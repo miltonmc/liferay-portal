@@ -1,0 +1,16 @@
+on:
+  schedule:
+    - cron:  '0 */3 * * *'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Add upstream
+        run: git remote add upstream https://github.com/liferay/liferay-portal.git
+      - name: Get latest commits from 
+        run: git fetch --all
+      - name: Sync with upstream master branch
+        run: git push origin upstream/master:main
