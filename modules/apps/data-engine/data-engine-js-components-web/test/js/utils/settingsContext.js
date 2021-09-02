@@ -12,23 +12,19 @@
  * details.
  */
 
-import {
-	getFieldProperty,
-	getFieldValue,
-} from 'data-engine-js-components-web/js/core/utils/fields';
+import {updateField} from '../../../src/main/resources/META-INF/resources/js/utils/settingsContext';
+import {camelize} from '../../../src/main/resources/META-INF/resources/js/utils/strings';
 
-import {
-	updateFieldDataType,
-	updateFieldLabel,
-	updateFieldName,
-	updateFieldOptions,
-	updateFieldProperty,
-} from '../../../src/main/resources/META-INF/resources/js/utils/settingsContext';
-import mockPages from '../__mock__/mockPages.es';
-
-const field = {
+const generateField = (...settingsContextFields) => ({
 	fieldName: 'oldFieldName',
 	label: 'Old Field Label',
+	readonly: false,
+	settingsContext: {
+		pages: [{rows: [{columns: [{fields: [...settingsContextFields]}]}]}],
+	},
+});
+
+const getSettingsContextField = ({
 	settingsContext: {
 		pages: [
 			{
@@ -36,44 +32,7 @@ const field = {
 					{
 						columns: [
 							{
-								fields: [
-									{
-										fieldName: 'name',
-										value: 'oldFieldName',
-									},
-									{
-										fieldName: 'label',
-										value: 'Old Field Label',
-									},
-									{
-										fieldName: 'readOnly',
-										value: false,
-									},
-									{
-										fieldName: 'dataType',
-										value: 'oldDataType',
-									},
-									{
-										fieldName: 'predefinedValue',
-										value: [
-											{
-												label: 'Predefined',
-												value: 'Predefined',
-											},
-										],
-									},
-									{
-										fieldName: 'validation',
-										validation: {
-											dataType: 'oldDataType',
-											fieldName: 'oldFieldName',
-										},
-										value: {
-											expression:
-												'isEmailAddress(oldFieldName)',
-										},
-									},
-								],
+								fields: [settingsContextField],
 							},
 						],
 					},
@@ -81,209 +40,225 @@ const field = {
 			},
 		],
 	},
-};
+}) => settingsContextField;
 
-xdescribe('utils/settingsContext', () => {
-	describe('updateFieldLabel(state, field, value)', () => {
-		it('updates the focused field "label" property', () => {
-			const state = {
-				pages: mockPages,
-			};
+const fieldNameGenerator = jest.fn((propertyValue) => camelize(propertyValue));
 
-			const updatedField = updateFieldLabel(state, field, 'New Label');
+describe('utils/settingsContext/updateField()', () => {
+	describe('Update Field Label', () => {
+		it('updates the field property', () => {
+			const field = generateField();
 
-			expect(updatedField.label).toEqual('New Label');
+			const {label} = updateField({}, field, 'label', 'New Label');
+
+			expect(label).toEqual('New Label');
 		});
 
-		it('updates the settingsContext of the focused field with the new field label', () => {
-			const state = {
-				pages: mockPages,
-			};
+		it('updates the settingsContext', () => {
+			const field = generateField({
+				fieldName: 'label',
+				value: 'Old Field Label',
+			});
 
-			const updatedField = updateFieldLabel(state, field, 'New Label');
+			const updatedField = updateField({}, field, 'label', 'New Label');
 
-			expect(
-				getFieldValue(updatedField.settingsContext.pages, 'label')
-			).toEqual('New Label');
+			const {fieldName, value} = getSettingsContextField(updatedField);
+			expect(fieldName).toEqual('label');
+			expect(value).toEqual('New Label');
 		});
 
-		it('automaticallys update the field name if it was auto generated from its label', () => {
-			const mockFocusedField = {
-				...field,
-				fieldName: 'GeneratedFieldName',
-				label: 'Generated Field Name',
-			};
+		it('not updates field name by default', () => {
+			const field = generateField({
+				fieldName: 'name',
+				value: 'oldFieldName',
+			});
 
-			const state = {
-				pages: mockPages,
-			};
+			const updatedField = updateField({}, field, 'label', 'New Label');
 
-			const updatedField = updateFieldLabel(
-				state,
-				mockFocusedField,
+			expect(updatedField.fieldName).toEqual('oldFieldName');
+
+			const {value} = getSettingsContextField(updatedField);
+			expect(value).toEqual('oldFieldName');
+		});
+
+		it('updates the field name based on the label if "generateFieldNameUsingFieldLabel" is true', () => {
+			const field = generateField({
+				fieldName: 'name',
+				value: 'oldFieldName',
+			});
+
+			const updatedField = updateField(
+				{
+					fieldNameGenerator,
+					generateFieldNameUsingFieldLabel: true,
+				},
+				field,
+				'label',
 				'New Label'
 			);
 
 			expect(updatedField.fieldName).toEqual('NewLabel');
-			expect(
-				getFieldValue(updatedField.settingsContext.pages, 'name')
-			).toEqual('NewLabel');
-		});
 
-		it('does not automatically update the field name if it was not auto generated from its label', () => {
-			const state = {
-				pages: mockPages,
-			};
-
-			const updatedField = updateFieldLabel(state, field, 'New Label');
-
-			expect(updatedField.fieldName).toEqual('oldFieldName');
-			expect(
-				getFieldValue(updatedField.settingsContext.pages, 'name')
-			).toEqual('oldFieldName');
+			const {value} = getSettingsContextField(updatedField);
+			expect(value).toEqual('NewLabel');
 		});
 	});
 
-	describe('updateFieldName(state, field, value)', () => {
-		it('updates the focused field "fieldName" property', () => {
-			const state = {
-				pages: mockPages,
-			};
+	describe('Update Field Name', () => {
+		it('updates the field property', () => {
+			const field = generateField();
 
-			const updatedField = updateFieldName(state, field, 'newName');
-
-			expect(updatedField.fieldName).toEqual('newName');
-		});
-
-		it('updates the settingsContext of the focused field with the new field name', () => {
-			const state = {
-				pages: mockPages,
-			};
-
-			const updatedField = updateFieldName(state, field, 'newName');
-
-			expect(
-				getFieldValue(updatedField.settingsContext.pages, 'name')
-			).toEqual('newName');
-		});
-
-		it('updates the validation expression of the validation field of the settingsContext with the new field name', () => {
-			const state = {
-				pages: mockPages,
-			};
-
-			const updatedField = updateFieldName(state, field, 'newName');
-
-			expect(
-				getFieldValue(updatedField.settingsContext.pages, 'validation')
-					.expression
-			).toEqual('isEmailAddress(newName)');
-			expect(
-				getFieldProperty(
-					updatedField.settingsContext.pages,
-					'validation',
-					'validation'
-				).fieldName
-			).toEqual('newName');
-		});
-
-		it('falls back to the previous valid name when trying to change to an invalid one', () => {
-			const state = {
-				pages: mockPages,
-			};
-
-			const updatedField = updateFieldName(state, field, 'oldName');
-
-			expect(
-				getFieldValue(updatedField.settingsContext.pages, 'name')
-			).toEqual('oldName');
-		});
-	});
-
-	describe('updateFieldDataType(state, field, value)', () => {
-		it('updates the focused field "dataType" property', () => {
-			const state = {
-				pages: mockPages,
-			};
-
-			const updatedField = updateFieldDataType(
-				state,
+			const {fieldName} = updateField(
+				{fieldNameGenerator},
 				field,
-				'newDataType'
+				'name',
+				'newName'
 			);
 
-			expect(updatedField.dataType).toEqual('newDataType');
+			expect(fieldName).toEqual('newName');
 		});
 
-		it('updates the settingsContext of the focused field with the new dataType', () => {
-			const state = {
-				pages: mockPages,
-			};
-
-			const updatedField = updateFieldDataType(
-				state,
+		it('updates the settingsContext', () => {
+			const field = generateField({
+				fieldName: 'name',
+				value: 'oldFieldName',
+			});
+			const updatedField = updateField(
+				{fieldNameGenerator},
 				field,
-				'newDataType'
+				'name',
+				'newName'
 			);
 
-			expect(
-				getFieldValue(updatedField.settingsContext.pages, 'dataType')
-			).toEqual('newDataType');
+			const {fieldName, value} = getSettingsContextField(updatedField);
+			expect(fieldName).toEqual('name');
+			expect(value).toEqual('newName');
 		});
 
-		it('updates the validation expression of the validation field of the settingsContext with the new dataType', () => {
-			const state = {
-				pages: mockPages,
-			};
-
-			const updatedField = updateFieldDataType(
-				state,
-				field,
-				'newDataType'
-			);
-
-			expect(
-				getFieldProperty(
-					updatedField.settingsContext.pages,
-					'validation',
-					'validation'
-				).dataType
-			).toEqual('newDataType');
-		});
-	});
-
-	describe('updateFieldOptions(state, field, options)', () => {
-		it('updates the focused field "options" property', () => {
-			const newOptions = [
-				{
-					label: 'New Label',
-					value: 'NewLabel',
+		it('updates the validation into the settingsContext', () => {
+			const field = generateField({
+				fieldName: 'validation',
+				validation: {
+					dataType: 'oldDataType',
+					fieldName: 'oldFieldName',
 				},
-			];
-			const state = {
-				pages: mockPages,
-			};
+				value: {
+					expression: 'isEmailAddress(oldFieldName)',
+				},
+			});
+			const updatedField = updateField(
+				{fieldNameGenerator},
+				field,
+				'name',
+				'newName'
+			);
 
-			const updatedField = updateFieldOptions(state, field, newOptions);
+			const {
+				validation: {fieldName},
+				value: {expression},
+			} = getSettingsContextField(updatedField);
+			expect(fieldName).toEqual('newName');
+			expect(expression).toEqual('isEmailAddress(newName)');
+		});
 
-			expect(updatedField.options).toEqual(newOptions);
+		it('not updates field property if name is invalid', () => {
+			const field = generateField();
+
+			const updatedField = updateField(
+				{fieldNameGenerator},
+				field,
+				'name',
+				'newName'
+			);
+
+			expect(updatedField.fieldName).toEqual('oldName');
+
+			const {value} = getSettingsContextField(updatedField);
+			expect(value).toEqual('oldName');
 		});
 	});
 
-	describe('updateFieldProperty(state, field, options)', () => {
-		it('updates the desired property', () => {
-			const state = {
-				pages: mockPages,
-			};
+	describe('Update Field DataType', () => {
+		it('updates the field property', () => {
+			const field = generateField();
 
-			const updatedField = updateFieldProperty(
-				state,
+			const {dataType} = updateField(
+				{},
 				field,
-				'readOnly',
-				true
+				'dataType',
+				'newDataType'
 			);
 
-			expect(updatedField.readOnly).toEqual(true);
+			expect(dataType).toEqual('newDataType');
+		});
+
+		it('updates the settingsContext', () => {
+			const field = generateField({
+				fieldName: 'dataType',
+				value: 'oldDataType',
+			});
+
+			const updatedField = updateField(
+				{},
+				field,
+				'dataType',
+				'newDataType'
+			);
+
+			const {fieldName, value} = getSettingsContextField(updatedField);
+			expect(fieldName).toEqual('dataType');
+			expect(value).toEqual('newDataType');
+		});
+
+		it('updates the validation into the settingsContext', () => {
+			const field = generateField({
+				fieldName: 'validation',
+				validation: {
+					dataType: 'oldDataType',
+					fieldName: 'oldFieldName',
+				},
+				value: {
+					expression: 'isEmailAddress(oldFieldName)',
+				},
+			});
+
+			const updatedField = updateField(
+				{},
+				field,
+				'dataType',
+				'newDataType'
+			);
+
+			const {
+				validation: {dataType},
+			} = getSettingsContextField(updatedField);
+			expect(dataType).toEqual('newDataType');
+		});
+	});
+
+	describe('Update Field Options', () => {
+		it('updates the field property', () => {
+			const field = generateField();
+			const newOptions = {en_US: {label: 'New Label', value: 'NewLabel'}};
+
+			const {options} = updateField(
+				{editingLanguageId: 'en_US'},
+				field,
+				'options',
+				newOptions
+			);
+
+			expect(options).toEqual(newOptions['en_US']);
+		});
+	});
+
+	describe('default field update', () => {
+		it('updates the property', () => {
+			const field = generateField();
+
+			const {readOnly} = updateField({}, field, 'readOnly', true);
+
+			expect(readOnly).toEqual(true);
 		});
 	});
 });
