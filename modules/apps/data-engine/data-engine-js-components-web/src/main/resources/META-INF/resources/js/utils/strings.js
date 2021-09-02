@@ -12,6 +12,29 @@
  * details.
  */
 
+/**
+ * Converts text to camel case notation
+ *
+ * It capitalizes every
+ *
+ * @param {string} text input text
+ * @param {string} separator string used to separate word each other. The default value is a white space
+ * @returns the text in camel case
+ *
+ * Examples:
+ * - camelize('MyText') => 'MyText'
+ * - camelize('mytext') => 'mytext'
+ * - camelize('My text') => 'MyText'
+ * - camelize('my text') => 'myText'
+ * - camelize('my-text', '-') => 'myText'
+ */
+export const camelize = (text, separator = ' ') => {
+	return text
+		.split(separator)
+		.map((word, index) => (index ? capitalize(word) : word))
+		.join('');
+};
+
 export const capitalize = (text) => {
 	return text.charAt(0).toUpperCase() + text.slice(1);
 };
