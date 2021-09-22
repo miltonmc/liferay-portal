@@ -38,6 +38,36 @@ describe('PagesVisitor', () => {
 	afterEach(() => {
 		if (visitor) {
 			visitor.dispose();
+		}
+	});
+
+	it('is able to change pages', () => {
+		expect(
+			visitor.mapPages((page, index) => ({
+				...page,
+				title: `New title ${index}`,
+			}))
+		).toMatchSnapshot();
+	});
+
+	it('is able to change rows', () => {
+		expect(
+			visitor.mapRows((row) => ({
+				...row,
+				columns: [],
+			}))
+		).toMatchSnapshot();
+	});
+
+	it('is able to change columns', () => {
+		expect(
+			visitor.mapColumns((column) => ({
+				...column,
+				size: 6,
+			}))
+		).toMatchSnapshot();
+	});
+
 	describe('visitFields(evaluateField)', () => {
 		it('visits each field and stops on first occurrence', () => {
 			const visitedFieldNames = [];
@@ -48,6 +78,7 @@ describe('PagesVisitor', () => {
 						{
 							columns: [
 								{
+									fields: [
 										{fieldName: 'A'},
 										{
 											fieldName: 'B',
@@ -138,7 +169,7 @@ describe('PagesVisitor', () => {
 			expect(oldField).toEqual(newField);
 		});
 
-		it('overrides the original nested field if iterating over the nested fields', () => {
+		it('does not overrides the original nested field if iterating over the nested fields', () => {
 			const pages = visitor.mapFields(
 				() => ({nestedFields: [{fieldName: 'C'}], visited: true}),
 				true,
@@ -193,13 +224,9 @@ describe('PagesVisitor', () => {
 				},
 			] = pages;
 
-			// check if we want to keep the empty `nestedField` was created into the field
-
 			expect(field).toEqual({
 				fieldName: 'A',
-				nestedFields: [
-					{fieldName: 'B', nestedFields: [], visited: true},
-				],
+				nestedFields: [{fieldName: 'B', visited: true}],
 				visited: true,
 			});
 		});
@@ -232,7 +259,7 @@ describe('PagesVisitor', () => {
 			});
 		});
 
-		it('keeps only new properties from a field ignoring the old nested fields', () => {
+		it('keeps only new properties from a field and also for its nested fields', () => {
 			const pages = visitor.mapFields(
 				() => ({visited: true}),
 				false,
@@ -253,7 +280,10 @@ describe('PagesVisitor', () => {
 				},
 			] = pages;
 
-			expect(field).toEqual({visited: true});
+			expect(field).toEqual({
+				nestedFields: [{visited: true}],
+				visited: true,
+			});
 		});
 
 		it('keeps only new properties from a field not iterating over the nested fields', () => {

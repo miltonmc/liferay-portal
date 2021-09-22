@@ -47,19 +47,24 @@ class PagesVisitor {
 		return this._map(identity, identity, mapper, identity);
 	}
 
-	mapFields(mapper, merge = true, includeNestedFields = false) {
-		return this._map(identity, identity, identity, (fields, ...args) => {
-			return fields.map((field, fieldIndex) => {
-				let mappedField;
+	mapFields(mapper, merge = true, iterateOverNestedFields = false) {
+		const recursiveMapFields = (fields, ...args) => {
+			return fields.map((oldField, fieldIndex) => {
+				const mappedField = mapper(oldField, fieldIndex, ...args);
+				const newField = merge
+					? {...oldField, ...mappedField}
+					: mappedField;
 
-				if (merge) {
-					mappedField = {
-						...field,
-						...mapper(field, fieldIndex, ...args),
-					};
-				}
-				else {
-					mappedField = mapper(field, fieldIndex, ...args);
+				if (
+					newField &&
+					iterateOverNestedFields &&
+					oldField?.nestedFields
+				) {
+					newField.nestedFields = recursiveMapFields(
+						oldField.nestedFields,
+						...args,
+						newField
+					);
 				}
 
 				if (includeNestedFields && mappedField.nestedFields) {
