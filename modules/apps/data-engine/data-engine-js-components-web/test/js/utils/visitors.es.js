@@ -13,12 +13,20 @@
  */
 
 import {PagesVisitor} from '../../../src/main/resources/META-INF/resources/js/utils/visitors.es';
+import mockPages from '../__mock__/mockPages.es';
+
+const createNewPage = () => {
+	const field = {
+		fieldName: 'A',
+		nestedFields: [{fieldName: 'B'}],
+	};
+	const pages = [{rows: [{columns: [{fields: [field]}]}]}];
+
+	return {field, pages};
+};
 
 describe('PagesVisitor', () => {
-	let field;
-	let nestedField;
-	let pages;
-	const visitor = new PagesVisitor([]);
+	let visitor;
 
 	beforeEach(() => {
 		nestedField = {fieldName: 'B'};
@@ -27,9 +35,91 @@ describe('PagesVisitor', () => {
 		visitor.setPages(pages);
 	});
 
-	describe('mapFields(mapper, merge, includeNestedFields)', () => {
-		it('creates new field instances', () => {
-			const newPages = visitor.mapFields(() => ({fieldName: 'Z'}));
+	afterEach(() => {
+		if (visitor) {
+			visitor.dispose();
+	describe('visitFields(evaluateField)', () => {
+		it('visits each field and stops on first occurrence', () => {
+			const visitedFieldNames = [];
+
+			const visitor = new PagesVisitor([
+				{
+					rows: [
+						{
+							columns: [
+								{
+										{fieldName: 'A'},
+										{
+											fieldName: 'B',
+											nestedFields: [{fieldName: 'C'}],
+										},
+									],
+								},
+								{fields: [{fieldName: 'D'}]},
+							],
+						},
+						{columns: [{fields: [{fieldName: 'E'}]}]},
+					],
+				},
+				{rows: [{columns: [{fields: [{fieldName: 'F'}]}]}]},
+			]);
+
+			visitor.visitFields(({fieldName}) => {
+				visitedFieldNames.push(fieldName);
+
+				return fieldName === 'C';
+			});
+
+			expect(visitedFieldNames).toEqual(['A', 'B', 'C']);
+		});
+	});
+
+	describe('mapFields(callback, merge, includeNestedField)', () => {
+		let oldField;
+		let oldPages;
+
+		beforeEach(() => {
+			const {field, pages} = createNewPage();
+			oldField = field;
+			oldPages = pages;
+			visitor = new PagesVisitor(pages);
+		});
+
+		it('updates field property', () => {
+			expect(
+				visitor.mapFields((field, index) => ({
+					fieldName: `field${index}`,
+				}))
+			).toEqual([
+				{
+					rows: [
+						{
+							columns: [
+								{
+									fields: [
+										{
+											fieldName: 'field0',
+											nestedFields: [{fieldName: 'B'}],
+										},
+									],
+								},
+							],
+						},
+					],
+				},
+			]);
+		});
+
+		it('does not mutate the the original pages', () => {
+			const newPages = visitor.mapFields((field) => field);
+
+			expect(oldPages).not.toBe(newPages);
+			expect(oldPages).toEqual(newPages);
+		});
+
+		it('does not mutate the the original field', () => {
+			visitor = new PagesVisitor(oldPages);
+			const newPages = visitor.mapFields((field) => field);
 			const [
 				{
 					rows: [
@@ -43,156 +133,151 @@ describe('PagesVisitor', () => {
 					],
 				},
 			] = newPages;
-			expect(newField.fieldName).toEqual('Z');
+
+			expect(oldField).not.toBe(newField);
+			expect(oldField).toEqual(newField);
 		});
 
-		it('does not mutate the fields into the original pages', () => {
-			visitor.mapFields(() => ({fieldName: 'Z'}));
-			expect(field.fieldName).toEqual('A');
-		});
-
-		it('passes index as a callback parameters', () => {
-			const mapper = jest.fn();
-			visitor.mapFields(mapper);
-			expect(mapper).toHaveBeenCalledWith(
-				field,
-				0, // pages index
-				0, // rows index
-				0, // columns index
-				0 // fields index
+		it('overrides the original nested field if iterating over the nested fields', () => {
+			const pages = visitor.mapFields(
+				() => ({nestedFields: [{fieldName: 'C'}], visited: true}),
+				true,
+				true
 			);
-		});
 
-		it('merges field properties by default', () => {
-			const newPages = visitor.mapFields(() => ({fieldName: 'Z'}));
 			const [
 				{
 					rows: [
 						{
 							columns: [
 								{
-									fields: [newField],
+									fields: [field],
 								},
 							],
 						},
 					],
 				},
-			] = newPages;
-			expect(newField).toEqual({
-				fieldName: 'Z',
-				nestedFields: [nestedField],
+			] = pages;
+
+			expect(field).toEqual({
+				fieldName: 'A',
+				nestedFields: [
+					{
+						fieldName: 'B',
+						nestedFields: [{fieldName: 'C'}],
+						visited: true,
+					},
+				],
+				visited: true,
 			});
 		});
 
-		it('not merges field properties if merge set to false', () => {
-			const newPages = visitor.mapFields(() => ({fieldName: 'Z'}), false);
+		it('merges new and old properties from a field including its nested fields', () => {
+			const pages = visitor.mapFields(
+				() => ({visited: true}),
+				true,
+				true
+			);
+
 			const [
 				{
 					rows: [
 						{
 							columns: [
 								{
-									fields: [newField],
+									fields: [field],
 								},
 							],
 						},
 					],
 				},
-			] = newPages;
-			expect(newField).toEqual({fieldName: 'Z'});
+			] = pages;
+
+			// check if we want to keep the empty `nestedField` was created into the field
+
+			expect(field).toEqual({
+				fieldName: 'A',
+				nestedFields: [
+					{fieldName: 'B', nestedFields: [], visited: true},
+				],
+				visited: true,
+			});
 		});
 
-		it('iterates over nested fields', () => {
-			const mapper = jest.fn();
-			visitor.mapFields(mapper, true, true);
-			expect(mapper).toHaveBeenCalledTimes(2);
-			expect(mapper).toHaveBeenLastCalledWith(
-				nestedField,
-				0, // pages index
-				0, // rows index
-				0, // columns index
-				0, // fields index
-				field
+		it('merges new and old properties from a field not iterating over the nested fields', () => {
+			const pages = visitor.mapFields(
+				() => ({visited: true}),
+				true,
+				false
 			);
+
+			const [
+				{
+					rows: [
+						{
+							columns: [
+								{
+									fields: [field],
+								},
+							],
+						},
+					],
+				},
+			] = pages;
+
+			expect(field).toEqual({
+				fieldName: 'A',
+				nestedFields: [{fieldName: 'B'}],
+				visited: true,
+			});
 		});
 
-		it('not iterates over nested fields if merge is false', () => {
-			const mapper = jest.fn();
-			visitor.mapFields(mapper, false, true);
-			expect(mapper).toHaveBeenLastCalledWith(
-				field,
-				0, // pages index
-				0, // rows index
-				0, // columns index
-				0 // fields index
+		it('keeps only new properties from a field ignoring the old nested fields', () => {
+			const pages = visitor.mapFields(
+				() => ({visited: true}),
+				false,
+				true
 			);
-		});
-	});
 
-	describe('mapPages(mapper)', () => {
-		it('is able to change pages', () => {
-			expect(visitor.mapPages((_page, index) => ({index}))).toEqual([
-				{index: 0, rows: [{columns: [{fields: [field]}]}]},
-			]);
-		});
-	});
+			const [
+				{
+					rows: [
+						{
+							columns: [
+								{
+									fields: [field],
+								},
+							],
+						},
+					],
+				},
+			] = pages;
 
-	describe('mapRows(mapper)', () => {
-		it('is able to change rows', () => {
-			expect(visitor.mapRows((_row, index) => ({index}))).toEqual([
-				{rows: [{columns: [{fields: [field]}], index: 0}]},
-			]);
-		});
-	});
-
-	describe('mapColumns(mapper)', () => {
-		it('is able to change columns', () => {
-			expect(visitor.mapColumns((_column, index) => ({index}))).toEqual([
-				{rows: [{columns: [{fields: [field], index: 0}]}]},
-			]);
-		});
-	});
-
-	describe('visitFields(evaluateField)', () => {
-		it('stops on first evaluateField return true', () => {
-			const evaluateField = jest.fn(() => true);
-
-			visitor.visitFields(evaluateField);
-
-			expect(evaluateField).toHaveBeenCalledTimes(1);
+			expect(field).toEqual({visited: true});
 		});
 
-		it('iterates over nested fields', () => {
-			const evaluateField = jest.fn();
+		it('keeps only new properties from a field not iterating over the nested fields', () => {
+			const pages = visitor.mapFields(
+				() => ({visited: true}),
+				false,
+				false
+			);
 
-			visitor.visitFields(evaluateField);
+			const [
+				{
+					rows: [
+						{
+							columns: [
+								{
+									fields: [field],
+								},
+							],
+						},
+					],
+				},
+			] = pages;
 
-			expect(evaluateField).toHaveBeenCalledTimes(2);
-			expect(evaluateField).toHaveBeenLastCalledWith(nestedField);
-		});
-
-		it('iterates over multiple pages', () => {
-			const evaluateField = jest.fn();
-			const newField = {fieldName: 'C'};
-			pages.push({rows: [{columns: [{fields: [newField]}]}]});
-			visitor.setPages(pages);
-
-			visitor.visitFields(evaluateField);
-
-			expect(evaluateField).toHaveBeenCalledTimes(3);
-			expect(evaluateField).toHaveBeenLastCalledWith(newField);
-		});
-	});
-
-	describe('findField(condition)', () => {
-		it('returns undefined if no condition evaluate to true', () => {
-			const fieldFound = visitor.findField(() => false);
-			expect(fieldFound).toEqual(undefined);
-		});
-
-		it('returns the field on the first condition evaluating to true', () => {
-			const fieldFound = visitor.findField(() => true);
-			expect(fieldFound).toBe(field);
+			expect(field).toEqual({visited: true});
 		});
 	});
 });
