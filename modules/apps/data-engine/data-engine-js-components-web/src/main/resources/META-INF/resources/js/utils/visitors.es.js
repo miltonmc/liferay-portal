@@ -48,27 +48,52 @@ class PagesVisitor {
 	}
 
 	mapFields(mapper, merge = true, includeNestedFields = false) {
-		const recursiveMapFields = (fields, ...args) => {
+		return this._map(identity, identity, identity, (fields, ...args) => {
 			return fields.map((field, fieldIndex) => {
-				const newField = {
-					...(merge ? field : null),
-					...mapper(field, fieldIndex, ...args),
-				};
+				let mappedField;
 
-				const nestedFields = newField.nestedFields;
-				if (includeNestedFields && nestedFields) {
-					newField.nestedFields = recursiveMapFields(
-						nestedFields,
-						...args,
-						newField
-					);
+				if (merge) {
+					mappedField = {
+						...field,
+						...mapper(field, fieldIndex, ...args),
+					};
+				}
+				else {
+					mappedField = mapper(field, fieldIndex, ...args);
 				}
 
-				return newField;
-			});
-		};
+				if (includeNestedFields && mappedField.nestedFields) {
+					const mapNestedFields = (field) => {
+						return {
+							...field,
+							nestedFields: (field.nestedFields || []).map(
+								(nestedField) => {
+									let mappedNestedField = mapper(
+										nestedField,
+										fieldIndex,
+										...args,
+										field
+									);
 
-		return this._map(identity, identity, identity, recursiveMapFields);
+									if (merge) {
+										mappedNestedField = {
+											...nestedField,
+											...mappedNestedField,
+										};
+									}
+
+									return mapNestedFields(mappedNestedField);
+								}
+							),
+						};
+					};
+
+					return mapNestedFields(mappedField);
+				}
+
+				return mappedField;
+			});
+		});
 	}
 
 	mapPages(mapper) {
