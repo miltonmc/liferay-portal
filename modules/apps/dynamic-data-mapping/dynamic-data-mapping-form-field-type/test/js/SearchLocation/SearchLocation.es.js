@@ -19,8 +19,6 @@ import React from 'react';
 
 import SearchLocation from '../../../src/main/resources/META-INF/resources/SearchLocation/SearchLocation.es';
 
-const globalLanguageDirection = Liferay.Language.direction;
-
 const SearchLocationWithProvider = (props) => (
 	<FormProvider value={{editingLanguageId: 'en_US', viewMode: true}}>
 		<SearchLocation {...props} />
@@ -86,10 +84,6 @@ const hasAllFieldsInCorrectOrder = (
 
 describe('Field Search Location', () => {
 	beforeAll(() => {
-		Liferay.Language.direction = {
-			en_US: 'rtl',
-		};
-
 		window.google = {
 			maps: {
 				event: {
@@ -100,10 +94,6 @@ describe('Field Search Location', () => {
 				},
 			},
 		};
-	});
-
-	afterAll(() => {
-		Liferay.Language.direction = globalLanguageDirection;
 	});
 
 	afterEach(cleanup);

@@ -19,8 +19,6 @@ import React from 'react';
 
 import Validation from '../../../src/main/resources/META-INF/resources/Validation/Validation';
 
-const globalLanguageDirection = Liferay.Language.direction;
-
 const generateValue = (parameter = null) => ({
 	errorMessage: {
 		en_US: null,
@@ -40,16 +38,6 @@ const ValidationWithProvider = ({formBuilder, validations, ...props}) => (
 );
 
 describe('Validation', () => {
-	beforeAll(() => {
-		Liferay.Language.direction = {
-			en_US: 'rtl',
-		};
-	});
-
-	afterAll(() => {
-		Liferay.Language.direction = globalLanguageDirection;
-	});
-
 	afterEach(cleanup);
 
 	it('renders checkbox to enable Validation', () => {

@@ -20,17 +20,7 @@ import React from 'react';
 
 import Numeric from '../../../src/main/resources/META-INF/resources/Numeric/Numeric';
 
-const globalLanguageDirection = Liferay.Language.direction;
-
 describe('Field Numeric', () => {
-	beforeAll(() => {
-		Liferay.Language.direction = {en_US: 'rtl'};
-	});
-
-	afterAll(() => {
-		Liferay.Language.direction = globalLanguageDirection;
-	});
-
 	afterEach(cleanup);
 
 	it('renders the default markup', () => {

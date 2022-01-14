@@ -19,8 +19,6 @@ import React from 'react';
 
 import ValidationDate from '../../../src/main/resources/META-INF/resources/Validation/ValidationDate';
 
-const globalLanguageDirection = Liferay.Language.direction;
-
 const validations = [
 	{
 		checked: false,
@@ -82,16 +80,6 @@ const ValidationDateProvider = ({
 );
 
 describe('ValidationDate', () => {
-	beforeAll(() => {
-		Liferay.Language.direction = {
-			en_US: 'rtl',
-		};
-	});
-
-	afterAll(() => {
-		Liferay.Language.direction = globalLanguageDirection;
-	});
-
 	it('shows future dates validation', () => {
 		const {container} = render(
 			<ValidationDateProvider

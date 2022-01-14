@@ -19,7 +19,6 @@ import React from 'react';
 
 import Validation from '../../../src/main/resources/META-INF/resources/Validation/Validation';
 
-const globalLanguageDirection = Liferay.Language.direction;
 const validations = {
 	numeric: [
 		{
@@ -46,16 +45,6 @@ const ValidationWithProvider = ({validations, ...props}) => (
 );
 
 describe('ValidationTextAndNumeric', () => {
-	beforeAll(() => {
-		Liferay.Language.direction = {
-			en_US: 'rtl',
-		};
-	});
-
-	afterAll(() => {
-		Liferay.Language.direction = globalLanguageDirection;
-	});
-
 	afterEach(cleanup);
 
 	it('allows user to delete parameter value for non-default languages', () => {

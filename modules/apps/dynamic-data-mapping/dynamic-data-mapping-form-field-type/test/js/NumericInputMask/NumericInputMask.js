@@ -18,8 +18,6 @@ import React from 'react';
 
 import NumericInputMask from '../../../src/main/resources/META-INF/resources/NumericInputMask/NumericInputMask';
 
-const globalLanguageDirection = Liferay.Language.direction;
-
 const DECIMAL_SYMBOLS = [
 	{label: '0,00', reference: ',', value: ','},
 	{label: '0.00', reference: '.', value: '.'},
@@ -36,11 +34,6 @@ const THOUSANDS_SEPARATORS = [
 describe('Field Numeric Input Mask', () => {
 	beforeAll(() => {
 		jest.useFakeTimers();
-		Liferay.Language.direction = {en_US: 'rtl'};
-	});
-
-	afterAll(() => {
-		Liferay.Language.direction = globalLanguageDirection;
 	});
 
 	afterEach(cleanup);
