@@ -12,7 +12,7 @@
  * details.
  */
 
-import {cleanup, render} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {FormProvider} from 'data-engine-js-components-web';
 import React from 'react';
@@ -38,8 +38,6 @@ const ValidationWithProvider = ({formBuilder, validations, ...props}) => (
 );
 
 describe('Validation', () => {
-	afterEach(cleanup);
-
 	it('renders checkbox to enable Validation', () => {
 		const {container} = render(
 			<ValidationWithProvider

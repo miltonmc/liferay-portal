@@ -13,7 +13,7 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {cleanup, fireEvent, render} from '@testing-library/react';
+import {fireEvent, render} from '@testing-library/react';
 import {FormProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
@@ -95,8 +95,6 @@ describe('Field Search Location', () => {
 			},
 		};
 	});
-
-	afterEach(cleanup);
 
 	it('must to be show search location fields', () => {
 		const {getAllByLabelText} = render(

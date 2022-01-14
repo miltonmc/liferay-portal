@@ -12,7 +12,7 @@
  * details.
  */
 
-import {act, cleanup, render} from '@testing-library/react';
+import {act, render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
@@ -46,8 +46,6 @@ describe('Field Color Picker', () => {
 		// eslint-disable-next-line no-console
 		console.warn = originalWarn;
 	});
-
-	afterEach(cleanup);
 
 	beforeEach(() => {
 		jest.useFakeTimers();

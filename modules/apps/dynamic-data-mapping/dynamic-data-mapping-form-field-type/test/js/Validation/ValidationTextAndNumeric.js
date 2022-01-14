@@ -12,7 +12,7 @@
  * details.
  */
 
-import {cleanup, render} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {FormProvider} from 'data-engine-js-components-web';
 import React from 'react';
@@ -45,8 +45,6 @@ const ValidationWithProvider = ({validations, ...props}) => (
 );
 
 describe('ValidationTextAndNumeric', () => {
-	afterEach(cleanup);
-
 	it('allows user to delete parameter value for non-default languages', () => {
 		const {container} = render(
 			<ValidationWithProvider

@@ -13,15 +13,13 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {cleanup, render} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import Checkbox from '../../../src/main/resources/META-INF/resources/Checkbox/Checkbox';
 
 describe('Field Checkbox', () => {
-	afterEach(cleanup);
-
 	it('is not editable', () => {
 		const {container} = render(<Checkbox readOnly />);
 

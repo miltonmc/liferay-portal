@@ -13,7 +13,7 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {cleanup, render} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import React from 'react';
 
 import NumericInputMask from '../../../src/main/resources/META-INF/resources/NumericInputMask/NumericInputMask';
@@ -35,8 +35,6 @@ describe('Field Numeric Input Mask', () => {
 	beforeAll(() => {
 		jest.useFakeTimers();
 	});
-
-	afterEach(cleanup);
 
 	it('shows the Thousands Separator, Decimal Separator, Decimal places and Prefix or Suffix field by default', () => {
 		const {container} = render(
