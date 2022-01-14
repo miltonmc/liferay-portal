@@ -12,7 +12,7 @@
  * details.
  */
 
-import {act, render} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
@@ -59,10 +59,6 @@ describe('KeyValue', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -74,10 +70,6 @@ describe('KeyValue', () => {
 				tip="Type something"
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -91,10 +83,6 @@ describe('KeyValue', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -107,10 +95,6 @@ describe('KeyValue', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -122,10 +106,6 @@ describe('KeyValue', () => {
 				spritemap={spritemap}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -153,10 +133,6 @@ describe('KeyValue', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -170,10 +146,6 @@ describe('KeyValue', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -186,10 +158,6 @@ describe('KeyValue', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -201,10 +169,6 @@ describe('KeyValue', () => {
 				spritemap={spritemap}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});

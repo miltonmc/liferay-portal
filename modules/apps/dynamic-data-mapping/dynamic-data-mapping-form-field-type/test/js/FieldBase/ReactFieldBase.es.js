@@ -12,11 +12,10 @@
  * details.
  */
 
-import {act, fireEvent, render} from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import {fireEvent, render} from '@testing-library/react';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
-
-import '@testing-library/jest-dom/extend-expect';
 
 import {FieldBase} from '../../../src/main/resources/META-INF/resources/FieldBase/ReactFieldBase.es';
 
@@ -62,10 +61,6 @@ describe('ReactFieldBase', () => {
 			<FieldBaseWithProvider spritemap={spritemap} />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -74,10 +69,6 @@ describe('ReactFieldBase', () => {
 			<FieldBaseWithProvider required spritemap={spritemap} />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -85,10 +76,6 @@ describe('ReactFieldBase', () => {
 		const {container} = render(
 			<FieldBaseWithProvider id="Id" spritemap={spritemap} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -101,10 +88,6 @@ describe('ReactFieldBase', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -113,10 +96,6 @@ describe('ReactFieldBase', () => {
 			<FieldBaseWithProvider label="Text" spritemap={spritemap} />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -124,10 +103,6 @@ describe('ReactFieldBase', () => {
 		const {container} = render(
 			<FieldBaseWithProvider spritemap={spritemap} tooltip="Tooltip" />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container.querySelector('.ddm-tooltip')).not.toBeNull();
 	});
@@ -141,10 +116,6 @@ describe('ReactFieldBase', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -156,10 +127,6 @@ describe('ReactFieldBase', () => {
 				</div>
 			</FieldBaseWithProvider>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -173,10 +140,6 @@ describe('ReactFieldBase', () => {
 				spritemap={spritemap}
 			/>
 		);
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -190,10 +153,6 @@ describe('ReactFieldBase', () => {
 				spritemap={spritemap}
 			/>
 		);
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 

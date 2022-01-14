@@ -13,7 +13,7 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {act, render} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
@@ -60,10 +60,6 @@ describe('Field Checkbox Multiple', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -75,10 +71,6 @@ describe('Field Checkbox Multiple', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -87,10 +79,6 @@ describe('Field Checkbox Multiple', () => {
 			<CheckboxMultipleWithProvider id="ID" spritemap={spritemap} />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -98,10 +86,6 @@ describe('Field Checkbox Multiple', () => {
 		const {container} = render(
 			<CheckboxMultipleWithProvider label="label" spritemap={spritemap} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -114,10 +98,6 @@ describe('Field Checkbox Multiple', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -128,10 +108,6 @@ describe('Field Checkbox Multiple', () => {
 				spritemap={spritemap}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -144,10 +120,6 @@ describe('Field Checkbox Multiple', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -158,10 +130,6 @@ describe('Field Checkbox Multiple', () => {
 				spritemap={spritemap}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -175,10 +143,6 @@ describe('Field Checkbox Multiple', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -186,10 +150,6 @@ describe('Field Checkbox Multiple', () => {
 		const {container} = render(
 			<CheckboxMultipleWithProvider spritemap={spritemap} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -199,10 +159,6 @@ describe('Field Checkbox Multiple', () => {
 			<CheckboxMultipleWithProvider spritemap={spritemap} value={true} />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -210,10 +166,6 @@ describe('Field Checkbox Multiple', () => {
 		const {container} = render(
 			<CheckboxMultipleWithProvider key="key" spritemap={spritemap} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -229,10 +181,6 @@ describe('Field Checkbox Multiple', () => {
 		);
 
 		userEvent.click(document.body.querySelector('input'));
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(handleFieldEdited).toHaveBeenCalled();
 	});

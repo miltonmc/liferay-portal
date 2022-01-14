@@ -12,7 +12,7 @@
  * details.
  */
 
-import {act, fireEvent, render} from '@testing-library/react';
+import {fireEvent, render} from '@testing-library/react';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -113,10 +113,6 @@ describe('Field LocalizableText', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -132,10 +128,6 @@ describe('Field LocalizableText', () => {
 				}}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -153,10 +145,6 @@ describe('Field LocalizableText', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -173,10 +161,6 @@ describe('Field LocalizableText', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -192,10 +176,6 @@ describe('Field LocalizableText', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -206,10 +186,6 @@ describe('Field LocalizableText', () => {
 				value={{}}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -225,10 +201,6 @@ describe('Field LocalizableText', () => {
 				}}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		const triggerElement = getByTestId('triggerText');
 
@@ -263,10 +235,6 @@ describe('Field LocalizableText', () => {
 			},
 		});
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(handleFieldEdited).toHaveBeenCalledWith(
 			expect.any(Object),
 			EXPECTED_VALUE
@@ -292,19 +260,11 @@ describe('Field LocalizableText', () => {
 
 		fireEvent.click(triggerButton);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const dropdownItem = await findByTestId(
 			'availableLocalesDropdownca_ES'
 		);
 
 		fireEvent.click(dropdownItem);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		const inputElement = await findByTestId('visibleChangeInput');
 
@@ -334,19 +294,11 @@ describe('Field LocalizableText', () => {
 
 		fireEvent.click(triggerElement);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const dropdownItem = await findByTestId(
 			'availableLocalesDropdownja_JP'
 		);
 
 		fireEvent.click(dropdownItem);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		const inputComponent = getByTestId('visibleChangeInput');
 
@@ -376,19 +328,11 @@ describe('Field LocalizableText', () => {
 
 		fireEvent.click(triggerElement);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const dropdownItem = await findByTestId(
 			'availableLocalesDropdownja_JP'
 		);
 
 		fireEvent.click(dropdownItem);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		const inputComponent = getByTestId('visibleChangeInput');
 
@@ -398,10 +342,6 @@ describe('Field LocalizableText', () => {
 			target: {
 				value: 'Test JP',
 			},
-		});
-
-		act(() => {
-			jest.runAllTimers();
 		});
 
 		expect(inputComponent.value).toEqual('Test JP');
@@ -426,19 +366,11 @@ describe('Field LocalizableText', () => {
 
 		fireEvent.click(triggerElement);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const dropdownItem = await findByTestId(
 			'availableLocalesDropdownpt_BR'
 		);
 
 		fireEvent.click(dropdownItem);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		const inputComponent = getByTestId('visibleChangeInput');
 
@@ -448,10 +380,6 @@ describe('Field LocalizableText', () => {
 			target: {
 				value: '',
 			},
-		});
-
-		act(() => {
-			jest.runAllTimers();
 		});
 
 		expect(inputComponent.value).toEqual('');
@@ -478,19 +406,11 @@ describe('Field LocalizableText', () => {
 
 			fireEvent.click(triggerButton);
 
-			act(() => {
-				jest.runAllTimers();
-			});
-
 			const dropdownItem = await findByTestId(
 				'availableLocalesDropdownde_DE'
 			);
 
 			fireEvent.click(dropdownItem);
-
-			act(() => {
-				jest.runAllTimers();
-			});
 
 			const inputComponent = await findByTestId('visibleChangeInput');
 

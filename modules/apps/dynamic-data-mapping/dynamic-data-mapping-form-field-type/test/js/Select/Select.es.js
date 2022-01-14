@@ -13,7 +13,7 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent, render, screen} from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -124,10 +124,6 @@ describe('Select', () => {
 	it('is not editable', () => {
 		render(<SelectWithProvider readOnly spritemap={spritemap} />);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const dropdownTrigger = document.body.querySelector(
 			'.select-field-trigger'
 		);
@@ -140,10 +136,6 @@ describe('Select', () => {
 			<SelectWithProvider spritemap={spritemap} tip="Type something" />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -151,10 +143,6 @@ describe('Select', () => {
 		const {container} = render(
 			<SelectWithProvider id="Id" spritemap={spritemap} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -205,10 +193,6 @@ describe('Select', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -235,10 +219,6 @@ describe('Select', () => {
 			<SelectWithProvider options={[]} spritemap={spritemap} />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -246,10 +226,6 @@ describe('Select', () => {
 		const {container} = render(
 			<SelectWithProvider label="label" spritemap={spritemap} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -259,10 +235,6 @@ describe('Select', () => {
 			<SelectWithProvider open={false} spritemap={spritemap} />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -270,10 +242,6 @@ describe('Select', () => {
 		const {container} = render(
 			<SelectWithProvider open spritemap={spritemap} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -286,10 +254,6 @@ describe('Select', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -301,10 +265,6 @@ describe('Select', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -312,10 +272,6 @@ describe('Select', () => {
 		const {container} = render(
 			<SelectWithProvider required={false} spritemap={spritemap} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -329,10 +285,6 @@ describe('Select', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -340,10 +292,6 @@ describe('Select', () => {
 		const {container} = render(
 			<SelectWithProvider label="text" showLabel spritemap={spritemap} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -353,10 +301,6 @@ describe('Select', () => {
 			<SelectWithProvider spritemap={spritemap} value={['value']} />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -364,10 +308,6 @@ describe('Select', () => {
 		const {container} = render(
 			<SelectWithProvider key="key" spritemap={spritemap} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -384,27 +324,15 @@ describe('Select', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const dropdownTrigger = container.querySelector(
 			'.form-builder-select-field.input-group-container'
 		);
 
 		fireEvent.click(dropdownTrigger);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const dropdownItem = await findByTestId('dropdownItem-0');
 
 		fireEvent.click(dropdownItem);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(handleFieldEdited).toHaveBeenCalled();
 	});
@@ -428,17 +356,9 @@ describe('Select', () => {
 
 		fireEvent.click(dropdownTrigger);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const labelItem = await findByTestId('labelItem-item7');
 
 		fireEvent.click(labelItem);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(handleFieldEdited).toHaveBeenCalledWith(expect.any(Object), [
 			'item7',
@@ -490,10 +410,6 @@ describe('Select', () => {
 
 		fireEvent.click(dropdownTrigger);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -516,10 +432,6 @@ describe('Select', () => {
 
 		fireEvent.click(dropdownTrigger);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const input = container.querySelector('input');
 
 		fireEvent.change(input, {
@@ -528,19 +440,11 @@ describe('Select', () => {
 			},
 		});
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 
 		const labelItem = await findByTestId('labelItem-item11');
 
 		fireEvent.click(labelItem);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(handleFieldEdited).toHaveBeenCalledWith(expect.any(Object), [
 			'item11',

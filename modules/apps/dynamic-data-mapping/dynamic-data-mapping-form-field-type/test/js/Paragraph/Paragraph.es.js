@@ -12,7 +12,7 @@
  * details.
  */
 
-import {act, render} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
@@ -60,10 +60,6 @@ describe('Field Paragraph', () => {
 			<ParagraphWithProvider {...defaultParagraphConfig} readOnly />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -72,10 +68,6 @@ describe('Field Paragraph', () => {
 			<ParagraphWithProvider {...defaultParagraphConfig} id="Id" />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -83,10 +75,6 @@ describe('Field Paragraph', () => {
 		const {container} = render(
 			<ParagraphWithProvider {...defaultParagraphConfig} label="label" />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -99,10 +87,6 @@ describe('Field Paragraph', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -113,10 +97,6 @@ describe('Field Paragraph', () => {
 				required={false}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -130,10 +110,6 @@ describe('Field Paragraph', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -142,10 +118,6 @@ describe('Field Paragraph', () => {
 			<ParagraphWithProvider {...defaultParagraphConfig} value="value" />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -153,10 +125,6 @@ describe('Field Paragraph', () => {
 		const {container} = render(
 			<ParagraphWithProvider {...defaultParagraphConfig} key="key" />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});

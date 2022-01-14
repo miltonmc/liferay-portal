@@ -12,7 +12,7 @@
  * details.
  */
 
-import {act, fireEvent, render} from '@testing-library/react';
+import {fireEvent, render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
@@ -100,10 +100,6 @@ describe('Options', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const referenceInputs = container.querySelectorAll(
 			'.key-value-reference-input'
 		);
@@ -148,10 +144,6 @@ describe('Options', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const valueInputs = container.querySelectorAll('.key-value-input');
 
 		expect(valueInputs[0].readOnly).toBeTruthy();
@@ -183,10 +175,6 @@ describe('Options', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		userEvent.type(getByDisplayValue('Option1'), 'Option2');
 
 		const valueInputs = container.querySelectorAll('.key-value-input');
@@ -217,10 +205,6 @@ describe('Options', () => {
 				}}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		const labelInputs = container.querySelectorAll('.ddm-field-text');
 
@@ -266,10 +250,6 @@ describe('Options', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const labelInputs = container.querySelectorAll('.ddm-field-text');
 
 		expect(labelInputs.length).toEqual(2);
@@ -295,10 +275,6 @@ describe('Options', () => {
 				}}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		userEvent.type(getByDisplayValue('Option 1'), 'Option 2');
 
@@ -330,20 +306,12 @@ describe('Options', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const labelInputs = container.querySelectorAll('.ddm-field-text');
 
 		fireEvent.change(labelInputs[0], {
 			target: {
 				value: 'Hello',
 			},
-		});
-
-		act(() => {
-			jest.runAllTimers();
 		});
 
 		const valueInputs = container.querySelectorAll('.key-value-input');
@@ -370,20 +338,12 @@ describe('Options', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const labelInputs = container.querySelectorAll('.ddm-field-text');
 
 		fireEvent.change(labelInputs[1], {
 			target: {
 				value: 'Hello',
 			},
-		});
-
-		act(() => {
-			jest.runAllTimers();
 		});
 
 		const valueInputs = container.querySelectorAll('.key-value-input');
@@ -419,17 +379,9 @@ describe('Options', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const labelInputs = container.querySelectorAll('.ddm-field-text');
 
 		fireEvent.input(labelInputs[0], {target: {value: 'Hello'}});
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		const valueInputs = container.querySelectorAll('.key-value-input');
 
@@ -457,17 +409,9 @@ describe('Options', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const labelInputs = container.querySelectorAll('.ddm-field-text');
 
 		fireEvent.input(labelInputs[1], {target: {value: 'Foo'}});
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		const valueInputs = container.querySelectorAll('.key-value-input');
 
@@ -502,17 +446,9 @@ describe('Options', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const labelInputs = container.querySelectorAll('.ddm-field-text');
 
 		fireEvent.input(labelInputs[1], {target: {value: 'Bar'}});
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		const valueInputs = container.querySelectorAll('.key-value-input');
 
@@ -538,17 +474,9 @@ describe('Options', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const labelInput = container.querySelector('.ddm-field-text');
 
 		fireEvent.input(labelInput, {target: {value: ''}});
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		const valueInput = container.querySelector('.key-value-input');
 
@@ -666,10 +594,6 @@ describe('Options', () => {
 
 			fireEvent.blur(referenceInputs[0]);
 
-			act(() => {
-				jest.runAllTimers();
-			});
-
 			expect(referenceInputs[0].value).toBe('Option1');
 			expect(referenceInputs[1].value).toBe('Reference2');
 
@@ -706,10 +630,6 @@ describe('Options', () => {
 			fireEvent.input(referenceInput, {target: {value: ''}});
 
 			fireEvent.blur(referenceInput);
-
-			act(() => {
-				jest.runAllTimers();
-			});
 
 			expect(referenceInput.value).toEqual('Value');
 

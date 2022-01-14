@@ -12,7 +12,7 @@
  * details.
  */
 
-import {act, render} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
@@ -63,10 +63,6 @@ describe('Field DocumentLibrary', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -77,10 +73,6 @@ describe('Field DocumentLibrary', () => {
 				readOnly={true}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		const uploadFieldInput = document.getElementById(
 			'uploadFieldinputFile'
@@ -108,10 +100,6 @@ describe('Field DocumentLibrary', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const guestUploadFieldInput = document.getElementById(
 			'uploadFieldinputFileGuestUpload'
 		);
@@ -133,10 +121,6 @@ describe('Field DocumentLibrary', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -147,10 +131,6 @@ describe('Field DocumentLibrary', () => {
 				id="ID"
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -163,10 +143,6 @@ describe('Field DocumentLibrary', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -178,10 +154,6 @@ describe('Field DocumentLibrary', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -192,10 +164,6 @@ describe('Field DocumentLibrary', () => {
 				required={false}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -209,10 +177,6 @@ describe('Field DocumentLibrary', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -220,10 +184,6 @@ describe('Field DocumentLibrary', () => {
 		const {container} = render(
 			<DocumentLibraryWithProvider {...defaultDocumentLibraryConfig} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -235,10 +195,6 @@ describe('Field DocumentLibrary', () => {
 				value='{"id":"123"}'
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -255,10 +211,6 @@ describe('Field DocumentLibrary', () => {
 				value='{"id":"123"}'
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		const guestUploadFieldInput = document.getElementById(
 			'uploadFieldinputFileGuestUpload'
@@ -280,10 +232,6 @@ describe('Field DocumentLibrary', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const guestUploadFieldInput = document.getElementById(
 			'uploadFieldinputFileGuestUpload'
 		);
@@ -303,10 +251,6 @@ describe('Field DocumentLibrary', () => {
 				maximumSubmissionLimitReached={true}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		const guestUploadFieldInput = document.getElementById(
 			'uploadFieldinputFileGuestUpload'

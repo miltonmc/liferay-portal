@@ -13,7 +13,7 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent, render, screen} from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
@@ -61,10 +61,6 @@ describe('Field Text', () => {
 			<TextWithProvider {...defaultTextConfig} readOnly={false} />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -72,10 +68,6 @@ describe('Field Text', () => {
 		const {container} = render(
 			<TextWithProvider {...defaultTextConfig} readOnly={true} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -85,10 +77,6 @@ describe('Field Text', () => {
 			<TextWithProvider {...defaultTextConfig} tip="Type something" />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -97,10 +85,6 @@ describe('Field Text', () => {
 			<TextWithProvider {...defaultTextConfig} id="Id" />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -108,10 +92,6 @@ describe('Field Text', () => {
 		const {container} = render(
 			<TextWithProvider {...defaultTextConfig} label="label" />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -123,10 +103,6 @@ describe('Field Text', () => {
 				placeholder="Placeholder"
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -148,10 +124,6 @@ describe('Field Text', () => {
 			</div>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const autocompleteDropdownMenu = document.body.querySelector(
 			'.autocomplete-dropdown-menu'
 		);
@@ -165,10 +137,6 @@ describe('Field Text', () => {
 		const {container} = render(
 			<TextWithProvider {...defaultTextConfig} required={false} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -198,10 +166,6 @@ describe('Field Text', () => {
 			target: {
 				value: 'Option',
 			},
-		});
-
-		act(() => {
-			jest.runAllTimers();
 		});
 
 		const autocompleteDropdownMenu = document.querySelector(
@@ -240,10 +204,6 @@ describe('Field Text', () => {
 			},
 		});
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const autocompleteDropdownMenu = document.querySelector(
 			'.autocomplete-dropdown-menu'
 		);
@@ -278,10 +238,6 @@ describe('Field Text', () => {
 			},
 		});
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		const autocompleteDropdownMenu = document.querySelector(
 			'.autocomplete-dropdown-menu'
 		);
@@ -294,10 +250,6 @@ describe('Field Text', () => {
 
 		fireEvent.mouseDown(body);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(autocompleteDropdownMenu.classList.contains('show')).toBeFalsy();
 	});
 
@@ -306,10 +258,6 @@ describe('Field Text', () => {
 			<TextWithProvider {...defaultTextConfig} label="text" showLabel />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -317,10 +265,6 @@ describe('Field Text', () => {
 		const {container} = render(
 			<TextWithProvider {...defaultTextConfig} value="value" />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -342,10 +286,6 @@ describe('Field Text', () => {
 			target: {
 				value: 'test',
 			},
-		});
-
-		act(() => {
-			jest.runAllTimers();
 		});
 
 		expect(onChange).toHaveBeenCalled();
@@ -371,10 +311,6 @@ describe('Field Text', () => {
 			},
 		});
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(input.value).toEqual('FieldReference');
 	});
 
@@ -396,10 +332,6 @@ describe('Field Text', () => {
 			target: {
 				value: '+9 (129) 993-9999',
 			},
-		});
-
-		act(() => {
-			jest.runAllTimers();
 		});
 
 		expect(input.value).toEqual('+9 (9) 99-9999');

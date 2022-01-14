@@ -12,7 +12,7 @@
  * details.
  */
 
-import {act, render} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
@@ -61,10 +61,6 @@ describe('Field Color Picker', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -76,10 +72,6 @@ describe('Field Color Picker', () => {
 				tip="Helptext"
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -93,10 +85,6 @@ describe('Field Color Picker', () => {
 				tip="Helptext"
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -112,10 +100,6 @@ describe('Field Color Picker', () => {
 				value={color}
 			/>
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container.querySelector('input').value).toBe(color);
 	});
@@ -133,10 +117,6 @@ describe('Field Color Picker', () => {
 
 		userEvent.click(document.body.querySelector('input'), {
 			target: {value: 'ffffff'},
-		});
-
-		act(() => {
-			jest.runAllTimers();
 		});
 
 		expect(handleFieldEdited).toHaveBeenCalled();

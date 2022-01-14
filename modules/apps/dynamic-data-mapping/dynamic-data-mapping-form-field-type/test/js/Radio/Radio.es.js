@@ -12,7 +12,7 @@
  * details.
  */
 
-import {act, render} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
@@ -60,10 +60,6 @@ describe('Field Radio', () => {
 			<RadioWithProvider {...defaultRadioConfig} readOnly />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -71,10 +67,6 @@ describe('Field Radio', () => {
 		const {container} = render(
 			<RadioWithProvider {...defaultRadioConfig} tip="Type something" />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -108,10 +100,6 @@ describe('Field Radio', () => {
 			/>
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -119,10 +107,6 @@ describe('Field Radio', () => {
 		const {container} = render(
 			<RadioWithProvider {...defaultRadioConfig} options={[]} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -132,10 +116,6 @@ describe('Field Radio', () => {
 			<RadioWithProvider {...defaultRadioConfig} id="Id" />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -143,10 +123,6 @@ describe('Field Radio', () => {
 		const {container} = render(
 			<RadioWithProvider {...defaultRadioConfig} label="label" />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -156,10 +132,6 @@ describe('Field Radio', () => {
 			<RadioWithProvider {...defaultRadioConfig} placeholder="Option 1" />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -167,10 +139,6 @@ describe('Field Radio', () => {
 		const {container} = render(
 			<RadioWithProvider {...defaultRadioConfig} required={false} />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
@@ -180,10 +148,6 @@ describe('Field Radio', () => {
 			<RadioWithProvider {...defaultRadioConfig} label="text" showLabel />
 		);
 
-		act(() => {
-			jest.runAllTimers();
-		});
-
 		expect(container).toMatchSnapshot();
 	});
 
@@ -191,10 +155,6 @@ describe('Field Radio', () => {
 		const {container} = render(
 			<RadioWithProvider {...defaultRadioConfig} value="value" />
 		);
-
-		act(() => {
-			jest.runAllTimers();
-		});
 
 		expect(container).toMatchSnapshot();
 	});
