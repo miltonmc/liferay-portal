@@ -167,6 +167,7 @@ describe('ReactFieldBase', () => {
 
 		const tooltipIcon = container.querySelector('.ddm-tooltip');
 
+		/* TODO: replace by userEvent.hover() after bump @testing-library/user-event */
 		fireEvent.mouseOver(tooltipIcon);
 
 		const clayPopover = await findByTestId('clayPopover');

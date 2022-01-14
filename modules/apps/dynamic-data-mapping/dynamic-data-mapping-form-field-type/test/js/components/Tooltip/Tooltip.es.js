@@ -12,7 +12,7 @@
  * details.
  */
 
-import userEvent from '@testing-library/user-event';
+import {fireEvent} from '@testing-library/react';
 
 import Tooltip from '../../../../src/main/resources/META-INF/resources/components/Tooltip/Tooltip.es';
 
@@ -40,8 +40,7 @@ describe('Field Tooltip', () => {
 		expect(component).toMatchSnapshot();
 	});
 
-	/* TODO: remove skip after bump @testing-library/user-event to a version that provides hover() */
-	it.skip('updates the tooltip visible state when the mouse is over the tooltip target', () => {
+	it('updates the tooltip visible state when the mouse is over the tooltip target', () => {
 		component = new Tooltip({
 			icon: 'question-circle-full',
 			spritemap,
@@ -52,7 +51,8 @@ describe('Field Tooltip', () => {
 
 		const {tooltipTarget} = component.refs;
 
-		userEvent.hover(tooltipTarget);
+		/* TODO: replace by userEvent.hover() after bump @testing-library/user-event */
+		fireEvent.mouseOver(tooltipTarget);
 
 		expect(component.showContent).toBe(true);
 		expect(component).toMatchSnapshot();
