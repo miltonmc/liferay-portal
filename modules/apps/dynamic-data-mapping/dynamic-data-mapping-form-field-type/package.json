@@ -14,8 +14,7 @@
 			"metal-jest-serializer"
 		],
 		"testPathIgnorePatterns": [
-			"Tooltip",
-			"withContextMock"
+			"Tooltip"
 		]
 	},
 	"main": "index.js",
