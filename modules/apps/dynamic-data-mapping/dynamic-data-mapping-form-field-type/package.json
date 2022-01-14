@@ -12,9 +12,6 @@
 		],
 		"snapshotSerializers": [
 			"metal-jest-serializer"
-		],
-		"testPathIgnorePatterns": [
-			"Tooltip"
 		]
 	},
 	"main": "index.js",
