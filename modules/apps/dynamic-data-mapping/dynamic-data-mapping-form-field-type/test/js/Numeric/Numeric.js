@@ -28,25 +28,25 @@ describe('Field Numeric', () => {
 	});
 
 	it('has a name', () => {
-		const {container} = render(<Numeric name="numericField" />);
+		render(<Numeric name="numericField" />);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		expect(input).toHaveAttribute('name', 'numericField');
 	});
 
 	it('enables input whenever readOnly is omitted', () => {
-		const {container} = render(<Numeric />);
+		render(<Numeric />);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		expect(input).toBeEnabled();
 	});
 
 	it('disables input whenever readOnly is set', () => {
-		const {container} = render(<Numeric readOnly />);
+		render(<Numeric readOnly />);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		expect(input).toBeDisabled();
 	});
@@ -58,9 +58,9 @@ describe('Field Numeric', () => {
 	});
 
 	it('has an id', () => {
-		const {container} = render(<Numeric id="ID" />);
+		render(<Numeric id="ID" />);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		expect(input).toHaveAttribute('id', 'ID');
 	});
@@ -75,9 +75,9 @@ describe('Field Numeric', () => {
 	});
 
 	it('has a placeholder', () => {
-		const {container} = render(<Numeric placeholder="Placeholder" />);
+		render(<Numeric placeholder="Placeholder" />);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		expect(input).toHaveAttribute('placeholder', 'Placeholder');
 	});
@@ -100,34 +100,34 @@ describe('Field Numeric', () => {
 	});
 
 	it('has a value', () => {
-		const {container} = render(<Numeric value="123" />);
+		render(<Numeric value="123" />);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		expect(input).toHaveValue('123');
 	});
 
 	it('fills with an input number', () => {
 		const onChange = jest.fn();
-		const {container} = render(<Numeric onChange={onChange} />);
+		render(<Numeric onChange={onChange} />);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 		userEvent.type(input, '2');
 
 		expect(onChange).toHaveBeenCalledWith({target: {value: '2'}});
 	});
 
 	it('changes the mask type', () => {
-		const {container} = render(<Numeric dataType="double" value="22.22" />);
+		render(<Numeric dataType="double" value="22.22" />);
 
-		expect(container.querySelector('input').value).toBe('22.22');
+		expect(document.querySelector('input').value).toBe('22.22');
 	});
 
 	it('filters the non numeric characters when set to integer', () => {
 		const onChange = jest.fn();
-		const {container} = render(<Numeric onChange={onChange} />);
+		render(<Numeric onChange={onChange} />);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 		userEvent.type(input, '3.0');
 
 		expect(onChange).toHaveBeenLastCalledWith({
@@ -136,15 +136,15 @@ describe('Field Numeric', () => {
 	});
 
 	it('check field value is the same without decimal symbol when fieldType is integer but it receives a double', () => {
-		const {container} = render(<Numeric value="3.8" />);
+		render(<Numeric value="3.8" />);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		expect(input.value).toBe('38');
 	});
 
 	it('remove decimal symbol from value when changing from decimal to integer when symbol of language is comma', () => {
-		const {container} = render(
+		render(
 			<Numeric
 				dataType="integer"
 				symbols={{decimalSymbol: ','}}
@@ -152,11 +152,11 @@ describe('Field Numeric', () => {
 			/>
 		);
 
-		expect(container.querySelector('input').value).toBe('2282');
+		expect(document.querySelector('input').value).toBe('2282');
 	});
 
 	it('updates decimal symbol using the current value of symbols', () => {
-		const {container} = render(
+		render(
 			<Numeric
 				dataType="double"
 				symbols={{decimalSymbol: ','}}
@@ -164,11 +164,11 @@ describe('Field Numeric', () => {
 			/>
 		);
 
-		expect(container.querySelector('input').value).toBe('-1,2');
+		expect(document.querySelector('input').value).toBe('-1,2');
 	});
 
 	it('updates decimal symbol using the localizedSymbols based on current editing language', () => {
-		const {container} = render(
+		render(
 			<FormProvider initialState={{editingLanguageId: 'pt_BR'}}>
 				<Numeric
 					dataType="double"
@@ -185,7 +185,7 @@ describe('Field Numeric', () => {
 			</FormProvider>
 		);
 
-		expect(container.querySelector('input').value).toBe('1,2');
+		expect(document.querySelector('input').value).toBe('1,2');
 	});
 
 	describe('Confirmation Field', () => {
@@ -238,7 +238,7 @@ describe('Field Numeric', () => {
 		});
 
 		it('applies mask to value', () => {
-			const {container} = render(
+			render(
 				<Numeric
 					inputMask
 					inputMaskFormat="+99 (99) 9999-9999"
@@ -246,13 +246,13 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			expect(input.value).toBe('+12 (34) 5678-9012');
 		});
 
 		it('applies mask to predefined value', () => {
-			const {container} = render(
+			render(
 				<Numeric
 					inputMask
 					inputMaskFormat="+99 (99) 9999-9999"
@@ -260,13 +260,13 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			expect(input.value).toBe('+12 (34) 5678-9012');
 		});
 
 		it('truncates values over mask digit limit', () => {
-			const {container} = render(
+			render(
 				<Numeric
 					inputMask
 					inputMaskFormat="+99 (099) 9999-9999"
@@ -274,13 +274,13 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			expect(input.value).toBe('+12 (345) 6789-0123');
 		});
 
 		it('ignores optional digits whenever input is less than mandatory', () => {
-			const {container} = render(
+			render(
 				<Numeric
 					inputMask
 					inputMaskFormat="+09 (099) 9999-9999"
@@ -288,14 +288,14 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			expect(input.value).toBe('+1 (23) 45');
 		});
 
 		it('sends unmasked value though onChange event', () => {
 			const onChange = jest.fn();
-			const {container} = render(
+			render(
 				<Numeric
 					inputMask
 					inputMaskFormat="E.g +99 (99) 9999-9999"
@@ -303,7 +303,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			userEvent.type(input, 'E.g +55 (81) 2121-6000');
 
@@ -313,7 +313,7 @@ describe('Field Numeric', () => {
 		});
 
 		it('limits predefined value size according to the mask', () => {
-			const {container} = render(
+			render(
 				<Numeric
 					inputMask
 					inputMaskFormat="99-99"
@@ -322,17 +322,15 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input[name="LPS-134259"]');
+			const input = document.querySelector('input[name="LPS-134259"]');
 
 			expect(input.value).toBe('1234');
 		});
 
 		it('allows input mask format to have only numbers', () => {
-			const {container} = render(
-				<Numeric inputMask inputMaskFormat={99} value="1234" />
-			);
+			render(<Numeric inputMask inputMaskFormat={99} value="1234" />);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			expect(input.value).toBe('12');
 		});
@@ -343,7 +341,7 @@ describe('Field Numeric', () => {
 		 * @testing-library/use-event)
 		 */
 		xit('it allows to delete non numeric characters from mask', () => {
-			const {container} = render(
+			render(
 				<Numeric
 					inputMask
 					inputMaskFormat="99-99"
@@ -352,7 +350,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			userEvent.click(input);
 			userEvent.type(input, '{backspace}');
@@ -363,7 +361,7 @@ describe('Field Numeric', () => {
 
 	describe('Decimal Input Mask toggle', () => {
 		it('renders a suffix', () => {
-			const {container, getByText} = render(
+			const {getByText} = render(
 				<Numeric
 					append="$"
 					appendType="suffix"
@@ -374,14 +372,14 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			expect(input.value).toBe('123');
 			expect(getByText('$')).toHaveClass('input-group-text');
 		});
 
 		it('renders a prefix', () => {
-			const {container, getByText} = render(
+			const {getByText} = render(
 				<Numeric
 					append="$"
 					appendType="prefix"
@@ -392,14 +390,14 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			expect(getByText('$')).toHaveClass('input-group-text');
 			expect(input.value).toBe('123');
 		});
 
 		it('renders the thousand separator', () => {
-			const {container} = render(
+			render(
 				<Numeric
 					dataType="double"
 					inputMask
@@ -409,13 +407,13 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			expect(input.value).toBe('1,234');
 		});
 
 		it('hides the thousand separator if it is set to `none`', () => {
-			const {container} = render(
+			render(
 				<Numeric
 					dataType="double"
 					inputMask
@@ -425,14 +423,14 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			expect(input.value).toBe('1234');
 		});
 
 		it('allows user to input a decimal separator', () => {
 			const onChange = jest.fn();
-			const {container} = render(
+			render(
 				<Numeric
 					dataType="double"
 					inputMask
@@ -442,7 +440,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			userEvent.type(input, '1,234');
 
@@ -452,7 +450,7 @@ describe('Field Numeric', () => {
 		});
 
 		it('generates a placeholder', () => {
-			const {container} = render(
+			render(
 				<Numeric
 					dataType="double"
 					decimalPlaces="2"
@@ -462,14 +460,14 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			expect(input).toHaveAttribute('placeholder', '0,00');
 		});
 
 		it('allows user to input only the decimal quantity defined by decimal places field', () => {
 			const onChange = jest.fn();
-			const {container} = render(
+			render(
 				<Numeric
 					dataType="double"
 					decimalPlaces={3}
@@ -480,7 +478,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			userEvent.type(input, '1,2345678');
 
@@ -494,7 +492,7 @@ describe('Field Numeric', () => {
 		 */
 		it('ignores non decimal input', () => {
 			const onChange = jest.fn();
-			const {container} = render(
+			render(
 				<Numeric
 					append="999"
 					appendType="suffix"
@@ -506,7 +504,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			userEvent.type(input, 'a# @e');
 
@@ -519,7 +517,7 @@ describe('Field Numeric', () => {
 
 		it('does not allow typing zeroes not followed by decimal symbol', () => {
 			const onChange = jest.fn();
-			const {container} = render(
+			render(
 				<Numeric
 					dataType="double"
 					decimalPlaces={3}
@@ -530,7 +528,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			userEvent.type(input, '0083,5');
 
@@ -541,7 +539,7 @@ describe('Field Numeric', () => {
 
 		it('does not allow typing sequence of zeroes', () => {
 			const onChange = jest.fn();
-			const {container} = render(
+			render(
 				<Numeric
 					dataType="double"
 					decimalPlaces={3}
@@ -552,7 +550,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = container.querySelector('input');
+			const input = document.querySelector('input');
 
 			userEvent.type(input, '00,083');
 

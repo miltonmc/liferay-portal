@@ -155,13 +155,13 @@ describe('Field Text', () => {
 			...defaultTextConfig,
 		};
 
-		const {container} = render(
+		render(
 			<div className="ddm-page-container-layout">
 				<TextWithProvider {...props} key="input" onChange={onChange} />
 			</div>
 		);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		userEvent.type(input, 'Option');
 
@@ -187,13 +187,13 @@ describe('Field Text', () => {
 			...defaultTextConfig,
 		};
 
-		const {container} = render(
+		render(
 			<div className="ddm-page-container-layout">
 				<TextWithProvider {...props} key="input" onChange={onChange} />
 			</div>
 		);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		userEvent.type(input, '');
 
@@ -217,13 +217,13 @@ describe('Field Text', () => {
 			...defaultTextConfig,
 		};
 
-		const {container} = render(
+		render(
 			<div className="ddm-page-container-layout">
 				<TextWithProvider {...props} key="input" onChange={onChange} />
 			</div>
 		);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		userEvent.type(input, 'Option');
 
@@ -261,7 +261,7 @@ describe('Field Text', () => {
 	it('emits a field edit with correct parameters', () => {
 		const onChange = jest.fn();
 
-		const {container} = render(
+		render(
 			<TextWithProvider
 				{...defaultTextConfig}
 				key="input"
@@ -269,7 +269,7 @@ describe('Field Text', () => {
 			/>
 		);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		userEvent.type(input, 'test');
 
@@ -279,7 +279,7 @@ describe('Field Text', () => {
 	it('normalizes the field if it contains invalid characters', () => {
 		const onChange = jest.fn();
 
-		const {container} = render(
+		render(
 			<TextWithProvider
 				{...defaultTextConfig}
 				key="input"
@@ -288,7 +288,7 @@ describe('Field Text', () => {
 			/>
 		);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		userEvent.type(input, 'Field¿êReference');
 
@@ -298,7 +298,7 @@ describe('Field Text', () => {
 	it('normalizes the value of the field if it contains invalid characters', () => {
 		const onChange = jest.fn();
 
-		const {container} = render(
+		render(
 			<TextWithProvider
 				{...defaultTextConfig}
 				invalidCharacters="[1-8]"
@@ -307,7 +307,7 @@ describe('Field Text', () => {
 			/>
 		);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		userEvent.type(input, '+9 (129) 993-9999');
 
@@ -380,7 +380,7 @@ describe('Field Text', () => {
 		});
 
 		it('shows the confirmation field if the requireConfirmation property is enabled', () => {
-			const {container} = render(
+			render(
 				<TextWithProvider
 					{...defaultTextConfig}
 					direction="horizontal"
@@ -393,16 +393,14 @@ describe('Field Text', () => {
 			);
 
 			expect(confirmationField).not.toBeNull();
-
-			expect(container.firstChild).toHaveClass('row');
-
 			expect(
-				container.firstChild.querySelector('.col-md-6')
-			).not.toBeNull();
+				document.getElementsByClassName('row')[0]
+			).toBeInTheDocument();
+			expect(document.querySelector('.col-md-6')).not.toBeNull();
 		});
 
 		it('shows the confirmation field in vertical mode', () => {
-			const {container} = render(
+			render(
 				<TextWithProvider
 					{...defaultTextConfig}
 					direction="vertical"
@@ -410,9 +408,7 @@ describe('Field Text', () => {
 				/>
 			);
 
-			expect(
-				container.firstChild.querySelector('.col-md-12')
-			).not.toBeNull();
+			expect(document.querySelector('.col-md-12')).not.toBeNull();
 		});
 	});
 });

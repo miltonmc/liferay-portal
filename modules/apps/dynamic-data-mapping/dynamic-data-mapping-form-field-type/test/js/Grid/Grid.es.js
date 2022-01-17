@@ -157,7 +157,7 @@ describe('Grid', () => {
 	it('emits a fieldBlurred event when blurring the radio input', () => {
 		const handleFieldBlurred = jest.fn();
 
-		const {container} = render(
+		render(
 			<GridWithProvider
 				columns={[
 					{
@@ -186,7 +186,7 @@ describe('Grid', () => {
 			/>
 		);
 
-		const radioInputElement = container.querySelector(
+		const radioInputElement = document.querySelector(
 			'input[value][type="radio"][name="name_rowFieldId1"]:not([value="colFieldId2"])'
 		);
 
@@ -198,7 +198,7 @@ describe('Grid', () => {
 	it('emits a fieldEdited event when changing the state of radio input', () => {
 		const handleFieldEdited = jest.fn();
 
-		const {container} = render(
+		render(
 			<GridWithProvider
 				columns={[
 					{
@@ -227,7 +227,7 @@ describe('Grid', () => {
 			/>
 		);
 
-		const radioInputElement = container.querySelector(
+		const radioInputElement = document.querySelector(
 			'input[value][type="radio"][name="name_rowFieldId1"]:not([value="colFieldId2"])'
 		);
 
@@ -239,7 +239,7 @@ describe('Grid', () => {
 	it('emits a fieldFocused event when focusing a radio input', () => {
 		const handleFieldFocused = jest.fn();
 
-		const {container} = render(
+		render(
 			<GridWithProvider
 				columns={[
 					{
@@ -268,7 +268,7 @@ describe('Grid', () => {
 			/>
 		);
 
-		const radioInputElement = container.querySelector(
+		const radioInputElement = document.querySelector(
 			'input[value][type="radio"][name="name_rowFieldId1"]:not([value="colFieldId2"])'
 		);
 

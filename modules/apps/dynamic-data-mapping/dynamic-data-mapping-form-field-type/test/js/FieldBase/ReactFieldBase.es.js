@@ -100,11 +100,11 @@ describe('ReactFieldBase', () => {
 	});
 
 	it('renders the FieldBase with tooltip', () => {
-		const {container} = render(
+		render(
 			<FieldBaseWithProvider spritemap={spritemap} tooltip="Tooltip" />
 		);
 
-		expect(container.querySelector('.ddm-tooltip')).not.toBeNull();
+		expect(document.querySelector('.ddm-tooltip')).not.toBeNull();
 	});
 
 	it('does not render the label if showLabel is false', () => {
@@ -157,7 +157,7 @@ describe('ReactFieldBase', () => {
 	});
 
 	it('shows the popover for Format field when hovering over the tooltip icon', async () => {
-		const {container, findByTestId, getByRole, getByText} = render(
+		const {findByTestId, getByRole, getByText} = render(
 			<FieldBaseWithProvider
 				fieldName="inputMaskFormat"
 				spritemap={spritemap}
@@ -165,7 +165,7 @@ describe('ReactFieldBase', () => {
 			/>
 		);
 
-		const tooltipIcon = container.querySelector('.ddm-tooltip');
+		const tooltipIcon = document.querySelector('.ddm-tooltip');
 
 		/* TODO: replace by userEvent.hover() after bump @testing-library/user-event */
 		fireEvent.mouseOver(tooltipIcon);

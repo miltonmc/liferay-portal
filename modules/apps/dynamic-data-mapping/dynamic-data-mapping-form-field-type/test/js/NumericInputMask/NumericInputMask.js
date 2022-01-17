@@ -37,7 +37,7 @@ describe('Field Numeric Input Mask', () => {
 	});
 
 	it('shows the Thousands Separator, Decimal Separator, Decimal places and Prefix or Suffix field by default', () => {
-		const {container} = render(
+		render(
 			<NumericInputMask
 				append=""
 				decimalSymbols={DECIMAL_SYMBOLS}
@@ -46,22 +46,20 @@ describe('Field Numeric Input Mask', () => {
 			/>
 		);
 
-		const appendField = container.querySelector(
+		const appendField = document.querySelector(
 			'[data-field-name="append"]'
 		);
-		const appendFieldInput = container.querySelector(
-			'input[name="append"]'
-		);
-		const decimalPlacesFieldInput = container.querySelector(
+		const appendFieldInput = document.querySelector('input[name="append"]');
+		const decimalPlacesFieldInput = document.querySelector(
 			'input[name="decimal_places"]'
 		);
-		const appendTypeField = container.querySelector(
+		const appendTypeField = document.querySelector(
 			'[data-field-name="appendType"]'
 		);
-		const decimalSymbolField = container.querySelector(
+		const decimalSymbolField = document.querySelector(
 			'[data-field-name="decimalSymbol"]'
 		);
-		const thousandsSeparatorField = container.querySelector(
+		const thousandsSeparatorField = document.querySelector(
 			'[data-field-name="thousandsSeparator"]'
 		);
 
@@ -74,7 +72,7 @@ describe('Field Numeric Input Mask', () => {
 	});
 
 	it('shows the radio selector to choose the append type when there is a suffix or preffix text', () => {
-		const {container} = render(
+		render(
 			<NumericInputMask
 				append="$"
 				decimalSymbols={DECIMAL_SYMBOLS}
@@ -83,7 +81,7 @@ describe('Field Numeric Input Mask', () => {
 			/>
 		);
 
-		const appendTypeField = container.querySelector(
+		const appendTypeField = document.querySelector(
 			'[data-field-name="appendType"]'
 		);
 

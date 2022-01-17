@@ -100,7 +100,7 @@ describe('Options', () => {
 			/>
 		);
 
-		const referenceInputs = container.querySelectorAll(
+		const referenceInputs = document.querySelectorAll(
 			'.key-value-reference-input'
 		);
 
@@ -110,7 +110,7 @@ describe('Options', () => {
 
 		referenceInputs[2].setAttribute('value', 'Any<String>');
 
-		const valueInputs = container.querySelectorAll('.key-value-input');
+		const valueInputs = document.querySelectorAll('.key-value-input');
 
 		expect(valueInputs[2].value).toEqual(
 			expect.stringMatching(DEFAULT_OPTION_NAME_REGEX)
@@ -126,7 +126,7 @@ describe('Options', () => {
 	it('shows the options with not editable value', () => {
 		mockLiferayLanguage();
 
-		const {container} = render(
+		render(
 			<OptionsWithProvider
 				keywordReadOnly={true}
 				name="options"
@@ -144,7 +144,7 @@ describe('Options', () => {
 			/>
 		);
 
-		const valueInputs = container.querySelectorAll('.key-value-input');
+		const valueInputs = document.querySelectorAll('.key-value-input');
 
 		expect(valueInputs[0].readOnly).toBeTruthy();
 		expect(valueInputs[0].value).toEqual('Option1');
@@ -155,7 +155,7 @@ describe('Options', () => {
 	it('shows the options with editable value', () => {
 		mockLiferayLanguage();
 
-		const {container, getByDisplayValue} = render(
+		const {getByDisplayValue} = render(
 			<OptionsWithProvider
 				keywordReadOnly={false}
 				name="options"
@@ -177,7 +177,7 @@ describe('Options', () => {
 
 		userEvent.type(getByDisplayValue('Option1'), 'Option2');
 
-		const valueInputs = container.querySelectorAll('.key-value-input');
+		const valueInputs = document.querySelectorAll('.key-value-input');
 
 		expect(valueInputs[0].readOnly).toBeFalsy();
 		expect(valueInputs[0].value).toEqual('Option2');
@@ -188,7 +188,7 @@ describe('Options', () => {
 	it('shows an empty option when value is an array of size 1', () => {
 		mockLiferayLanguage();
 
-		const {container} = render(
+		render(
 			<OptionsWithProvider
 				name="options"
 				onChange={jest.fn()}
@@ -206,13 +206,13 @@ describe('Options', () => {
 			/>
 		);
 
-		const labelInputs = container.querySelectorAll('.ddm-field-text');
+		const labelInputs = document.querySelectorAll('.ddm-field-text');
 
 		expect(labelInputs.length).toEqual(2);
 		expect(labelInputs[0].value).toEqual('Option');
 		expect(labelInputs[1].value).toEqual('');
 
-		const valueInputs = container.querySelectorAll('.key-value-input');
+		const valueInputs = document.querySelectorAll('.key-value-input');
 
 		expect(valueInputs.length).toEqual(2);
 		expect(valueInputs[0].value).toEqual('Option');
@@ -224,7 +224,7 @@ describe('Options', () => {
 	});
 
 	it('does show an empty option when translating', () => {
-		const {container} = render(
+		render(
 			<OptionsWithProvider
 				defaultLanguageId={themeDisplay.getLanguageId()}
 				editingLanguageId="pt_BR"
@@ -250,7 +250,7 @@ describe('Options', () => {
 			/>
 		);
 
-		const labelInputs = container.querySelectorAll('.ddm-field-text');
+		const labelInputs = document.querySelectorAll('.ddm-field-text');
 
 		expect(labelInputs.length).toEqual(2);
 	});
@@ -258,7 +258,7 @@ describe('Options', () => {
 	it('does not changes the option value when the option label changes', () => {
 		mockLiferayLanguage();
 
-		const {container, getByDisplayValue} = render(
+		const {getByDisplayValue} = render(
 			<OptionsWithProvider
 				name="options"
 				onChange={jest.fn()}
@@ -278,17 +278,17 @@ describe('Options', () => {
 
 		userEvent.type(getByDisplayValue('Option 1'), 'Option 2');
 
-		const labelInputs = container.querySelectorAll('.ddm-field-text');
+		const labelInputs = document.querySelectorAll('.ddm-field-text');
 		expect(labelInputs[0].value).toEqual('Option 2');
 
-		const valueInputs = container.querySelectorAll('.key-value-input');
+		const valueInputs = document.querySelectorAll('.key-value-input');
 		expect(valueInputs[0].value).toEqual('Option1');
 
 		unmockLiferayLanguage();
 	});
 
 	it('edits the value of an option based on the label', () => {
-		const {container} = render(
+		render(
 			<OptionsWithProvider
 				name="options"
 				onChange={jest.fn()}
@@ -306,17 +306,17 @@ describe('Options', () => {
 			/>
 		);
 
-		const labelInputs = container.querySelectorAll('.ddm-field-text');
+		const labelInputs = document.querySelectorAll('.ddm-field-text');
 
 		userEvent.type(labelInputs[0], 'Hello');
 
-		const valueInputs = container.querySelectorAll('.key-value-input');
+		const valueInputs = document.querySelectorAll('.key-value-input');
 
 		expect(valueInputs[0].value).toEqual('Option');
 	});
 
 	it('inserts a new empty option when editing the last option', () => {
-		const {container} = render(
+		render(
 			<OptionsWithProvider
 				name="options"
 				onChange={jest.fn()}
@@ -334,17 +334,17 @@ describe('Options', () => {
 			/>
 		);
 
-		const labelInputs = container.querySelectorAll('.ddm-field-text');
+		const labelInputs = document.querySelectorAll('.ddm-field-text');
 
 		userEvent.type(labelInputs[1], 'Hello');
 
-		const valueInputs = container.querySelectorAll('.key-value-input');
+		const valueInputs = document.querySelectorAll('.key-value-input');
 
 		expect(valueInputs.length).toEqual(labelInputs.length + 1);
 	});
 
 	it('does not insert a new empty option automatically if translating', () => {
-		const {container} = render(
+		render(
 			<OptionsWithProvider
 				defaultLanguageId={themeDisplay.getLanguageId()}
 				editingLanguageId="pt_BR"
@@ -371,11 +371,11 @@ describe('Options', () => {
 			/>
 		);
 
-		const labelInputs = container.querySelectorAll('.ddm-field-text');
+		const labelInputs = document.querySelectorAll('.ddm-field-text');
 
 		userEvent.type(labelInputs[0], 'Hello');
 
-		const valueInputs = container.querySelectorAll('.key-value-input');
+		const valueInputs = document.querySelectorAll('.key-value-input');
 
 		expect(valueInputs.length).toEqual(labelInputs.length);
 	});
@@ -383,7 +383,7 @@ describe('Options', () => {
 	it('deduplication of value when adding a new option', () => {
 		mockLiferayLanguage();
 
-		const {container} = render(
+		render(
 			<OptionsWithProvider
 				name="options"
 				onChange={jest.fn()}
@@ -401,11 +401,11 @@ describe('Options', () => {
 			/>
 		);
 
-		const labelInputs = container.querySelectorAll('.ddm-field-text');
+		const labelInputs = document.querySelectorAll('.ddm-field-text');
 
 		userEvent.type(labelInputs[1], 'Foo');
 
-		const valueInputs = container.querySelectorAll('.key-value-input');
+		const valueInputs = document.querySelectorAll('.key-value-input');
 
 		expect(valueInputs[1].value).toEqual(
 			expect.stringMatching(DEFAULT_OPTION_NAME_REGEX)
@@ -415,7 +415,7 @@ describe('Options', () => {
 	});
 
 	it('deduplication of the value when editing the value', () => {
-		const {container} = render(
+		render(
 			<OptionsWithProvider
 				name="options"
 				onChange={jest.fn()}
@@ -438,17 +438,17 @@ describe('Options', () => {
 			/>
 		);
 
-		const labelInputs = container.querySelectorAll('.ddm-field-text');
+		const labelInputs = document.querySelectorAll('.ddm-field-text');
 
 		userEvent.type(labelInputs[1], 'Bar');
 
-		const valueInputs = container.querySelectorAll('.key-value-input');
+		const valueInputs = document.querySelectorAll('.key-value-input');
 
 		expect(valueInputs[1].value).toEqual('Foo');
 	});
 
 	it('adds a value to the value property when the label is empty', () => {
-		const {container} = render(
+		render(
 			<OptionsWithProvider
 				name="options"
 				onChange={jest.fn()}
@@ -466,17 +466,17 @@ describe('Options', () => {
 			/>
 		);
 
-		const labelInput = container.querySelector('.ddm-field-text');
+		const labelInput = document.querySelector('.ddm-field-text');
 
 		fireEvent.input(labelInput, {target: {value: ''}});
 
-		const valueInput = container.querySelector('.key-value-input');
+		const valueInput = document.querySelector('.key-value-input');
 
 		expect(valueInput.value).toBe('Bar');
 	});
 
 	it('removes an option when click on remove button', () => {
-		const {container} = render(
+		render(
 			<OptionsWithProvider
 				defaultLanguageId={themeDisplay.getLanguageId()}
 				editingLanguageId="pt_BR"
@@ -503,7 +503,7 @@ describe('Options', () => {
 			/>
 		);
 
-		let options = container.querySelectorAll('.ddm-field-options');
+		let options = document.querySelectorAll('.ddm-field-options');
 
 		expect(options.length).toEqual(3);
 
@@ -513,7 +513,7 @@ describe('Options', () => {
 
 		fireEvent.click(removeOptionButton);
 
-		options = container.querySelectorAll('.ddm-field-options');
+		options = document.querySelectorAll('.ddm-field-options');
 
 		expect(options.length).toEqual(2);
 	});
@@ -521,7 +521,7 @@ describe('Options', () => {
 	it('checks if the initial value of the option reference matches the option value', () => {
 		mockLiferayLanguage();
 
-		const {container} = render(
+		render(
 			<OptionsWithProvider
 				name="options"
 				showKeyword={true}
@@ -530,7 +530,7 @@ describe('Options', () => {
 			/>
 		);
 
-		const referenceInputs = container.querySelectorAll(
+		const referenceInputs = document.querySelectorAll(
 			'.key-value-reference-input'
 		);
 
@@ -538,7 +538,7 @@ describe('Options', () => {
 			expect.stringMatching(DEFAULT_OPTION_NAME_REGEX)
 		);
 
-		const valueInputs = container.querySelectorAll('.key-value-input');
+		const valueInputs = document.querySelectorAll('.key-value-input');
 
 		expect(referenceInputs[2].value).toBe(valueInputs[2].value);
 
@@ -549,7 +549,7 @@ describe('Options', () => {
 		it('changes to the option value when the reference is duplicated', () => {
 			mockLiferayLanguage();
 
-			const {container} = render(
+			render(
 				<OptionsWithProvider
 					name="options"
 					onChange={jest.fn()}
@@ -573,7 +573,7 @@ describe('Options', () => {
 				/>
 			);
 
-			const referenceInputs = container.querySelectorAll(
+			const referenceInputs = document.querySelectorAll(
 				'.key-value-reference-input'
 			);
 
@@ -593,7 +593,7 @@ describe('Options', () => {
 		it('changes to the option value when the reference is empty', () => {
 			mockLiferayLanguage();
 
-			const {container} = render(
+			render(
 				<OptionsWithProvider
 					name="options"
 					onChange={jest.fn()}
@@ -611,7 +611,7 @@ describe('Options', () => {
 				/>
 			);
 
-			const referenceInput = container.querySelector(
+			const referenceInput = document.querySelector(
 				'.key-value-reference-input'
 			);
 

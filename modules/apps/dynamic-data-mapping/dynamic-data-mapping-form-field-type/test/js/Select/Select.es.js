@@ -82,7 +82,7 @@ describe('Select', () => {
 			value: 'item',
 		};
 
-		const {container} = render(
+		render(
 			<SelectWithProvider
 				options={[option]}
 				showEmptyOption={false}
@@ -90,7 +90,7 @@ describe('Select', () => {
 			/>
 		);
 
-		const dropDownItem = container.querySelector(
+		const dropDownItem = document.querySelector(
 			'.dropdown-menu .dropdown-item'
 		);
 
@@ -100,7 +100,7 @@ describe('Select', () => {
 	it('does not show an empty option when the search input is available', async () => {
 		const handleFieldEdited = jest.fn();
 
-		const {container} = render(
+		render(
 			<SelectWithProvider
 				dataSourceType="manual"
 				multiple={false}
@@ -111,13 +111,13 @@ describe('Select', () => {
 			/>
 		);
 
-		const dropdownTrigger = container.querySelector(
+		const dropdownTrigger = document.querySelector(
 			'.form-builder-select-field.input-group-container'
 		);
 
 		userEvent.click(dropdownTrigger);
 
-		const emptyOption = container.querySelector('[label=choose-an-option]');
+		const emptyOption = document.querySelector('[label=choose-an-option]');
 
 		expect(emptyOption).toBeNull();
 	});
@@ -149,7 +149,7 @@ describe('Select', () => {
 	});
 
 	it('renders an empty option', () => {
-		const {container} = render(
+		render(
 			<SelectWithProvider
 				options={[
 					{
@@ -168,7 +168,7 @@ describe('Select', () => {
 			/>
 		);
 
-		const dropDownItem = container.querySelector(
+		const dropDownItem = document.querySelector(
 			'.dropdown-menu .dropdown-item'
 		);
 
@@ -316,7 +316,7 @@ describe('Select', () => {
 	it('calls onChange callback when an item is selected', async () => {
 		const handleFieldEdited = jest.fn();
 
-		const {container, findByTestId} = render(
+		const {findByTestId} = render(
 			<SelectWithProvider
 				dataSourceType="manual"
 				onChange={handleFieldEdited}
@@ -325,7 +325,7 @@ describe('Select', () => {
 			/>
 		);
 
-		const dropdownTrigger = container.querySelector(
+		const dropdownTrigger = document.querySelector(
 			'.form-builder-select-field.input-group-container'
 		);
 
@@ -351,7 +351,7 @@ describe('Select', () => {
 			/>
 		);
 
-		const dropdownTrigger = container.querySelector(
+		const dropdownTrigger = document.querySelector(
 			'.form-builder-select-field.input-group-container'
 		);
 
@@ -370,7 +370,7 @@ describe('Select', () => {
 	it('shows an empty option when the search input is available', async () => {
 		const handleFieldEdited = jest.fn();
 
-		const {container} = render(
+		render(
 			<SelectWithProvider
 				dataSourceType="manual"
 				multiple={false}
@@ -381,13 +381,13 @@ describe('Select', () => {
 			/>
 		);
 
-		const dropdownTrigger = container.querySelector(
+		const dropdownTrigger = document.querySelector(
 			'.form-builder-select-field.input-group-container'
 		);
 
 		userEvent.click(dropdownTrigger);
 
-		const emptyOption = container.querySelector('[label=choose-an-option]');
+		const emptyOption = document.querySelector('[label=choose-an-option]');
 
 		expect(emptyOption).not.toBeNull();
 	});
@@ -405,7 +405,7 @@ describe('Select', () => {
 			/>
 		);
 
-		const dropdownTrigger = container.querySelector(
+		const dropdownTrigger = document.querySelector(
 			'.form-builder-select-field.input-group-container'
 		);
 
@@ -427,13 +427,13 @@ describe('Select', () => {
 			/>
 		);
 
-		const dropdownTrigger = container.querySelector(
+		const dropdownTrigger = document.querySelector(
 			'.form-builder-select-field.input-group-container'
 		);
 
 		userEvent.click(dropdownTrigger);
 
-		const input = container.querySelector('input');
+		const input = document.querySelector('input');
 
 		userEvent.type(input, 'label1');
 

@@ -65,7 +65,7 @@ describe('Validation', () => {
 	it('enables validation after click on toogle', () => {
 		const onChange = jest.fn();
 
-		const {container} = render(
+		render(
 			<ValidationWithProvider
 				dataType="string"
 				defaultLanguageId="en_US"
@@ -92,7 +92,7 @@ describe('Validation', () => {
 			/>
 		);
 
-		const inputCheckbox = container.querySelector('input[type="checkbox"]');
+		const inputCheckbox = document.querySelector('input[type="checkbox"]');
 
 		userEvent.click(inputCheckbox);
 
@@ -118,7 +118,7 @@ describe('Validation', () => {
 	it('renders parameter field with Numeric element', () => {
 		const onChange = jest.fn();
 
-		const {container} = render(
+		render(
 			<ValidationWithProvider
 				dataType="numeric"
 				defaultLanguageId="en_US"
@@ -145,7 +145,7 @@ describe('Validation', () => {
 			/>
 		);
 
-		const inputCheckbox = container.querySelector('input[type="checkbox"]');
+		const inputCheckbox = document.querySelector('input[type="checkbox"]');
 
 		userEvent.click(inputCheckbox);
 
@@ -171,7 +171,7 @@ describe('Validation', () => {
 	it('renders parameter field with Date element', () => {
 		const onChange = jest.fn();
 
-		const {container} = render(
+		render(
 			<ValidationWithProvider
 				dataType="date"
 				defaultLanguageId="en_US"
@@ -199,7 +199,7 @@ describe('Validation', () => {
 			/>
 		);
 
-		const inputCheckbox = container.querySelector('input[type="checkbox"]');
+		const inputCheckbox = document.querySelector('input[type="checkbox"]');
 
 		userEvent.click(inputCheckbox);
 

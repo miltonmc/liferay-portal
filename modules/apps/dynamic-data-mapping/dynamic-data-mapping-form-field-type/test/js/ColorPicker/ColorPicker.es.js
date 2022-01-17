@@ -92,7 +92,7 @@ describe('Field Color Picker', () => {
 	it('renders with basic color', () => {
 		const color = '#FF67AA';
 
-		const {container} = render(
+		render(
 			<ColorPickerWithProvider
 				name={name}
 				readOnly
@@ -101,7 +101,7 @@ describe('Field Color Picker', () => {
 			/>
 		);
 
-		expect(container.querySelector('input').value).toBe(color);
+		expect(document.querySelector('input').value).toBe(color);
 	});
 
 	it.skip('should call the onChange callback on the field change', () => {

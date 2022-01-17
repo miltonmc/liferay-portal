@@ -111,7 +111,7 @@ describe('KeyValue', () => {
 	});
 
 	it('hides keyword input', () => {
-		const {container} = render(
+		render(
 			<KeyValueWithProvider
 				name="keyValue"
 				readOnly={true}
@@ -119,7 +119,7 @@ describe('KeyValue', () => {
 			/>
 		);
 
-		const keyValueInput = container.querySelectorAll('.key-value-input');
+		const keyValueInput = document.querySelectorAll('.key-value-input');
 
 		expect(keyValueInput.length).toBe(0);
 	});
@@ -174,7 +174,7 @@ describe('KeyValue', () => {
 	});
 
 	it('shows keyword input', () => {
-		const {container} = render(
+		render(
 			<KeyValueWithProvider
 				name="keyValue"
 				readOnly={true}
@@ -183,7 +183,7 @@ describe('KeyValue', () => {
 			/>
 		);
 
-		const keyValueInput = container.querySelectorAll('.key-value-input');
+		const keyValueInput = document.querySelectorAll('.key-value-input');
 
 		expect(keyValueInput.length).toBe(1);
 	});

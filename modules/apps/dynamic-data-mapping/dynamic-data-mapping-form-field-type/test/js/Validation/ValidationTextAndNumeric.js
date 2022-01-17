@@ -46,7 +46,7 @@ const ValidationWithProvider = ({validations, ...props}) => (
 
 describe('ValidationTextAndNumeric', () => {
 	it('allows user to delete parameter value for non-default languages', () => {
-		const {container} = render(
+		render(
 			<ValidationWithProvider
 				dataType="string"
 				defaultLanguageId="en_US"
@@ -71,7 +71,7 @@ describe('ValidationTextAndNumeric', () => {
 			/>
 		);
 
-		const inputParameter = container.querySelector(
+		const inputParameter = document.querySelector(
 			'input[name="validation_parameter"]'
 		);
 
@@ -89,7 +89,7 @@ describe('ValidationTextAndNumeric', () => {
 			parameter: {},
 		};
 
-		const {container} = render(
+		render(
 			<ValidationWithProvider
 				dataType="double"
 				editingLanguageId="en_US"
@@ -107,7 +107,7 @@ describe('ValidationTextAndNumeric', () => {
 			/>
 		);
 
-		const inputParameter = container.querySelector(
+		const inputParameter = document.querySelector(
 			'input[name="validation_parameter"]'
 		);
 

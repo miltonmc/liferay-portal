@@ -107,9 +107,7 @@ describe('Field Search Location', () => {
 	});
 
 	it('must to be show search location fields in correct order', () => {
-		const {container} = render(
-			<SearchLocationWithProvider {...defaultConfig} />
-		);
+		render(<SearchLocationWithProvider {...defaultConfig} />);
 
 		const correctFieldsOrderByName = [
 			'test_search_location_field#place',
@@ -120,7 +118,7 @@ describe('Field Search Location', () => {
 			'test_search_location_field#state',
 		];
 
-		const renderedFields = container.getElementsByTagName('input');
+		const renderedFields = document.getElementsByTagName('input');
 
 		expect(
 			hasAllFieldsInCorrectOrder(correctFieldsOrderByName, renderedFields)
@@ -141,9 +139,7 @@ describe('Field Search Location', () => {
 	});
 
 	it('must to be show search location fields in correct order - remove field', () => {
-		const {container} = render(
-			<SearchLocationWithProvider {...defaultConfig} />
-		);
+		render(<SearchLocationWithProvider {...defaultConfig} />);
 
 		const correctFieldsOrderByName = [
 			'test_search_location_field#place',
@@ -153,7 +149,7 @@ describe('Field Search Location', () => {
 			'test_search_location_field#state',
 		];
 
-		const renderedFields = container.getElementsByTagName('input');
+		const renderedFields = document.getElementsByTagName('input');
 
 		expect(
 			hasAllFieldsInCorrectOrder(correctFieldsOrderByName, renderedFields)
@@ -174,9 +170,7 @@ describe('Field Search Location', () => {
 	});
 
 	it('must to be show search location fields in correct order - add field', () => {
-		const {container} = render(
-			<SearchLocationWithProvider {...defaultConfig} />
-		);
+		render(<SearchLocationWithProvider {...defaultConfig} />);
 
 		const correctFieldsOrderByName = [
 			'test_search_location_field#place',
@@ -187,7 +181,7 @@ describe('Field Search Location', () => {
 			'test_search_location_field#state',
 		];
 
-		const renderedFields = container.getElementsByTagName('input');
+		const renderedFields = document.getElementsByTagName('input');
 
 		expect(
 			hasAllFieldsInCorrectOrder(correctFieldsOrderByName, renderedFields)
@@ -195,11 +189,9 @@ describe('Field Search Location', () => {
 	});
 
 	it('must to be reflect the one column layout settings', () => {
-		const {container} = render(
-			<SearchLocationWithProvider {...defaultConfig} />
-		);
+		render(<SearchLocationWithProvider {...defaultConfig} />);
 
-		const fieldsWithLayoutBehavior = container.getElementsByClassName(
+		const fieldsWithLayoutBehavior = document.getElementsByClassName(
 			'col-md-12'
 		);
 
@@ -210,11 +202,9 @@ describe('Field Search Location', () => {
 
 	it('must to be reflect the two columns layout settings', () => {
 		defaultConfig.layout = ['two-columns'];
-		const {container} = render(
-			<SearchLocationWithProvider {...defaultConfig} />
-		);
+		render(<SearchLocationWithProvider {...defaultConfig} />);
 
-		const fieldsWithLayoutBehavior = container.getElementsByClassName(
+		const fieldsWithLayoutBehavior = document.getElementsByClassName(
 			'col-md-6'
 		);
 
@@ -237,9 +227,7 @@ describe('Field Search Location', () => {
 	});
 
 	it('must to be show search location fields in correct order - remove field - layout changed', () => {
-		const {container} = render(
-			<SearchLocationWithProvider {...defaultConfig} />
-		);
+		render(<SearchLocationWithProvider {...defaultConfig} />);
 
 		const correctFieldsOrderByName = [
 			'test_search_location_field#place',
@@ -249,7 +237,7 @@ describe('Field Search Location', () => {
 			'test_search_location_field#state',
 		];
 
-		const renderedFields = container.getElementsByTagName('input');
+		const renderedFields = document.getElementsByTagName('input');
 
 		expect(
 			hasAllFieldsInCorrectOrder(correctFieldsOrderByName, renderedFields)
@@ -270,9 +258,7 @@ describe('Field Search Location', () => {
 	});
 
 	it('must to be show search location fields in correct order - add field - layout changed', () => {
-		const {container} = render(
-			<SearchLocationWithProvider {...defaultConfig} />
-		);
+		render(<SearchLocationWithProvider {...defaultConfig} />);
 
 		const correctFieldsOrderByName = [
 			'test_search_location_field#place',
@@ -283,7 +269,7 @@ describe('Field Search Location', () => {
 			'test_search_location_field#state',
 		];
 
-		const renderedFields = container.getElementsByTagName('input');
+		const renderedFields = document.getElementsByTagName('input');
 
 		expect(
 			hasAllFieldsInCorrectOrder(correctFieldsOrderByName, renderedFields)
@@ -307,7 +293,7 @@ describe('Field Search Location', () => {
 	});
 
 	it('shows error message only for empty fields that triggered the onBlur or onChange event', () => {
-		const {container} = render(
+		render(
 			<SearchLocationWithProvider
 				{...defaultConfig}
 				displayErrors={true}
@@ -317,13 +303,13 @@ describe('Field Search Location', () => {
 			/>
 		);
 
-		const address = container.querySelector(
+		const address = document.querySelector(
 			'input[name="test_search_location_field#address"]'
 		);
 
 		fireEvent.blur(address);
 
-		const city = container.querySelector(
+		const city = document.querySelector(
 			'input[name="test_search_location_field#city"]'
 		);
 
@@ -333,19 +319,19 @@ describe('Field Search Location', () => {
 			},
 		});
 
-		const country = container.querySelector(
+		const country = document.querySelector(
 			'input[name="test_search_location_field#country"]'
 		);
 
 		fireEvent.blur(country);
 
 		expect(
-			container.getElementsByClassName('form-feedback-group').length
+			document.getElementsByClassName('form-feedback-group').length
 		).toBe(2);
 	});
 
 	it('shows error message for all empty fields if page validation failed', () => {
-		const {container} = render(
+		render(
 			<SearchLocationWithProvider
 				{...defaultConfig}
 				displayErrors={true}
@@ -357,7 +343,7 @@ describe('Field Search Location', () => {
 		);
 
 		expect(
-			container.getElementsByClassName('form-feedback-group').length
+			document.getElementsByClassName('form-feedback-group').length
 		).toBe(5);
 	});
 });
