@@ -13,7 +13,8 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, render, screen} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
@@ -162,11 +163,7 @@ describe('Field Text', () => {
 
 		const input = container.querySelector('input');
 
-		fireEvent.change(input, {
-			target: {
-				value: 'Option',
-			},
-		});
+		userEvent.type(input, 'Option');
 
 		const autocompleteDropdownMenu = document.querySelector(
 			'.autocomplete-dropdown-menu'
@@ -198,11 +195,7 @@ describe('Field Text', () => {
 
 		const input = container.querySelector('input');
 
-		fireEvent.change(input, {
-			target: {
-				value: '',
-			},
-		});
+		userEvent.type(input, '');
 
 		const autocompleteDropdownMenu = document.querySelector(
 			'.autocomplete-dropdown-menu'
@@ -232,11 +225,7 @@ describe('Field Text', () => {
 
 		const input = container.querySelector('input');
 
-		fireEvent.change(input, {
-			target: {
-				value: 'Option',
-			},
-		});
+		userEvent.type(input, 'Option');
 
 		const autocompleteDropdownMenu = document.querySelector(
 			'.autocomplete-dropdown-menu'
@@ -248,7 +237,7 @@ describe('Field Text', () => {
 
 		const body = document.body;
 
-		fireEvent.mouseDown(body);
+		userEvent.click(body);
 
 		expect(autocompleteDropdownMenu.classList.contains('show')).toBeFalsy();
 	});
@@ -282,11 +271,7 @@ describe('Field Text', () => {
 
 		const input = container.querySelector('input');
 
-		fireEvent.change(input, {
-			target: {
-				value: 'test',
-			},
-		});
+		userEvent.type(input, 'test');
 
 		expect(onChange).toHaveBeenCalled();
 	});
@@ -305,11 +290,7 @@ describe('Field Text', () => {
 
 		const input = container.querySelector('input');
 
-		fireEvent.change(input, {
-			target: {
-				value: 'Field¿êReference',
-			},
-		});
+		userEvent.type(input, 'Field¿êReference');
 
 		expect(input.value).toEqual('FieldReference');
 	});
@@ -328,11 +309,7 @@ describe('Field Text', () => {
 
 		const input = container.querySelector('input');
 
-		fireEvent.change(input, {
-			target: {
-				value: '+9 (129) 993-9999',
-			},
-		});
+		userEvent.type(input, '+9 (129) 993-9999');
 
 		expect(input.value).toEqual('+9 (9) 99-9999');
 	});

@@ -13,6 +13,7 @@
  */
 
 import {fireEvent, render} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -229,11 +230,7 @@ describe('Field LocalizableText', () => {
 
 		const inputComponent = getByTestId('visibleChangeInput');
 
-		fireEvent.change(inputComponent, {
-			target: {
-				value: 'Test 2 EUA',
-			},
-		});
+		userEvent.type(inputComponent, 'Test 2 EUA');
 
 		expect(handleFieldEdited).toHaveBeenCalledWith(
 			expect.any(Object),
@@ -258,13 +255,13 @@ describe('Field LocalizableText', () => {
 
 		const triggerButton = getByTestId('triggerButton');
 
-		fireEvent.click(triggerButton);
+		userEvent.click(triggerButton);
 
 		const dropdownItem = await findByTestId(
 			'availableLocalesDropdownca_ES'
 		);
 
-		fireEvent.click(dropdownItem);
+		userEvent.click(dropdownItem);
 
 		const inputElement = await findByTestId('visibleChangeInput');
 
@@ -292,13 +289,13 @@ describe('Field LocalizableText', () => {
 
 		expect(triggerElement.textContent).toEqual('en-us');
 
-		fireEvent.click(triggerElement);
+		userEvent.click(triggerElement);
 
 		const dropdownItem = await findByTestId(
 			'availableLocalesDropdownja_JP'
 		);
 
-		fireEvent.click(dropdownItem);
+		userEvent.click(dropdownItem);
 
 		const inputComponent = getByTestId('visibleChangeInput');
 
@@ -326,23 +323,19 @@ describe('Field LocalizableText', () => {
 
 		expect(triggerElement.textContent).toEqual('en-us');
 
-		fireEvent.click(triggerElement);
+		userEvent.click(triggerElement);
 
 		const dropdownItem = await findByTestId(
 			'availableLocalesDropdownja_JP'
 		);
 
-		fireEvent.click(dropdownItem);
+		userEvent.click(dropdownItem);
 
 		const inputComponent = getByTestId('visibleChangeInput');
 
 		expect(inputComponent.textContent).toEqual('');
 
-		fireEvent.change(inputComponent, {
-			target: {
-				value: 'Test JP',
-			},
-		});
+		userEvent.type(inputComponent, 'Test JP');
 
 		expect(inputComponent.value).toEqual('Test JP');
 
@@ -364,13 +357,13 @@ describe('Field LocalizableText', () => {
 
 		const triggerElement = getByTestId('triggerText');
 
-		fireEvent.click(triggerElement);
+		userEvent.click(triggerElement);
 
 		const dropdownItem = await findByTestId(
 			'availableLocalesDropdownpt_BR'
 		);
 
-		fireEvent.click(dropdownItem);
+		userEvent.click(dropdownItem);
 
 		const inputComponent = getByTestId('visibleChangeInput');
 
@@ -404,13 +397,13 @@ describe('Field LocalizableText', () => {
 
 			const triggerButton = getByTestId('triggerButton');
 
-			fireEvent.click(triggerButton);
+			userEvent.click(triggerButton);
 
 			const dropdownItem = await findByTestId(
 				'availableLocalesDropdownde_DE'
 			);
 
-			fireEvent.click(dropdownItem);
+			userEvent.click(dropdownItem);
 
 			const inputComponent = await findByTestId('visibleChangeInput');
 

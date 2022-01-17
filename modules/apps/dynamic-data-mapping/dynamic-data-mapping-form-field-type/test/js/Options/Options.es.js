@@ -308,11 +308,7 @@ describe('Options', () => {
 
 		const labelInputs = container.querySelectorAll('.ddm-field-text');
 
-		fireEvent.change(labelInputs[0], {
-			target: {
-				value: 'Hello',
-			},
-		});
+		userEvent.type(labelInputs[0], 'Hello');
 
 		const valueInputs = container.querySelectorAll('.key-value-input');
 
@@ -340,11 +336,7 @@ describe('Options', () => {
 
 		const labelInputs = container.querySelectorAll('.ddm-field-text');
 
-		fireEvent.change(labelInputs[1], {
-			target: {
-				value: 'Hello',
-			},
-		});
+		userEvent.type(labelInputs[1], 'Hello');
 
 		const valueInputs = container.querySelectorAll('.key-value-input');
 
@@ -381,7 +373,7 @@ describe('Options', () => {
 
 		const labelInputs = container.querySelectorAll('.ddm-field-text');
 
-		fireEvent.input(labelInputs[0], {target: {value: 'Hello'}});
+		userEvent.type(labelInputs[0], 'Hello');
 
 		const valueInputs = container.querySelectorAll('.key-value-input');
 
@@ -411,7 +403,7 @@ describe('Options', () => {
 
 		const labelInputs = container.querySelectorAll('.ddm-field-text');
 
-		fireEvent.input(labelInputs[1], {target: {value: 'Foo'}});
+		userEvent.type(labelInputs[1], 'Foo');
 
 		const valueInputs = container.querySelectorAll('.key-value-input');
 
@@ -448,7 +440,7 @@ describe('Options', () => {
 
 		const labelInputs = container.querySelectorAll('.ddm-field-text');
 
-		fireEvent.input(labelInputs[1], {target: {value: 'Bar'}});
+		userEvent.type(labelInputs[1], 'Bar');
 
 		const valueInputs = container.querySelectorAll('.key-value-input');
 
@@ -588,9 +580,7 @@ describe('Options', () => {
 			expect(referenceInputs[0].value).toBe('Reference1');
 			expect(referenceInputs[1].value).toBe('Reference2');
 
-			fireEvent.input(referenceInputs[0], {
-				target: {value: 'Reference2'},
-			});
+			userEvent.type(referenceInputs[0], 'Reference2');
 
 			fireEvent.blur(referenceInputs[0]);
 

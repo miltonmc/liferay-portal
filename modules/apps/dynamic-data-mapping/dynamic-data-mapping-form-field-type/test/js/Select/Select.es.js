@@ -13,7 +13,8 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, render, screen} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -114,7 +115,7 @@ describe('Select', () => {
 			'.form-builder-select-field.input-group-container'
 		);
 
-		fireEvent.click(dropdownTrigger);
+		userEvent.click(dropdownTrigger);
 
 		const emptyOption = container.querySelector('[label=choose-an-option]');
 
@@ -328,11 +329,11 @@ describe('Select', () => {
 			'.form-builder-select-field.input-group-container'
 		);
 
-		fireEvent.click(dropdownTrigger);
+		userEvent.click(dropdownTrigger);
 
 		const dropdownItem = await findByTestId('dropdownItem-0');
 
-		fireEvent.click(dropdownItem);
+		userEvent.click(dropdownItem);
 
 		expect(handleFieldEdited).toHaveBeenCalled();
 	});
@@ -354,11 +355,11 @@ describe('Select', () => {
 			'.form-builder-select-field.input-group-container'
 		);
 
-		fireEvent.click(dropdownTrigger);
+		userEvent.click(dropdownTrigger);
 
 		const labelItem = await findByTestId('labelItem-item7');
 
-		fireEvent.click(labelItem);
+		userEvent.click(labelItem);
 
 		expect(handleFieldEdited).toHaveBeenCalledWith(expect.any(Object), [
 			'item7',
@@ -384,7 +385,7 @@ describe('Select', () => {
 			'.form-builder-select-field.input-group-container'
 		);
 
-		fireEvent.click(dropdownTrigger);
+		userEvent.click(dropdownTrigger);
 
 		const emptyOption = container.querySelector('[label=choose-an-option]');
 
@@ -408,7 +409,7 @@ describe('Select', () => {
 			'.form-builder-select-field.input-group-container'
 		);
 
-		fireEvent.click(dropdownTrigger);
+		userEvent.click(dropdownTrigger);
 
 		expect(container).toMatchSnapshot();
 	});
@@ -430,21 +431,17 @@ describe('Select', () => {
 			'.form-builder-select-field.input-group-container'
 		);
 
-		fireEvent.click(dropdownTrigger);
+		userEvent.click(dropdownTrigger);
 
 		const input = container.querySelector('input');
 
-		fireEvent.change(input, {
-			target: {
-				value: 'label1',
-			},
-		});
+		userEvent.type(input, 'label1');
 
 		expect(container).toMatchSnapshot();
 
 		const labelItem = await findByTestId('labelItem-item11');
 
-		fireEvent.click(labelItem);
+		userEvent.click(labelItem);
 
 		expect(handleFieldEdited).toHaveBeenCalledWith(expect.any(Object), [
 			'item11',
