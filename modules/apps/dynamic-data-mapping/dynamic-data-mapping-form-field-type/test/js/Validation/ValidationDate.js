@@ -13,7 +13,7 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {render} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import {FormProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
@@ -163,7 +163,7 @@ describe('ValidationDate', () => {
 		};
 
 		const localizedValue = jest.fn(() => parameter['en_US']);
-		const {getByText} = render(
+		render(
 			<ValidationDateProvider
 				defaultLanguageId="en_US"
 				editingLanguageId="en_US"
@@ -183,10 +183,10 @@ describe('ValidationDate', () => {
 		);
 
 		const [acceptedDate, operation, quantity, unit] = [
-			getByText('accepted-date'),
-			getByText('operation'),
-			getByText('quantity'),
-			getByText('unit'),
+			screen.getByText('accepted-date'),
+			screen.getByText('operation'),
+			screen.getByText('quantity'),
+			screen.getByText('unit'),
 		].map((element) => element.querySelector('input'));
 
 		expect(acceptedDate).toHaveValue('futureDates');
@@ -208,7 +208,7 @@ describe('ValidationDate', () => {
 		};
 
 		const localizedValue = jest.fn(() => parameter['en_US']);
-		const {getByText} = render(
+		render(
 			<ValidationDateProvider
 				defaultLanguageId="en_US"
 				editingLanguageId="en_US"
@@ -228,10 +228,10 @@ describe('ValidationDate', () => {
 		);
 
 		const [acceptedDate, operation, quantity, unit] = [
-			getByText('accepted-date'),
-			getByText('operation'),
-			getByText('quantity'),
-			getByText('unit'),
+			screen.getByText('accepted-date'),
+			screen.getByText('operation'),
+			screen.getByText('quantity'),
+			screen.getByText('unit'),
 		].map((element) => element.querySelector('input'));
 
 		expect(acceptedDate).toHaveValue('pastDates');
@@ -277,7 +277,7 @@ describe('ValidationDate', () => {
 
 		const localizedValue = jest.fn(() => parameter['en_US']);
 
-		const {getAllByRole} = render(
+		render(
 			<ValidationDateProvider
 				defaultLanguageId="en_US"
 				editingLanguageId="en_US"
@@ -297,7 +297,7 @@ describe('ValidationDate', () => {
 			/>
 		);
 
-		const lastOption = [...getAllByRole('button')].pop();
+		const lastOption = [...screen.getAllByRole('button')].pop();
 
 		expect(lastOption).toHaveValue('Date12345678');
 	});
@@ -340,7 +340,7 @@ describe('ValidationDate', () => {
 
 		const localizedValue = jest.fn(() => parameter['en_US']);
 
-		const {getAllByRole} = render(
+		render(
 			<ValidationDateProvider
 				defaultLanguageId="en_US"
 				editingLanguageId="en_US"
@@ -360,7 +360,7 @@ describe('ValidationDate', () => {
 			/>
 		);
 
-		const lastOption = [...getAllByRole('button')].pop();
+		const lastOption = [...screen.getAllByRole('button')].pop();
 
 		expect(lastOption).not.toHaveValue('Date12345678');
 	});
@@ -406,7 +406,7 @@ describe('ValidationDate', () => {
 
 		const localizedValue = jest.fn(() => parameter['en_US']);
 
-		const {getAllByRole} = render(
+		render(
 			<ValidationDateProvider
 				defaultLanguageId="en_US"
 				editingLanguageId="en_US"
@@ -426,7 +426,7 @@ describe('ValidationDate', () => {
 			/>
 		);
 
-		const lastOption = [...getAllByRole('button')].pop();
+		const lastOption = [...screen.getAllByRole('button')].pop();
 
 		expect(lastOption).toHaveValue('childDate');
 	});
@@ -473,7 +473,7 @@ describe('ValidationDate', () => {
 
 		const localizedValue = jest.fn(() => parameter['en_US']);
 
-		const {getAllByRole} = render(
+		render(
 			<ValidationDateProvider
 				defaultLanguageId="en_US"
 				editingLanguageId="en_US"
@@ -493,7 +493,7 @@ describe('ValidationDate', () => {
 			/>
 		);
 
-		const lastOption = [...getAllByRole('button')].pop();
+		const lastOption = [...screen.getAllByRole('button')].pop();
 
 		expect(lastOption).not.toHaveValue('childDate');
 	});
@@ -534,7 +534,7 @@ describe('ValidationDate', () => {
 		};
 
 		const localizedValue = jest.fn(() => parameter['en_US']);
-		const {getAllByRole, getByText} = render(
+		render(
 			<ValidationDateProvider
 				defaultLanguageId="en_US"
 				editingLanguageId="en_US"
@@ -555,13 +555,13 @@ describe('ValidationDate', () => {
 		);
 
 		const [acceptedDate, operation, quantity, unit] = [
-			getByText('accepted-date'),
-			getByText('operation'),
-			getByText('quantity'),
-			getByText('unit'),
+			screen.getByText('accepted-date'),
+			screen.getByText('operation'),
+			screen.getByText('quantity'),
+			screen.getByText('unit'),
 		].map((element) => element.querySelector('input'));
 
-		const availableDates = [...getAllByRole('button')];
+		const availableDates = [...screen.getAllByRole('button')];
 
 		expect(availableDates[7]).toHaveValue('Date12345678');
 		expect(acceptedDate).toHaveValue('pastDates');

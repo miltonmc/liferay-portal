@@ -13,7 +13,7 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {render} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
@@ -128,25 +128,21 @@ describe('Field Checkbox', () => {
 
 	describe('Boolean Field', () => {
 		it('check if the boolean field is not checked if he has predefinedValue false', () => {
-			const {queryByLabelText} = render(
-				<Checkbox label="Boolean" predefinedValue={['false']} />
-			);
+			render(<Checkbox label="Boolean" predefinedValue={['false']} />);
 
-			expect(queryByLabelText('Boolean')).not.toBeChecked();
+			expect(screen.queryByLabelText('Boolean')).not.toBeChecked();
 		});
 
 		it('check if the boolean field is checked if he has predefinedValue true', () => {
-			const {queryByLabelText} = render(
-				<Checkbox label="Boolean" predefinedValue={['true']} />
-			);
+			render(<Checkbox label="Boolean" predefinedValue={['true']} />);
 
-			expect(queryByLabelText('Boolean')).toBeChecked();
+			expect(screen.queryByLabelText('Boolean')).toBeChecked();
 		});
 
 		it('check that with false predefinedValue the boolean field is checked when we enable it', () => {
 			const onChange = jest.fn();
 
-			const {queryByLabelText} = render(
+			render(
 				<Checkbox
 					label="Boolean"
 					onChange={onChange}
@@ -154,14 +150,13 @@ describe('Field Checkbox', () => {
 				/>
 			);
 
-			const input = queryByLabelText('Boolean');
-			userEvent.click(input);
+			userEvent.click(screen.queryByLabelText('Boolean'));
 			expect(onChange).toHaveBeenLastCalledWith({target: {value: true}});
 		});
 
 		it('check that with true predefinedValue the boolean field is not checked when we disabled it', () => {
 			const onChange = jest.fn();
-			const {queryByLabelText} = render(
+			render(
 				<Checkbox
 					label="Boolean"
 					onChange={onChange}
@@ -169,17 +164,14 @@ describe('Field Checkbox', () => {
 				/>
 			);
 
-			const input = queryByLabelText('Boolean');
-			userEvent.click(input);
+			userEvent.click(screen.queryByLabelText('Boolean'));
 			expect(onChange).toHaveBeenLastCalledWith({target: {value: false}});
 		});
 
 		it('check it shows the label when we set it up', () => {
-			const {queryByLabelText} = render(
-				<Checkbox label="Boolean" showLabel />
-			);
+			render(<Checkbox label="Boolean" showLabel />);
 
-			expect(queryByLabelText('Boolean')).toBeInTheDocument();
+			expect(screen.queryByLabelText('Boolean')).toBeInTheDocument();
 		});
 
 		it('check if the required icon appears when the field is required', () => {

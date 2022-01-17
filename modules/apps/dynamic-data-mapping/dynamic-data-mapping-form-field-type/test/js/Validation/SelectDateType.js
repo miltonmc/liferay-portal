@@ -13,7 +13,7 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {render} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import {FormProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
@@ -104,7 +104,7 @@ describe('SelectDateType', () => {
 
 		const localizedValue = jest.fn(() => parameter['en_US']);
 
-		const {getAllByRole} = render(
+		render(
 			<SelectDateTypeProvider
 				dateFieldOptions={dateFieldOptions}
 				defaultLanguageId="en_US"
@@ -125,7 +125,7 @@ describe('SelectDateType', () => {
 			/>
 		);
 
-		const [responseDate, dateField] = [...getAllByRole('button')];
+		const [responseDate, dateField] = [...screen.getAllByRole('button')];
 
 		expect(responseDate).toHaveValue('responseDate');
 		expect(dateField).toHaveValue('Date12345678');

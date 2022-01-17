@@ -12,7 +12,7 @@
  * details.
  */
 
-import {fireEvent, render} from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
@@ -155,7 +155,7 @@ describe('Options', () => {
 	it('shows the options with editable value', () => {
 		mockLiferayLanguage();
 
-		const {getByDisplayValue} = render(
+		render(
 			<OptionsWithProvider
 				keywordReadOnly={false}
 				name="options"
@@ -175,7 +175,7 @@ describe('Options', () => {
 			/>
 		);
 
-		userEvent.type(getByDisplayValue('Option1'), 'Option2');
+		userEvent.type(screen.getByDisplayValue('Option1'), 'Option2');
 
 		const valueInputs = document.querySelectorAll('.key-value-input');
 
@@ -258,7 +258,7 @@ describe('Options', () => {
 	it('does not changes the option value when the option label changes', () => {
 		mockLiferayLanguage();
 
-		const {getByDisplayValue} = render(
+		render(
 			<OptionsWithProvider
 				name="options"
 				onChange={jest.fn()}
@@ -276,7 +276,7 @@ describe('Options', () => {
 			/>
 		);
 
-		userEvent.type(getByDisplayValue('Option 1'), 'Option 2');
+		userEvent.type(screen.getByDisplayValue('Option 1'), 'Option 2');
 
 		const labelInputs = document.querySelectorAll('.ddm-field-text');
 		expect(labelInputs[0].value).toEqual('Option 2');

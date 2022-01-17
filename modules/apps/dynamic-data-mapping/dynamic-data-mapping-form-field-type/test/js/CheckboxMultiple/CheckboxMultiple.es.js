@@ -13,7 +13,7 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {render} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
@@ -186,7 +186,7 @@ describe('Field Checkbox Multiple', () => {
 	});
 
 	it('checks the value if there is a value', () => {
-		const {getByLabelText} = render(
+		render(
 			<CheckboxMultipleWithProvider
 				options={[
 					{
@@ -208,13 +208,13 @@ describe('Field Checkbox Multiple', () => {
 			/>
 		);
 
-		expect(getByLabelText('Option 1')).not.toBeChecked();
-		expect(getByLabelText('Option 2')).not.toBeChecked();
-		expect(getByLabelText('Option 3')).toBeChecked();
+		expect(screen.getByLabelText('Option 1')).not.toBeChecked();
+		expect(screen.getByLabelText('Option 2')).not.toBeChecked();
+		expect(screen.getByLabelText('Option 3')).toBeChecked();
 	});
 
 	it('checks the predefinedValue if there is no value', () => {
-		const {getByLabelText} = render(
+		render(
 			<CheckboxMultipleWithProvider
 				options={[
 					{
@@ -236,13 +236,13 @@ describe('Field Checkbox Multiple', () => {
 			/>
 		);
 
-		expect(getByLabelText('Option 1')).toBeChecked();
-		expect(getByLabelText('Option 2')).toBeChecked();
-		expect(getByLabelText('Option 3')).not.toBeChecked();
+		expect(screen.getByLabelText('Option 1')).toBeChecked();
+		expect(screen.getByLabelText('Option 2')).toBeChecked();
+		expect(screen.getByLabelText('Option 3')).not.toBeChecked();
 	});
 
 	it('uncheck all values if the user has edited the field to clear the predefinedValue', () => {
-		const {getByLabelText} = render(
+		render(
 			<CheckboxMultipleWithProvider
 				localizedValueEdited={{en_US: true}}
 				options={[
@@ -265,8 +265,8 @@ describe('Field Checkbox Multiple', () => {
 			/>
 		);
 
-		expect(getByLabelText('Option 1')).not.toBeChecked();
-		expect(getByLabelText('Option 2')).not.toBeChecked();
-		expect(getByLabelText('Option 3')).not.toBeChecked();
+		expect(screen.getByLabelText('Option 1')).not.toBeChecked();
+		expect(screen.getByLabelText('Option 2')).not.toBeChecked();
+		expect(screen.getByLabelText('Option 3')).not.toBeChecked();
 	});
 });

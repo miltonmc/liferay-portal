@@ -12,7 +12,8 @@
  * details.
  */
 
-import {render} from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
@@ -101,27 +102,19 @@ describe('Field Color Picker', () => {
 			/>
 		);
 
-		expect(document.querySelector('input').value).toBe(color);
+		expect(screen.getByRole('textbox')).toHaveValue('FF67AA');
 	});
 
-	it.skip('should call the onChange callback on the field change', () => {
+	it('calls the onChange callback on the field change', () => {
 		const handleFieldEdited = jest.fn();
 
-		render(
-			<ColorPickerWithProvider
-				name={name}
-				onChange={handleFieldEdited}
-				spritemap={spritemap}
-			/>
-		);
+		render(<ColorPicker onChange={handleFieldEdited} />);
 
-		userEvent.click(document.body.querySelector('input'), {
-			target: {value: 'ffffff'},
-		});
+		const input = screen.getByRole('textbox');
+
+		userEvent.type(input, 'ffffff');
 
 		expect(handleFieldEdited).toHaveBeenCalled();
-
-		const inputEl = document.body.querySelector('input');
-		expect(inputEl.value).toBe('ffffff');
+		expect(input).toHaveValue('ffffff');
 	});
 });

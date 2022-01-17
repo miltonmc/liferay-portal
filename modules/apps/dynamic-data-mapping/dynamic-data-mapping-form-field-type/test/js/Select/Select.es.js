@@ -316,7 +316,7 @@ describe('Select', () => {
 	it('calls onChange callback when an item is selected', async () => {
 		const handleFieldEdited = jest.fn();
 
-		const {findByTestId} = render(
+		render(
 			<SelectWithProvider
 				dataSourceType="manual"
 				onChange={handleFieldEdited}
@@ -331,7 +331,7 @@ describe('Select', () => {
 
 		userEvent.click(dropdownTrigger);
 
-		const dropdownItem = await findByTestId('dropdownItem-0');
+		const dropdownItem = await screen.findByTestId('dropdownItem-0');
 
 		userEvent.click(dropdownItem);
 
@@ -341,7 +341,7 @@ describe('Select', () => {
 	it('calls onChange callback when an item is selected using multiselect', async () => {
 		const handleFieldEdited = jest.fn();
 
-		const {container, findByTestId} = render(
+		const {container} = render(
 			<SelectWithProvider
 				dataSourceType="manual"
 				multiple={true}
@@ -357,7 +357,7 @@ describe('Select', () => {
 
 		userEvent.click(dropdownTrigger);
 
-		const labelItem = await findByTestId('labelItem-item7');
+		const labelItem = await screen.findByTestId('labelItem-item7');
 
 		userEvent.click(labelItem);
 
@@ -417,7 +417,7 @@ describe('Select', () => {
 	it('filters according to the input and calls onChange callback when an item is selected using search', async () => {
 		const handleFieldEdited = jest.fn();
 
-		const {container, findByTestId} = render(
+		const {container} = render(
 			<SelectWithProvider
 				dataSourceType="manual"
 				multiple={true}
@@ -439,7 +439,7 @@ describe('Select', () => {
 
 		expect(container).toMatchSnapshot();
 
-		const labelItem = await findByTestId('labelItem-item11');
+		const labelItem = await screen.findByTestId('labelItem-item11');
 
 		userEvent.click(labelItem);
 

@@ -13,7 +13,7 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, render} from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 import {FormProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
@@ -97,11 +97,9 @@ describe('Field Search Location', () => {
 	});
 
 	it('must to be show search location fields', () => {
-		const {getAllByLabelText} = render(
-			<SearchLocationWithProvider {...defaultConfig} />
-		);
+		render(<SearchLocationWithProvider {...defaultConfig} />);
 
-		expect(hasAllFields(getAllByLabelText, defaultConfig.labels)).toBe(
+		expect(hasAllFields(screen.getByLabelText, defaultConfig.labels)).toBe(
 			true
 		);
 	});
@@ -129,11 +127,9 @@ describe('Field Search Location', () => {
 		delete defaultConfig.labels.city;
 		defaultConfig.visibleFields.splice(1, 1);
 
-		const {getAllByLabelText} = render(
-			<SearchLocationWithProvider {...defaultConfig} />
-		);
+		render(<SearchLocationWithProvider {...defaultConfig} />);
 
-		expect(hasAllFields(getAllByLabelText, defaultConfig.labels)).toBe(
+		expect(hasAllFields(screen.getByLabelText, defaultConfig.labels)).toBe(
 			true
 		);
 	});
@@ -160,11 +156,9 @@ describe('Field Search Location', () => {
 		defaultConfig.labels.city = 'City';
 		defaultConfig.visibleFields.splice(1, 0, 'city');
 
-		const {getAllByLabelText} = render(
-			<SearchLocationWithProvider {...defaultConfig} />
-		);
+		render(<SearchLocationWithProvider {...defaultConfig} />);
 
-		expect(hasAllFields(getAllByLabelText, defaultConfig.labels)).toBe(
+		expect(hasAllFields(screen.getByLabelText, defaultConfig.labels)).toBe(
 			true
 		);
 	});
@@ -217,11 +211,9 @@ describe('Field Search Location', () => {
 		delete defaultConfig.labels.city;
 		defaultConfig.visibleFields.splice(1, 1);
 
-		const {getAllByLabelText} = render(
-			<SearchLocationWithProvider {...defaultConfig} />
-		);
+		render(<SearchLocationWithProvider {...defaultConfig} />);
 
-		expect(hasAllFields(getAllByLabelText, defaultConfig.labels)).toBe(
+		expect(hasAllFields(screen.getByLabelText, defaultConfig.labels)).toBe(
 			true
 		);
 	});
@@ -248,11 +240,9 @@ describe('Field Search Location', () => {
 		defaultConfig.labels.city = 'City';
 		defaultConfig.visibleFields.splice(1, 0, 'city');
 
-		const {getAllByLabelText} = render(
-			<SearchLocationWithProvider {...defaultConfig} />
-		);
+		render(<SearchLocationWithProvider {...defaultConfig} />);
 
-		expect(hasAllFields(getAllByLabelText, defaultConfig.labels)).toBe(
+		expect(hasAllFields(screen.getByLabelText, defaultConfig.labels)).toBe(
 			true
 		);
 	});

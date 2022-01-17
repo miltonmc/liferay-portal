@@ -13,7 +13,7 @@
  */
 
 import '@testing-library/jest-dom/extend-expect';
-import {render} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {FormProvider} from 'data-engine-js-components-web';
 import React from 'react';
@@ -52,9 +52,9 @@ describe('Field Numeric', () => {
 	});
 
 	it('has a helptext', () => {
-		const {getAllByText} = render(<Numeric tip="Type something" />);
+		render(<Numeric tip="Type something" />);
 
-		expect(getAllByText('Type something')[0]).toBeInTheDocument();
+		expect(screen.getAllByText('Type something')[0]).toBeInTheDocument();
 	});
 
 	it('has an id', () => {
@@ -66,12 +66,9 @@ describe('Field Numeric', () => {
 	});
 
 	it('has a label', () => {
-		const {getAllByText} = render(<Numeric label="label" />);
+		render(<Numeric label="label" />);
 
-		const allByText = getAllByText(/label/);
-		expect(allByText).toHaveLength(2);
-		expect(allByText[0]).toBeInTheDocument();
-		expect(allByText[1]).toBeInTheDocument();
+		expect(screen.getByText(/label/)).toBeInTheDocument();
 	});
 
 	it('has a placeholder', () => {
@@ -83,20 +80,15 @@ describe('Field Numeric', () => {
 	});
 
 	it('is required', () => {
-		const {getByText} = render(<Numeric required />);
+		render(<Numeric required />);
 
-		expect(getByText(/required/)).toBeInTheDocument();
+		expect(screen.getByText(/required/)).toBeInTheDocument();
 	});
 
 	it('renders Label if showLabel is true', () => {
-		const {getAllByText} = render(
-			<Numeric label="Numeric Field" showLabel />
-		);
+		render(<Numeric label="Numeric Field" showLabel />);
 
-		const allByText = getAllByText(/Numeric Field/);
-		expect(allByText).toHaveLength(2);
-		expect(allByText[0]).toHaveClass('ddm-label');
-		expect(allByText[1]).toHaveClass('sr-only');
+		expect(screen.getByText(/Numeric Field/)).toHaveClass('ddm-label');
 	});
 
 	it('has a value', () => {
@@ -340,7 +332,7 @@ describe('Field Numeric', () => {
 		 * allows simulate backspace key pressing (with the current
 		 * @testing-library/use-event)
 		 */
-		xit('it allows to delete non numeric characters from mask', () => {
+		it.skip('it allows to delete non numeric characters from mask', () => {
 			render(
 				<Numeric
 					inputMask
@@ -361,7 +353,7 @@ describe('Field Numeric', () => {
 
 	describe('Decimal Input Mask toggle', () => {
 		it('renders a suffix', () => {
-			const {getByText} = render(
+			render(
 				<Numeric
 					append="$"
 					appendType="suffix"
@@ -375,11 +367,11 @@ describe('Field Numeric', () => {
 			const input = document.querySelector('input');
 
 			expect(input.value).toBe('123');
-			expect(getByText('$')).toHaveClass('input-group-text');
+			expect(screen.getByText('$')).toHaveClass('input-group-text');
 		});
 
 		it('renders a prefix', () => {
-			const {getByText} = render(
+			render(
 				<Numeric
 					append="$"
 					appendType="prefix"
@@ -392,7 +384,7 @@ describe('Field Numeric', () => {
 
 			const input = document.querySelector('input');
 
-			expect(getByText('$')).toHaveClass('input-group-text');
+			expect(screen.getByText('$')).toHaveClass('input-group-text');
 			expect(input.value).toBe('123');
 		});
 
@@ -514,7 +506,6 @@ describe('Field Numeric', () => {
 		/**
 		 * LPS-141862
 		 */
-
 		it('does not allow typing zeroes not followed by decimal symbol', () => {
 			const onChange = jest.fn();
 			render(
