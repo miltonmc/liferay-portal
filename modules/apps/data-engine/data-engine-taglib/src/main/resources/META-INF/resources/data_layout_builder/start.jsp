@@ -17,7 +17,7 @@
 <%@ include file="/data_layout_builder/init.jsp" %>
 
 <liferay-util:html-top>
-	<link href="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathModule() + "/dynamic-data-mapping-form-builder/css/main.css") %>" rel="stylesheet" />
+	<link href="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathModule() + "/data-engine-js-components-web/css/ddm-form-builder/main.css") %>" rel="stylesheet" />
 	<link href="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathModule() + "/data-engine-js-components-web/css/main.css") %>" rel="stylesheet" />
 	<link href="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathModule() + "/data-engine-taglib/data_layout_builder/css/main.css") %>" rel="stylesheet" />
 </liferay-util:html-top>
