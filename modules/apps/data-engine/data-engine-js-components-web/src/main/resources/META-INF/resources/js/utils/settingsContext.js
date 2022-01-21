@@ -12,8 +12,7 @@
  * details.
  */
 
-import {updateFieldValidationProperty} from '../core/utils/fields';
-import {generateInstanceId, getDefaultFieldName} from './fieldSupport';
+import {getDefaultFieldName} from './fieldSupport';
 import {normalizeFieldName} from './fields.es';
 import {PagesVisitor} from './visitors.es';
 
@@ -34,7 +33,7 @@ export function getSettingsContextProperty(
 	return propertyValue;
 }
 
-export function setFieldReferenceErrorMessage(
+function setFieldReferenceErrorMessage(
 	settingsContext,
 	propertyName,
 	displayErrors = true,
@@ -63,127 +62,122 @@ export function setFieldReferenceErrorMessage(
 }
 
 export function updateSettingsContextProperty(
-	defaultLanguageId = themeDisplay.getDefaultLanguageId(),
 	editingLanguageId,
 	settingsContext,
 	propertyName,
-	propertyValue
+	propertyValue,
+	parentFieldName
 ) {
 	const visitor = new PagesVisitor(settingsContext.pages);
-	const isLocalizablePropertyValue = typeof propertyValue === 'object';
-	const isLocalizableLabel =
-		propertyName === 'label' && isLocalizablePropertyValue;
 
 	return {
 		...settingsContext,
 		pages: visitor.mapFields((field) => {
-			if (propertyName === field.fieldName) {
-				let value = propertyValue;
+			const {fieldName, localizable, localizedValue} = field;
 
-				if (isLocalizableLabel) {
-					value =
-						propertyValue[editingLanguageId] ||
-						propertyValue[defaultLanguageId];
-				}
+			if (fieldName === 'validation') {
+				return updateFieldValidationProperty(
+					field,
+					propertyName,
+					propertyValue,
+					parentFieldName
+				);
+			}
 
-				field = {
-					...field,
-					value,
-				};
+			if (propertyName !== fieldName) {
+				return field;
+			}
 
-				if (field.localizable) {
-					if (isLocalizableLabel) {
-						field.localizedValue = {
-							...propertyValue,
-						};
-					}
-				}
+			const updatedField = {
+				...field,
 
-				field.localizedValue = {
-					...(field.localizedValue ?? {}),
-					[editingLanguageId]: value,
+				/* TODO: remove from localizable fields after properly sync value with the sidebar */
+				value: propertyValue,
+			};
+
+			if (localizable) {
+				updatedField.localizedValue = {
+					...localizedValue,
+					[editingLanguageId]: propertyValue,
 				};
 			}
 
-			return field;
+			return updatedField;
 		}),
 	};
 }
 
-export function updateSettingsContextInstanceId({settingsContext}) {
-	const visitor = new PagesVisitor(settingsContext.pages);
+function updateFieldValidationProperty(
+	field,
+	propertyName,
+	propertyValue,
+	parentFieldName
+) {
+	const {validation, value} = field;
+
+	if (!parentFieldName || !value) {
+		return field;
+	}
+
+	const expression = value.expression;
+
+	if (expression?.value && propertyName === 'name') {
+		expression.value = expression.value.replaceAll(
+			parentFieldName,
+			propertyValue
+		);
+	}
+
+	const validationKey = propertyName === 'name' ? 'fieldName' : propertyName;
 
 	return {
-		...settingsContext,
-		pages: visitor.mapFields((field) => {
-			const newField = {
-				...field,
-				instanceId: generateInstanceId(),
-			};
-
-			return newField;
-		}),
+		...field,
+		validation: {
+			...validation,
+			[validationKey]: propertyValue,
+		},
+		value: {
+			...field.value,
+			expression,
+		},
 	};
 }
 
-export function updateFieldName(
-	defaultLanguageId,
-	editingLanguageId,
-	fieldNameGenerator,
-	focusedField,
-	value
-) {
-	const {fieldName} = focusedField;
+function updateFieldName(editingLanguageId, fieldNameGenerator, field, value) {
 	const normalizedFieldName = normalizeFieldName(value);
 
-	let newFieldName;
+	const newFieldName = fieldNameGenerator(
+		normalizedFieldName === '' ? getDefaultFieldName() : value,
+		field.fieldName
+	);
 
-	if (normalizedFieldName !== '') {
-		newFieldName = fieldNameGenerator(value, fieldName);
-	}
-	else {
-		newFieldName = fieldNameGenerator(getDefaultFieldName(), fieldName);
-	}
-
-	if (newFieldName) {
-		let {settingsContext} = focusedField;
-
-		settingsContext = {
-			...settingsContext,
-			pages: updateFieldValidationProperty(
-				settingsContext.pages,
-				fieldName,
-				'fieldName',
-				newFieldName
-			),
-		};
-
-		focusedField = {
-			...focusedField,
-			fieldName: newFieldName,
-			name: newFieldName,
-			settingsContext: updateSettingsContextProperty(
-				defaultLanguageId,
-				editingLanguageId,
-				settingsContext,
-				'name',
-				newFieldName
-			),
-		};
+	if (!newFieldName) {
+		return field;
 	}
 
-	return focusedField;
+	return {
+		...field,
+		fieldName: newFieldName,
+		name: newFieldName,
+		settingsContext: updateSettingsContextProperty(
+			editingLanguageId,
+			field.settingsContext,
+			'name',
+			newFieldName,
+			field.fieldName
+		),
+	};
 }
 
 export function updateFieldReference(
-	focusedField,
+	field,
 	invalid = false,
 	shouldUpdateValue = false
 ) {
-	const {settingsContext} = focusedField;
+	const {settingsContext} = field;
 
-	focusedField = {
-		...focusedField,
+	return {
+		...field,
 		settingsContext: setFieldReferenceErrorMessage(
 			settingsContext,
 			'fieldReference',
@@ -191,50 +185,17 @@ export function updateFieldReference(
 			shouldUpdateValue
 		),
 	};
-
-	return focusedField;
 }
 
-export function updateFieldDataType(
-	defaultLanguageId,
-	editingLanguageId,
-	focusedField,
-	value
-) {
-	let {settingsContext} = focusedField;
-
-	settingsContext = {
-		...settingsContext,
-		pages: updateFieldValidationProperty(
-			settingsContext.pages,
-			focusedField.fieldName,
-			'dataType',
-			value
-		),
-	};
-
-	return {
-		...focusedField,
-		dataType: value,
-		settingsContext: updateSettingsContextProperty(
-			defaultLanguageId,
-			editingLanguageId,
-			settingsContext,
-			'dataType',
-			value
-		),
-	};
-}
-
-export function updateFieldLabel(
+function updateFieldLabel(
 	defaultLanguageId,
 	editingLanguageId,
 	fieldNameGenerator,
-	focusedField,
+	field,
 	generateFieldNameUsingFieldLabel,
 	value
 ) {
-	let {fieldName, settingsContext} = focusedField;
+	let {fieldName, settingsContext} = field;
 	let label = value;
 
 	if (
@@ -242,10 +203,9 @@ export function updateFieldLabel(
 		defaultLanguageId === editingLanguageId
 	) {
 		const updates = updateFieldName(
-			defaultLanguageId,
 			editingLanguageId,
 			fieldNameGenerator,
-			focusedField,
+			field,
 			value
 		);
 
@@ -258,11 +218,10 @@ export function updateFieldLabel(
 	}
 
 	return {
-		...focusedField,
+		...field,
 		fieldName,
 		label,
 		settingsContext: updateSettingsContextProperty(
-			defaultLanguageId,
 			editingLanguageId,
 			settingsContext,
 			'label',
@@ -297,52 +256,6 @@ const getValueLocalized = (
 	return value;
 };
 
-export function updateFieldProperty(
-	defaultLanguageId,
-	editingLanguageId,
-	focusedField,
-	propertyName,
-	propertyValue
-) {
-	return {
-		...focusedField,
-		[propertyName]: getValueLocalized(
-			focusedField.localizable,
-			propertyValue,
-			defaultLanguageId,
-			editingLanguageId
-		),
-		settingsContext: updateSettingsContextProperty(
-			defaultLanguageId,
-			editingLanguageId,
-			focusedField.settingsContext,
-			propertyName,
-			propertyValue
-		),
-	};
-}
-
-export function updateFieldOptions(
-	defaultLanguageId,
-	editingLanguageId,
-	focusedField,
-	value
-) {
-	const options = value[editingLanguageId];
-
-	return {
-		...focusedField,
-		options,
-		settingsContext: updateSettingsContextProperty(
-			defaultLanguageId,
-			editingLanguageId,
-			focusedField.settingsContext,
-			'options',
-			value
-		),
-	};
-}
-
 export function updateField(
 	{
 		defaultLanguageId,
@@ -354,71 +267,70 @@ export function updateField(
 	propertyName,
 	propertyValue
 ) {
-	if (propertyName === 'dataType') {
-		field = {
-			...field,
-			...updateFieldDataType(
-				defaultLanguageId,
-				editingLanguageId,
-				field,
-				propertyValue
-			),
-		};
-	}
-	else if (propertyName === 'label') {
-		field = {
-			...field,
-			...updateFieldLabel(
+	switch (propertyName) {
+		case 'dataType': {
+			return {
+				...field,
+				dataType: propertyValue,
+				settingsContext: updateSettingsContextProperty(
+					editingLanguageId,
+					field.settingsContext,
+					'dataType',
+					propertyValue,
+					field.fieldName
+				),
+			};
+		}
+		case 'label': {
+			return updateFieldLabel(
 				defaultLanguageId,
 				editingLanguageId,
 				fieldNameGenerator,
 				field,
 				generateFieldNameUsingFieldLabel,
 				propertyValue
-			),
-		};
-	}
-	else if (propertyName === 'name') {
-		field = {
-			...field,
-			...updateFieldName(
-				defaultLanguageId,
+			);
+		}
+		case 'name': {
+			return updateFieldName(
 				editingLanguageId,
 				fieldNameGenerator,
 				field,
 				propertyValue
-			),
-		};
+			);
+		}
+		case 'numericInputMask': {
+			return {
+				...field,
+				...propertyValue,
+			};
+		}
+		case 'options':
+			return {
+				...field,
+				options: propertyValue[editingLanguageId],
+				settingsContext: updateSettingsContextProperty(
+					editingLanguageId,
+					field.settingsContext,
+					'options',
+					propertyValue
+				),
+			};
+		default:
+			return {
+				...field,
+				[propertyName]: getValueLocalized(
+					field.localizable,
+					propertyValue,
+					defaultLanguageId,
+					editingLanguageId
+				),
+				settingsContext: updateSettingsContextProperty(
+					editingLanguageId,
+					field.settingsContext,
+					propertyName,
+					propertyValue
+				),
+			};
 	}
-	else if (propertyName === 'numericInputMask') {
-		field = {
-			...field,
-			...propertyValue,
-		};
-	}
-	else if (propertyName === 'options') {
-		field = {
-			...field,
-			...updateFieldOptions(
-				defaultLanguageId,
-				editingLanguageId,
-				field,
-				propertyValue
-			),
-		};
-	}
-	else {
-		field = {
-			...field,
-			...updateFieldProperty(
-				defaultLanguageId,
-				editingLanguageId,
-				field,
-				propertyName,
-				propertyValue
-			),
-		};
-	}
-
-	return field;
 }

@@ -22,8 +22,6 @@ import {normalizeFieldName} from '../../utils/fields.es';
 import {
 	getSettingsContextProperty,
 	updateField,
-	updateFieldLabel,
-	updateSettingsContextInstanceId,
 	updateSettingsContextProperty,
 } from '../../utils/settingsContext';
 import {sub} from '../../utils/strings';
@@ -137,46 +135,6 @@ export function getLabel(originalField, defaultLanguageId, editingLanguageId) {
 	return sub(Liferay.Language.get('copy-of-x'), [labelFieldLocalizedValue]);
 }
 
-export function updateFieldValidationProperty(
-	pages,
-	fieldName,
-	propertyName,
-	propertyValue
-) {
-	const visitor = new PagesVisitor(pages);
-
-	return visitor.mapFields((field) => {
-		if (field.fieldName === 'validation' && field.value) {
-			const expression = field.value.expression;
-
-			if (
-				propertyName === 'fieldName' &&
-				expression &&
-				expression.value
-			) {
-				expression.value = expression.value.replaceAll(
-					fieldName,
-					propertyValue
-				);
-			}
-
-			field = {
-				...field,
-				validation: {
-					...field.validation,
-					[propertyName]: propertyValue,
-				},
-				value: {
-					...field.value,
-					expression,
-				},
-			};
-		}
-
-		return field;
-	});
-}
-
 export function getValidation(originalField) {
 	const validation = getSettingsContextProperty(
 		originalField.settingsContext,
@@ -216,20 +174,19 @@ export function createDuplicatedField(originalField, props, blacklist = []) {
 
 	duplicatedField.instanceId = generateInstanceId();
 
-	availableLanguageIds.forEach((availableLanguageId) => {
-		const label = getLabel(
-			originalField,
-			defaultLanguageId,
-			availableLanguageId
-		);
+	availableLanguageIds.forEach((languageId) => {
+		const label = getLabel(originalField, defaultLanguageId, languageId);
 
 		if (label) {
-			duplicatedField = updateFieldLabel(
-				defaultLanguageId,
-				availableLanguageId,
-				fieldNameGenerator,
+			duplicatedField = updateField(
+				{
+					defaultLanguageId,
+					editingLanguageId: languageId,
+					fieldNameGenerator,
+					generateFieldNameUsingFieldLabel,
+				},
 				duplicatedField,
-				generateFieldNameUsingFieldLabel,
+				'label',
 				label
 			);
 		}
@@ -278,7 +235,6 @@ export function createDuplicatedField(originalField, props, blacklist = []) {
 		);
 
 		duplicatedField.settingsContext = updateSettingsContextProperty(
-			defaultLanguageId,
 			props.editingLanguageId,
 			duplicatedField.settingsContext,
 			'rows',
@@ -288,7 +244,6 @@ export function createDuplicatedField(originalField, props, blacklist = []) {
 		duplicatedField.ddmStructureLayoutId = '';
 
 		duplicatedField.settingsContext = updateSettingsContextProperty(
-			defaultLanguageId,
 			props.editingLanguageId,
 			duplicatedField.settingsContext,
 			'ddmStructureLayoutId',
@@ -296,15 +251,14 @@ export function createDuplicatedField(originalField, props, blacklist = []) {
 		);
 	}
 
-	const settingsContext = updateSettingsContextInstanceId(duplicatedField);
-
-	const settingsVisitor = new PagesVisitor(settingsContext.pages);
+	const visitor = new PagesVisitor(duplicatedField.settingsContext.pages);
 
 	duplicatedField.settingsContext = {
-		...settingsContext,
-		pages: settingsVisitor.mapFields((field) =>
-			localizeField(field, defaultLanguageId, editingLanguageId)
-		),
+		...duplicatedField.settingsContext,
+		pages: visitor.mapFields((field) => ({
+			...localizeField(field, defaultLanguageId, editingLanguageId),
+			instanceId: generateInstanceId(),
+		})),
 	};
 
 	return updateField(
