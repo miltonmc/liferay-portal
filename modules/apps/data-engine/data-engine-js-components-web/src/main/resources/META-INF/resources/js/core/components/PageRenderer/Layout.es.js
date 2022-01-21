@@ -16,11 +16,10 @@ import React, {useContext} from 'react';
 
 import {getFormId, getFormNode} from '../../../utils/formId.es';
 import {useConfig} from '../../hooks/useConfig.es';
-import {useEvaluate} from '../../hooks/useEvaluate.es';
 import {useForm, useFormState} from '../../hooks/useForm.es';
 import {usePage} from '../../hooks/usePage.es';
 import fieldBlur from '../../thunks/fieldBlur.es';
-import fieldChange from '../../thunks/fieldChange.es';
+import {useFieldChange} from '../../thunks/fieldChange.es';
 import fieldFocus from '../../thunks/fieldFocus.es';
 import {mergeVariants} from '../../utils/merge-variants.es';
 import {Field} from '../Field/Field.es';
@@ -31,7 +30,7 @@ export function Layout({components, editable, rows, viewMode}) {
 	const {activePage, defaultLanguageId} = useFormState();
 	const {allowNestedFields, submitButtonId} = useConfig();
 
-	const createFieldChange = useEvaluate(fieldChange);
+	const fieldChange = useFieldChange();
 	const dispatch = useForm();
 
 	const variants = useContext(VariantsContext);
@@ -87,7 +86,7 @@ export function Layout({components, editable, rows, viewMode}) {
 									}
 									onChange={(properties) =>
 										dispatch(
-											createFieldChange({
+											fieldChange({
 												properties,
 												submitButtonId,
 											})

@@ -15,6 +15,7 @@
 import {evaluate, mergePages} from '../../utils/evaluation.es';
 import {PagesVisitor} from '../../utils/visitors.es';
 import {EVENT_TYPES} from '../actions/eventTypes.es';
+import {useEvaluate} from '../hooks/useEvaluate.es';
 import {disableSubmitButton} from '../utils/submitButtonController.es';
 
 let REVALIDATE_UPDATES = [];
@@ -61,7 +62,7 @@ const getEditedPages = ({
 
 let lastEditedPages = [];
 
-export default function fieldChange({
+function fieldChange({
 	defaultLanguageId,
 	editingLanguageId,
 	objectFields,
@@ -73,13 +74,16 @@ export default function fieldChange({
 	viewMode,
 }) {
 	return async (dispatch) => {
-		const {fieldInstance, key, value} = properties;
-		const {evaluable, fieldName} = fieldInstance;
+		const {
+			fieldInstance: {evaluable, fieldName, isDisposed, name},
+			key,
+			value,
+		} = properties;
 
 		const editedPages = getEditedPages({
 			editingLanguageId,
 			key,
-			name: fieldInstance.name,
+			name,
 			pages,
 			value,
 		});
@@ -124,7 +128,7 @@ export default function fieldChange({
 
 					REVALIDATE_UPDATES = [];
 				}
-				if (fieldInstance.isDisposed()) {
+				if (isDisposed()) {
 					return;
 				}
 
@@ -157,11 +161,11 @@ export default function fieldChange({
 		else {
 			dispatch({payload: properties, type: EVENT_TYPES.FIELD.CHANGE});
 
-			REVALIDATE_UPDATES.push({
-				editingLanguageId,
-				name: fieldInstance.name,
-				value,
-			});
+			REVALIDATE_UPDATES.push({editingLanguageId, name, value});
 		}
 	};
+}
+
+export function useFieldChange() {
+	return useEvaluate(fieldChange);
 }
