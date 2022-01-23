@@ -14,7 +14,6 @@
 
 import {ClayModalProvider} from '@clayui/modal';
 import {act, cleanup, fireEvent, render} from '@testing-library/react';
-import * as DDMForm from 'dynamic-data-mapping-form-builder';
 import React from 'react';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
@@ -49,7 +48,6 @@ const defaultState = {
 let dataLayoutBuilder;
 let spySuccessToast;
 let spyErrorToast;
-let ddmFormSpy;
 
 export function FieldSetWrapper({children}) {
 	return (
@@ -67,32 +65,6 @@ describe('FieldSets', () => {
 			name: 'Field53354166',
 			pages: FORM_VIEW.pages,
 		});
-
-		ddmFormSpy = jest
-			.spyOn(DDMForm, 'default')
-			.mockImplementation((props) => {
-				const state = {
-					...dataLayoutBuilder,
-					dispose: jest.fn(),
-					emit: jest.fn(),
-					formBuilderWithLayoutProvider: {
-						refs: {
-							layoutProvider: {
-								getRules: jest
-									.fn()
-									.mockImplementation(() => []),
-								on: jest.fn().mockImplementation(() => ({
-									removeListener: jest.fn(),
-								})),
-							},
-						},
-					},
-				};
-
-				props.layoutProviderProps.onLoad(state);
-
-				return state;
-			});
 
 		jest.useFakeTimers();
 
@@ -380,7 +352,6 @@ describe('FieldSets', () => {
 			jest.runAllTimers();
 		});
 
-		expect(ddmFormSpy.mock.calls.length).toBe(1);
 		expect(document.querySelector('.fieldset-modal')).toBeTruthy();
 		expect(document.querySelector('.modal-title').textContent).toBe(
 			'edit-fieldset'

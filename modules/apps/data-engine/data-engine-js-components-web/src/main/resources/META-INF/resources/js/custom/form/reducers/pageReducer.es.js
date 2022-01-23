@@ -12,7 +12,7 @@
  * details.
  */
 
-import * as FormSupport from '../../../utils/FormSupport.es';
+import {implAddRow} from '../../../utils/FormSupport.es';
 import {getUid} from '../../../utils/formId.es';
 import {EVENT_TYPES} from '../eventTypes.es';
 
@@ -77,7 +77,7 @@ export default function pageReducer(state, action) {
 						enabled: true,
 						headerRenderer: 'editable',
 						id: getUid(),
-						rows: [FormSupport.implAddRow(12, [])],
+						rows: [implAddRow(12, [])],
 						showRequiredFieldsWarning: true,
 						title: '',
 						...getLocalizedValue(editingLanguageId, 'title', ''),
@@ -108,7 +108,7 @@ export default function pageReducer(state, action) {
 				...pages[pageIndex],
 				description: '',
 				enabled: true,
-				rows: [FormSupport.implAddRow(12, [])],
+				rows: [implAddRow(12, [])],
 				showRequiredFieldsWarning: true,
 				title: '',
 				...getLocalizedValue(editingLanguageId, 'title', ''),

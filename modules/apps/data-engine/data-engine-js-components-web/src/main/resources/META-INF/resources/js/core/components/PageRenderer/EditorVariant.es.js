@@ -32,7 +32,10 @@ import {ParentFieldContext} from '../Field/ParentFieldContext.es';
 import FieldDragPreview from '../FieldDragPreview.es';
 import {Placeholder} from '../Placeholder.es';
 import ResizableColumn from '../ResizableColumn.es';
-import * as DefaultVariant from './DefaultVariant.es';
+import {
+	Column as DefaultColumn,
+	Page as DefaultPage,
+} from './DefaultVariant.es';
 
 export function Column({
 	allowNestedFields,
@@ -119,7 +122,7 @@ export function Column({
 			columnRef={columnRef}
 			field={fieldRootOrCurrent}
 		>
-			<DefaultVariant.Column
+			<DefaultColumn
 				className={classNames({
 					'active-drop-child':
 						isFieldSetOrGroup &&
@@ -190,7 +193,7 @@ export function Column({
 						)}
 					</div>
 				</ResizableColumn>
-			</DefaultVariant.Column>
+			</DefaultColumn>
 		</ActionsControls>
 	);
 }
@@ -215,7 +218,7 @@ export function Page({
 	});
 
 	return (
-		<DefaultVariant.Page
+		<DefaultPage
 			activePage={activePage}
 			forceAriaUpdate={forceAriaUpdate}
 			header={header}
@@ -248,7 +251,7 @@ export function Page({
 			) : (
 				children
 			)}
-		</DefaultVariant.Page>
+		</DefaultPage>
 	);
 }
 

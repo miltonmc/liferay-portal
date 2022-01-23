@@ -15,7 +15,7 @@
 import ClayButton from '@clayui/button';
 import React from 'react';
 
-import * as DefaultVariant from '../../../core/components/PageRenderer/DefaultVariant.es';
+import {Container as DefaultContainer} from '../../../core/components/PageRenderer/DefaultVariant.es';
 import {useConfig} from '../../../core/hooks/useConfig.es';
 import {Pagination} from '../components/Pagination.es';
 import {PaginationControls} from '../components/PaginationControls.es';
@@ -32,12 +32,9 @@ export function Container({
 
 	return (
 		<div className="ddm-form-page-container paginated">
-			<DefaultVariant.Container
-				activePage={activePage}
-				pageIndex={pageIndex}
-			>
+			<DefaultContainer activePage={activePage} pageIndex={pageIndex}>
 				{children}
-			</DefaultVariant.Container>
+			</DefaultContainer>
 
 			{pageIndex === activePage && (
 				<>

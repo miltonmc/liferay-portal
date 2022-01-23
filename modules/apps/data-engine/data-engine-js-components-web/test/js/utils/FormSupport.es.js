@@ -12,7 +12,20 @@
  * details.
  */
 
-import * as FormSupport from '../../../src/main/resources/META-INF/resources/js/utils/FormSupport.es';
+import {
+	addFieldToColumn,
+	addRow,
+	getColumn,
+	getField,
+	getIndexes,
+	getRow,
+	implAddRow,
+	removeColumn,
+	removeFields,
+	removeRow,
+	rowHasFields,
+	setColumnFields,
+} from '../../../src/main/resources/META-INF/resources/js/utils/FormSupport.es';
 import createElement from '../__mock__/createElement.es';
 import mockPages from '../__mock__/mockPages.es';
 
@@ -29,15 +42,11 @@ describe('FormSupport', () => {
 
 	it('add a new row to the pages and reorder', () => {
 		const indexToAddRow = 0;
-		const newRow = FormSupport.implAddRow(12, [
-			{
-				type: 'newRow',
-			},
-		]);
+		const newRow = implAddRow(12, [{type: 'newRow'}]);
 		const pageIndex = 0;
 
 		expect(
-			FormSupport.addRow(pages, indexToAddRow, pageIndex, newRow)
+			addRow(pages, indexToAddRow, pageIndex, newRow)
 		).toMatchSnapshot();
 	});
 
@@ -50,15 +59,10 @@ describe('FormSupport', () => {
 		];
 		const size = 12;
 
-		expect(FormSupport.implAddRow(size, row)).toEqual({
+		expect(implAddRow(size, row)).toEqual({
 			columns: [
 				{
-					fields: [
-						{
-							spritemap: 'icons.svg',
-							type: 'text',
-						},
-					],
+					fields: [{spritemap: 'icons.svg', type: 'text'}],
 					size: 12,
 				},
 			],
@@ -71,7 +75,7 @@ describe('FormSupport', () => {
 		const indexRow = 0;
 
 		expect(
-			FormSupport.getField(pages, indexPage, indexRow, indexColumn)
+			getField(pages, indexPage, indexRow, indexColumn)
 		).toMatchSnapshot();
 	});
 
@@ -85,13 +89,7 @@ describe('FormSupport', () => {
 		const rowIndex = 0;
 
 		expect(
-			FormSupport.addFieldToColumn(
-				pages,
-				pageIndex,
-				rowIndex,
-				columnIndex,
-				field
-			)
+			addFieldToColumn(pages, pageIndex, rowIndex, columnIndex, field)
 		).toMatchSnapshot();
 	});
 
@@ -107,13 +105,7 @@ describe('FormSupport', () => {
 		const rowIndex = 1;
 
 		expect(
-			FormSupport.setColumnFields(
-				pages,
-				pageIndex,
-				rowIndex,
-				columnIndex,
-				fields
-			)
+			setColumnFields(pages, pageIndex, rowIndex, columnIndex, fields)
 		).toMatchSnapshot();
 	});
 
@@ -123,7 +115,7 @@ describe('FormSupport', () => {
 		const rowIndex = 1;
 
 		expect(
-			FormSupport.removeColumn(pages, pageIndex, rowIndex, columnIndex)
+			removeColumn(pages, pageIndex, rowIndex, columnIndex)
 		).toMatchSnapshot();
 	});
 
@@ -133,7 +125,7 @@ describe('FormSupport', () => {
 		const rowIndex = 1;
 
 		expect(
-			FormSupport.removeFields(pages, pageIndex, rowIndex, columnIndex)
+			removeFields(pages, pageIndex, rowIndex, columnIndex)
 		).toMatchSnapshot();
 	});
 
@@ -141,9 +133,7 @@ describe('FormSupport', () => {
 		const pageIndex = 0;
 		const rowIndex = 1;
 
-		expect(
-			FormSupport.removeRow(pages, pageIndex, rowIndex)
-		).toMatchSnapshot();
+		expect(removeRow(pages, pageIndex, rowIndex)).toMatchSnapshot();
 	});
 
 	it('gets a column from pages', () => {
@@ -152,7 +142,7 @@ describe('FormSupport', () => {
 		const rowIndex = 1;
 
 		expect(
-			FormSupport.getColumn(pages, pageIndex, rowIndex, columnIndex)
+			getColumn(pages, pageIndex, rowIndex, columnIndex)
 		).toMatchSnapshot();
 	});
 
@@ -160,18 +150,14 @@ describe('FormSupport', () => {
 		const pageIndex = 0;
 		const rowIndex = 1;
 
-		expect(
-			FormSupport.getRow(pages, pageIndex, rowIndex)
-		).toMatchSnapshot();
+		expect(getRow(pages, pageIndex, rowIndex)).toMatchSnapshot();
 	});
 
 	it('returns true if there are fields in a row', () => {
 		const pageIndex = 0;
 		const rowIndex = 0;
 
-		expect(
-			FormSupport.rowHasFields(pages, pageIndex, rowIndex)
-		).toBeTruthy();
+		expect(rowHasFields(pages, pageIndex, rowIndex)).toBeTruthy();
 	});
 
 	it('returns false if there are fields in a row', () => {
@@ -179,8 +165,8 @@ describe('FormSupport', () => {
 		const rowIndex = 0;
 
 		expect(
-			FormSupport.rowHasFields(
-				FormSupport.removeFields(pages, pageIndex, rowIndex, 0),
+			rowHasFields(
+				removeFields(pages, pageIndex, rowIndex, 0),
 				pageIndex,
 				rowIndex
 			)
@@ -206,7 +192,7 @@ describe('FormSupport', () => {
 			tagname: 'div',
 		});
 
-		expect(FormSupport.getIndexes(element)).toEqual({
+		expect(getIndexes(element)).toEqual({
 			columnIndex: 0,
 			pageIndex: 2,
 			rowIndex: 2,
@@ -232,7 +218,7 @@ describe('FormSupport', () => {
 			tagname: 'div',
 		});
 
-		expect(FormSupport.getIndexes(element)).toEqual({
+		expect(getIndexes(element)).toEqual({
 			columnIndex: 0,
 			pageIndex: 2,
 			rowIndex: 1,

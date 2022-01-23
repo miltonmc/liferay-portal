@@ -12,7 +12,13 @@
  * details.
  */
 
-import * as FormSupport from '../../utils/FormSupport.es';
+import {
+	addColumn,
+	getColumn as getColumnUtil,
+	getColumnPosition as getColumnPositionUtil,
+	removeColumn,
+	updateColumn,
+} from '../../utils/FormSupport.es';
 import {updateField} from './fields';
 
 export function getColumn(pages, nestedIndexes = []) {
@@ -28,7 +34,7 @@ export function getColumn(pages, nestedIndexes = []) {
 			index = 0;
 		}
 
-		column = FormSupport.getColumn(
+		column = getColumnUtil(
 			context,
 			column ? 0 : index,
 			rowIndex,
@@ -76,12 +82,7 @@ const getContext = (context, nestedIndexes = []) => {
 const getColumnPosition = (context, indexes) => {
 	const {columnIndex, pageIndex, rowIndex} = indexes;
 
-	return FormSupport.getColumnPosition(
-		context,
-		pageIndex,
-		rowIndex,
-		columnIndex
-	);
+	return getColumnPositionUtil(context, pageIndex, rowIndex, columnIndex);
 };
 
 export function handleResizeRight(props, state, indexes, columnTarget) {
@@ -125,7 +126,7 @@ export function handleResizeRight(props, state, indexes, columnTarget) {
 			size: currentColumn.size - newSize,
 		};
 
-		newContext = FormSupport.addColumn(
+		newContext = addColumn(
 			newContext,
 			columnIndex + 1,
 			indexes.length > 1 ? 0 : pageIndex,
@@ -160,7 +161,7 @@ export function handleResizeRight(props, state, indexes, columnTarget) {
 					size: currentColumn.size + newSize,
 				};
 
-				newContext = FormSupport.removeColumn(
+				newContext = removeColumn(
 					newContext,
 					indexes.length > 1 ? 0 : pageIndex,
 					rowIndex,
@@ -182,7 +183,7 @@ export function handleResizeRight(props, state, indexes, columnTarget) {
 	}
 
 	if (newCurrentColumn) {
-		newContext = FormSupport.updateColumn(
+		newContext = updateColumn(
 			newContext,
 			indexes.length > 1 ? 0 : pageIndex,
 			rowIndex,
@@ -192,7 +193,7 @@ export function handleResizeRight(props, state, indexes, columnTarget) {
 	}
 
 	if (newNextColumn) {
-		newContext = FormSupport.updateColumn(
+		newContext = updateColumn(
 			newContext,
 			indexes.length > 1 ? 0 : pageIndex,
 			rowIndex,
@@ -243,7 +244,7 @@ export function handleResizeLeft(props, state, indexes, columnTarget) {
 	let newContext = currentContext;
 
 	if (columnIndex === 0 && columnTarget > 0) {
-		newContext = FormSupport.addColumn(
+		newContext = addColumn(
 			newContext,
 			columnIndex,
 			indexes.length > 1 ? 0 : pageIndex,
@@ -254,7 +255,7 @@ export function handleResizeLeft(props, state, indexes, columnTarget) {
 			}
 		);
 
-		newContext = FormSupport.updateColumn(
+		newContext = updateColumn(
 			newContext,
 			indexes.length > 1 ? 0 : pageIndex,
 			rowIndex,
@@ -271,14 +272,14 @@ export function handleResizeLeft(props, state, indexes, columnTarget) {
 		previousColumn.fields.length === 0 &&
 		columnTarget <= previousColumnPosition
 	) {
-		newContext = FormSupport.removeColumn(
+		newContext = removeColumn(
 			newContext,
 			indexes.length > 1 ? 0 : pageIndex,
 			rowIndex,
 			columnIndex - 1
 		);
 
-		newContext = FormSupport.updateColumn(
+		newContext = updateColumn(
 			newContext,
 			indexes.length > 1 ? 0 : pageIndex,
 			rowIndex,
@@ -307,7 +308,7 @@ export function handleResizeLeft(props, state, indexes, columnTarget) {
 			previousColumn.size += newSize;
 		}
 
-		newContext = FormSupport.updateColumn(
+		newContext = updateColumn(
 			newContext,
 			indexes.length > 1 ? 0 : pageIndex,
 			rowIndex,
@@ -315,7 +316,7 @@ export function handleResizeLeft(props, state, indexes, columnTarget) {
 			currentColumn
 		);
 
-		newContext = FormSupport.updateColumn(
+		newContext = updateColumn(
 			newContext,
 			indexes.length > 1 ? 0 : pageIndex,
 			rowIndex,

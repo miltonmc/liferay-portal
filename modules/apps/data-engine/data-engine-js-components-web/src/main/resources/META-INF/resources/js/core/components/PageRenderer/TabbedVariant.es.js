@@ -16,7 +16,7 @@ import ClayLayout from '@clayui/layout';
 import React from 'react';
 
 import {Tabs} from '../Tabs.es';
-import * as DefaultVariant from './DefaultVariant.es';
+import {Container as DefaultContainer} from './DefaultVariant.es';
 
 export function Column({children, column, index}) {
 	if (column.fields.length === 0) {
@@ -43,13 +43,13 @@ export function Container({activePage, children, pageIndex, pages}) {
 				/>
 			)}
 
-			<DefaultVariant.Container
+			<DefaultContainer
 				activePage={activePage}
 				isBuilder={false}
 				pageIndex={pageIndex}
 			>
 				{children}
-			</DefaultVariant.Container>
+			</DefaultContainer>
 		</div>
 	);
 }

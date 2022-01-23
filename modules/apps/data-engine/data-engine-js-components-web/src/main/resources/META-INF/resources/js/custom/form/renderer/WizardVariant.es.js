@@ -16,7 +16,7 @@ import ClayButton from '@clayui/button';
 import classnames from 'classnames';
 import React, {useState} from 'react';
 
-import * as DefaultVariant from '../../../core/components/PageRenderer/DefaultVariant.es';
+import {Column as DefaultColumn} from '../../../core/components/PageRenderer/DefaultVariant.es';
 import {useConfig} from '../../../core/hooks/useConfig.es';
 import {MultiStep} from '../components/MultiStep.es';
 import {PaginationControls} from '../components/PaginationControls.es';
@@ -26,7 +26,7 @@ export function Column({children, column, columnRef, editable, ...otherProps}) {
 	const firstField = column.fields[0];
 
 	return (
-		<DefaultVariant.Column
+		<DefaultColumn
 			{...otherProps}
 			column={column}
 			columnClassName={classnames({
@@ -35,7 +35,7 @@ export function Column({children, column, columnRef, editable, ...otherProps}) {
 			ref={columnRef}
 		>
 			{children}
-		</DefaultVariant.Column>
+		</DefaultColumn>
 	);
 }
 

@@ -37,7 +37,7 @@ import {
 import formValidate from '../../core/thunks/formValidate.es';
 import pageLanguageUpdate from '../../core/thunks/pageLanguageUpdate.es';
 import {evaluate} from '../../utils/evaluation.es';
-import * as Fields from '../../utils/fields.es';
+import {getFields} from '../../utils/fields.es';
 import {getFormId, getFormNode} from '../../utils/formId.es';
 import {parseProps} from '../../utils/parseProps.es';
 import {paginationReducer} from './reducers/index.es';
@@ -323,7 +323,7 @@ const usePublicAPI = ({apiRef, containerRef, unstable_onEventRef}) => {
 
 			return props[key];
 		},
-		getFields: () => Fields.getFields(pages),
+		getFields: () => getFields(pages),
 		getFormNode: () =>
 			containerRef.current && getFormNode(containerRef.current),
 		toJSON: () => ({

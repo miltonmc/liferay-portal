@@ -12,7 +12,7 @@
  * details.
  */
 
-import * as FormSupport from '../../utils/FormSupport.es';
+import {removeEmptyRows as removeEmptyRowsUtil} from '../../utils/FormSupport.es';
 import {
 	addFieldToPage,
 	createField,
@@ -59,10 +59,7 @@ export function deleteField({
 			return {
 				...page,
 				rows: clean
-					? FormSupport.removeEmptyRows(
-							pagesWithFieldRemoved,
-							pageIndex
-					  )
+					? removeEmptyRowsUtil(pagesWithFieldRemoved, pageIndex)
 					: pagesWithFieldRemoved[pageIndex].rows,
 			};
 		}
