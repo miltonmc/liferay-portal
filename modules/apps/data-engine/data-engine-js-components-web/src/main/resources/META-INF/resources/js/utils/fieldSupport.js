@@ -18,7 +18,7 @@ import {
 	removeEmptyRows as removeEmptyRowsUtil,
 } from './FormSupport.es';
 import {FIELD_TYPE_FIELDSET} from './constants';
-import {normalizeFieldName} from './fields.es';
+import {generateInstanceId, normalizeFieldName} from './fields.es';
 import {generateName, getRepeatedIndex, parseName} from './repeatable.es';
 import {PagesVisitor} from './visitors.es';
 
@@ -99,12 +99,6 @@ export function addFieldToPage({
 		true,
 		true
 	);
-}
-
-export function generateInstanceId(isNumbersOnly) {
-	return Math.random()
-		.toString(isNumbersOnly ? 10 : 36)
-		.substr(2, 8);
 }
 
 export function getDefaultFieldName(isOptionField = false, fieldType = '') {

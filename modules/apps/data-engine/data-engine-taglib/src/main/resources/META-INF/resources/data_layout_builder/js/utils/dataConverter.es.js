@@ -12,7 +12,7 @@
  * details.
  */
 
-import {FieldSupport, PagesVisitor} from 'data-engine-js-components-web';
+import {PagesVisitor, generateInstanceId} from 'data-engine-js-components-web';
 
 import {getDataDefinitionField as getDataDefinitionFieldUtils} from './dataDefinition.es';
 import {normalizeDataDefinition, normalizeDataLayout} from './normalizers.es';
@@ -83,7 +83,7 @@ export function getDDMFormField({
 		}
 	});
 	if (!ddmFormField.instanceId) {
-		ddmFormField.instanceId = FieldSupport.generateInstanceId();
+		ddmFormField.instanceId = generateInstanceId();
 	}
 
 	return ddmFormField;

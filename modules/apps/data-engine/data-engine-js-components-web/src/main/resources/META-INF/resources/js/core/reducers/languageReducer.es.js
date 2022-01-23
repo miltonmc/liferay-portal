@@ -13,11 +13,11 @@
  */
 
 import {
-	generateInstanceId,
 	getFieldProperties,
 	localizeField,
 	updateInputMaskProperties,
 } from '../../utils/fieldSupport';
+import {generateInstanceId} from '../../utils/fields.es';
 import {generateName, getRepeatedIndex} from '../../utils/repeatable.es';
 import {PagesVisitor} from '../../utils/visitors.es';
 import {EVENT_TYPES} from '../actions/eventTypes.es';

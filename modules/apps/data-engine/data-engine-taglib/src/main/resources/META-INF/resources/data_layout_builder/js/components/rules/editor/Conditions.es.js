@@ -17,6 +17,7 @@ import {Context as ModalContext} from '@clayui/modal';
 import {
 	FieldStateless,
 	FieldSupport,
+	generateInstanceId,
 	generateName,
 } from 'data-engine-js-components-web';
 import React, {useContext, useMemo} from 'react';
@@ -174,7 +175,7 @@ function evaluateFieldLeft(fieldLeft, value) {
 		}
 		case 'rich_text': {
 			if (editorConfig) {
-				const instanceId = FieldSupport.generateInstanceId();
+				const instanceId = generateInstanceId();
 
 				props.editorConfig = FieldSupport.updateEditorConfigInstanceId(
 					editorConfig,

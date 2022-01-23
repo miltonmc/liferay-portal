@@ -15,7 +15,8 @@
 import {updateField} from '../core/utils/fields';
 import {addFieldToColumn, removeFields} from './FormSupport.es';
 import {FIELD_TYPE_FIELDSET} from './constants';
-import {createField, generateInstanceId} from './fieldSupport';
+import {createField} from './fieldSupport';
+import {generateInstanceId} from './fields.es';
 import {PagesVisitor} from './visitors.es';
 
 const addNestedFields = ({field, indexes, nestedFields, props}) => {

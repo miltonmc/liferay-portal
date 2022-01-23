@@ -12,10 +12,32 @@
  * details.
  */
 
+import {FIELD_TYPE_FIELDSET} from './constants';
 import {PagesVisitor} from './visitors.es';
 
 export function checkValidFieldNameCharacter(character) {
 	return /[A-Za-z0-9_]/g.test(character);
+}
+
+export function generateInstanceId(isNumbersOnly) {
+	return Math.random()
+		.toString(isNumbersOnly ? 10 : 36)
+		.substr(2, 8);
+}
+
+export function getFields(pages) {
+	const fields = [];
+	const visitor = new PagesVisitor(pages);
+
+	visitor.visitFields((field) => {
+		fields.push(field);
+	});
+
+	return fields;
+}
+
+export function hasFieldSet(field) {
+	return field?.type === FIELD_TYPE_FIELDSET && field.ddmStructureId;
 }
 
 export function normalizeFieldName(fieldName) {
@@ -50,19 +72,4 @@ export function normalizeFieldName(fieldName) {
 	}
 
 	return normalizedFieldName;
-}
-
-export function getFields(pages) {
-	const fields = [];
-	const visitor = new PagesVisitor(pages);
-
-	visitor.visitFields((field) => {
-		fields.push(field);
-	});
-
-	return fields;
-}
-
-export function hasFieldSet(field) {
-	return field?.type === 'fieldset' && field.ddmStructureId;
 }

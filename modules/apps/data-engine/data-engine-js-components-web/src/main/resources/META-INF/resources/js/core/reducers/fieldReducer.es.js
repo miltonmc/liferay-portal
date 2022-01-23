@@ -12,7 +12,7 @@
  * details.
  */
 
-import {generateInstanceId} from '../../utils/fieldSupport';
+import {generateInstanceId} from '../../utils/fields.es';
 import {
 	generateName,
 	generateNestedFieldName,
