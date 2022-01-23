@@ -15,7 +15,6 @@
 import {
 	generateFieldName,
 	getFieldProperty,
-	getFieldValue,
 	updateField,
 } from '../../../../src/main/resources/META-INF/resources/js/core/utils/fields';
 import mockPages from '../../__mock__/mockPages.es';
@@ -162,7 +161,9 @@ describe('core/utils/fields', () => {
 					settingsContext: {pages},
 				} = updateField(state, field, 'dataType', 'newDataType');
 
-				expect(getFieldValue(pages, 'dataType')).toEqual('newDataType');
+				expect(getFieldProperty(pages, 'dataType', 'value')).toEqual(
+					'newDataType'
+				);
 			});
 
 			it('updates the validation expression of the validation field of the settingsContext with the new dataType', () => {
@@ -197,7 +198,11 @@ describe('core/utils/fields', () => {
 				);
 
 				expect(
-					getFieldValue(updatedField.settingsContext.pages, 'label')
+					getFieldProperty(
+						updatedField.settingsContext.pages,
+						'label',
+						'value'
+					)
 				).toEqual('New Label');
 			});
 
@@ -215,7 +220,11 @@ describe('core/utils/fields', () => {
 
 				expect(updatedField.fieldName).toEqual('NewLabel');
 				expect(
-					getFieldValue(updatedField.settingsContext.pages, 'name')
+					getFieldProperty(
+						updatedField.settingsContext.pages,
+						'name',
+						'value'
+					)
 				).toEqual('NewLabel');
 			});
 
@@ -229,7 +238,11 @@ describe('core/utils/fields', () => {
 
 				expect(updatedField.fieldName).toEqual('oldFieldName');
 				expect(
-					getFieldValue(updatedField.settingsContext.pages, 'name')
+					getFieldProperty(
+						updatedField.settingsContext.pages,
+						'name',
+						'value'
+					)
 				).toEqual('oldFieldName');
 			});
 		});
@@ -251,7 +264,9 @@ describe('core/utils/fields', () => {
 					settingsContext: {pages},
 				} = updateField(state, field, 'name', 'newName');
 
-				expect(getFieldValue(pages, 'name')).toEqual('newName');
+				expect(getFieldProperty(pages, 'name', 'value')).toEqual(
+					'newName'
+				);
 			});
 
 			it('updates the validation expression of the validation field of the settingsContext with the new field name', () => {
@@ -260,7 +275,8 @@ describe('core/utils/fields', () => {
 				} = updateField(state, field, 'name', 'newName');
 
 				expect(
-					getFieldValue(pages, 'validation').expression.value
+					getFieldProperty(pages, 'validation', 'value').expression
+						.value
 				).toEqual('isEmailAddress(newName)');
 				expect(
 					getFieldProperty(pages, 'validation', 'validation')
@@ -273,7 +289,9 @@ describe('core/utils/fields', () => {
 					settingsContext: {pages},
 				} = updateField(state, field, 'name', 'oldName');
 
-				expect(getFieldValue(pages, 'name')).toEqual('oldName');
+				expect(getFieldProperty(pages, 'name', 'value')).toEqual(
+					'oldName'
+				);
 			});
 		});
 

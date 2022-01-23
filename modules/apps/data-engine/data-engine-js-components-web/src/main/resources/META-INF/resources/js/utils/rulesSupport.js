@@ -82,10 +82,6 @@ export function getFieldOptions(fieldName, pages) {
 	return options;
 }
 
-export function getFieldType(fieldName, pages) {
-	return getFieldProperty(pages, fieldName, 'type');
-}
-
 const optionBelongsToRule = (condition, options) => {
 	return options.some(
 		(option) => option.value === condition.operands[1]?.value
@@ -195,9 +191,10 @@ export function formatRules(pages, rules) {
 				true
 			);
 
-			const firstOperandFieldType = getFieldType(
+			const firstOperandFieldType = getFieldProperty(
 				condition.operands[0].value,
-				pages
+				pages,
+				'type'
 			);
 
 			if (

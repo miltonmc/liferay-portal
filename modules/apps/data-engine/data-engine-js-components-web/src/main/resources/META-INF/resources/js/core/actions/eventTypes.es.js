@@ -28,7 +28,6 @@ const FIELD = {
 	CHANGE: 'field_change',
 	CLICK: 'field_click',
 	DELETE: 'field_delete',
-	DUPLICATE: 'field_duplicate',
 	EVALUATE: 'field_evaluate',
 	FOCUS: 'field_focus',
 	HOVER: 'field_hover',

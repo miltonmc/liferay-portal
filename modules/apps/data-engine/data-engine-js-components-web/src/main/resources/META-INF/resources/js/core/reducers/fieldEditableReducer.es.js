@@ -24,7 +24,6 @@ import {formatRules} from '../../utils/rulesSupport';
 import {PagesVisitor} from '../../utils/visitors.es';
 import {EVENT_TYPES} from '../actions/eventTypes.es';
 import {
-	createDuplicatedField,
 	findInvalidFieldReference,
 	updateField,
 	updateFieldReference,
@@ -346,125 +345,6 @@ export default function fieldEditableReducer(state, action, config) {
 				focusedField: {},
 				pages: newPages,
 				rules: editRule ? formatRules(newPages, rules) : rules,
-			};
-		}
-		case EVENT_TYPES.FIELD.DUPLICATE: {
-			const {fieldName, parentFieldName} = action.payload;
-			const {
-				availableLanguageIds,
-				defaultLanguageId,
-				editingLanguageId,
-				pages,
-			} = state;
-			const {
-				generateFieldNameUsingFieldLabel,
-				getFieldNameGenerator,
-			} = config;
-
-			const fieldNameGenerator = getFieldNameGenerator(
-				pages,
-				generateFieldNameUsingFieldLabel
-			);
-
-			const originalField = JSON.parse(
-				JSON.stringify(
-					FormSupport.findFieldByFieldName(pages, fieldName)
-				)
-			);
-
-			const newField = createDuplicatedField(originalField, {
-				availableLanguageIds,
-				defaultLanguageId,
-				editingLanguageId,
-				fieldNameGenerator,
-				generateFieldNameUsingFieldLabel,
-			});
-
-			let newPages = null;
-
-			if (parentFieldName) {
-				const visitor = new PagesVisitor(pages);
-
-				newPages = visitor.mapFields(
-					(field) => {
-						if (field.fieldName === parentFieldName) {
-							const nestedFields = field.nestedFields
-								? [...field.nestedFields, newField]
-								: [newField];
-
-							field = updateField(
-								{
-									availableLanguageIds,
-									defaultLanguageId,
-									fieldNameGenerator,
-									generateFieldNameUsingFieldLabel,
-								},
-								field,
-								'nestedFields',
-								nestedFields
-							);
-
-							let pages = [{rows: field.rows}];
-
-							const {
-								pageIndex,
-								rowIndex,
-							} = FormSupport.getFieldIndexes(
-								pages,
-								originalField.fieldName
-							);
-
-							const newRow = FormSupport.implAddRow(12, [
-								newField.fieldName,
-							]);
-
-							pages = FormSupport.addRow(
-								pages,
-								rowIndex + 1,
-								pageIndex,
-								newRow
-							);
-
-							return updateField(
-								{
-									availableLanguageIds,
-									defaultLanguageId,
-									fieldNameGenerator,
-									generateFieldNameUsingFieldLabel,
-								},
-								field,
-								'rows',
-								pages[0].rows
-							);
-						}
-
-						return field;
-					},
-					true,
-					true
-				);
-			}
-			else {
-				const {pageIndex, rowIndex} = FormSupport.getFieldIndexes(
-					pages,
-					originalField.fieldName
-				);
-
-				const newRow = FormSupport.implAddRow(12, [newField]);
-
-				newPages = FormSupport.addRow(
-					pages,
-					rowIndex + 1,
-					pageIndex,
-					newRow
-				);
-			}
-
-			return {
-				focusedField: {
-					...newField,
-				},
-				pages: newPages,
 			};
 		}
 		case EVENT_TYPES.FIELD.EVALUATE: {
