@@ -13,8 +13,7 @@
  */
 
 import {findFieldByFieldName} from '../../utils/FormSupport.es';
-import {getDefaultFieldName} from '../../utils/fieldSupport';
-import {normalizeFieldName} from '../../utils/fields.es';
+import {getDefaultFieldName, normalizeFieldName} from '../../utils/fields.es';
 import {PagesVisitor} from '../../utils/visitors.es';
 
 export function generateFieldName(

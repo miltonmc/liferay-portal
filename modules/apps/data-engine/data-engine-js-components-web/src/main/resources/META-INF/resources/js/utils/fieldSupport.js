@@ -18,7 +18,7 @@ import {
 	removeEmptyRows as removeEmptyRowsUtil,
 } from './FormSupport.es';
 import {FIELD_TYPE_FIELDSET} from './constants';
-import {generateInstanceId, normalizeFieldName} from './fields.es';
+import {generateInstanceId, getDefaultFieldName} from './fields.es';
 import {generateName, getRepeatedIndex, parseName} from './repeatable.es';
 import {PagesVisitor} from './visitors.es';
 
@@ -99,16 +99,6 @@ export function addFieldToPage({
 		true,
 		true
 	);
-}
-
-export function getDefaultFieldName(isOptionField = false, fieldType = '') {
-	const defaultFieldName = fieldType?.label
-		? normalizeFieldName(fieldType.label)
-		: isOptionField
-		? Liferay.Language.get('option')
-		: Liferay.Language.get('field');
-
-	return defaultFieldName + generateInstanceId(true);
 }
 
 export function removeField(props, pages, fieldName, removeEmptyRows = true) {

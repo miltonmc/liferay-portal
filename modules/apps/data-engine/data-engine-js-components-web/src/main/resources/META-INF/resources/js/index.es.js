@@ -19,6 +19,7 @@ export * as DRAG_TYPES from './utils/dragTypes';
 export {convertToFormData, makeFetch} from './utils/fetch.es';
 export {
 	generateInstanceId,
+	getDefaultFieldName,
 	getFields,
 	normalizeFieldName,
 } from './utils/fields.es';

@@ -12,7 +12,10 @@
  * details.
  */
 
-import {FieldSupport, normalizeFieldName} from 'data-engine-js-components-web';
+import {
+	getDefaultFieldName,
+	normalizeFieldName,
+} from 'data-engine-js-components-web';
 
 export function random(a) {
 	return a
@@ -92,7 +95,7 @@ export function dedupValue(fields, value, id, generateValueUsingLabel) {
 				recursive(fields, value + counter);
 			}
 			else {
-				recursive(fields, FieldSupport.getDefaultFieldName(true));
+				recursive(fields, getDefaultFieldName(true));
 			}
 		}
 		else {
@@ -115,18 +118,14 @@ export function findDuplicateReference(fields, currentIndex, currentReference) {
 }
 
 export function getDefaultOptionValue(generateValueUsingLabel, optionLabel) {
-	const defaultValue = generateValueUsingLabel
-		? optionLabel
-		: FieldSupport.getDefaultFieldName(true);
-
-	return defaultValue;
+	return generateValueUsingLabel ? optionLabel : getDefaultFieldName(true);
 }
 
 export function normalizeReference(fields, currentField, index) {
 	const {reference, value} = currentField;
 
 	if (!reference || findDuplicateReference(fields, index, reference)) {
-		return value ? value : FieldSupport.getDefaultFieldName(true);
+		return value ? value : getDefaultFieldName(true);
 	}
 
 	return reference;

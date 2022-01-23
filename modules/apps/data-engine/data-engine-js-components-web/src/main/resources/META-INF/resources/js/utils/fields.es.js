@@ -25,6 +25,16 @@ export function generateInstanceId(isNumbersOnly) {
 		.substr(2, 8);
 }
 
+export function getDefaultFieldName(isOptionField = false, fieldType = '') {
+	const defaultFieldName = fieldType?.label
+		? normalizeFieldName(fieldType.label)
+		: isOptionField
+		? Liferay.Language.get('option')
+		: Liferay.Language.get('field');
+
+	return defaultFieldName + generateInstanceId(true);
+}
+
 export function getFields(pages) {
 	const fields = [];
 	const visitor = new PagesVisitor(pages);
