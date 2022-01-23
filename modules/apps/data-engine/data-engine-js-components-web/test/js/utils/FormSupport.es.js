@@ -238,15 +238,4 @@ describe('FormSupport', () => {
 			rowIndex: 1,
 		});
 	});
-
-	it('updates a field', () => {
-		const properties = {
-			label: 'Foo',
-			type: 'radio',
-		};
-
-		expect(
-			FormSupport.updateField(pages, 'radioField', properties)
-		).toMatchSnapshot();
-	});
 });

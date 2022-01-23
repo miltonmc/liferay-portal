@@ -14,7 +14,7 @@
 
 import {PagesVisitor} from './visitors.es';
 
-export function implAddColumn(size, fields = []) {
+function implAddColumn(size, fields = []) {
 	return {
 		fields,
 		size,
@@ -360,25 +360,6 @@ export function getNestedIndexes(node) {
 	}
 
 	return indexes;
-}
-
-export function updateField(pages, fieldName, properties) {
-	const visitor = new PagesVisitor(pages);
-
-	return visitor.mapFields(
-		(field) => {
-			if (fieldName === field.fieldName) {
-				return {
-					...field,
-					...properties,
-				};
-			}
-
-			return field;
-		},
-		true,
-		true
-	);
 }
 
 export function updateColumn(
