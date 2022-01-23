@@ -15,9 +15,9 @@
 import {useResource} from '@clayui/data-provider';
 import {ClayModalProvider} from '@clayui/modal';
 import {
+	FieldUtil,
 	PageProvider as FieldProvider,
 	RulesSupport,
-	SettingsContext,
 	useFieldTypesResource,
 } from 'data-engine-js-components-web';
 import {fetch} from 'frontend-js-web';
@@ -35,7 +35,7 @@ const CONFIG_DATA = {
 		component: Actions,
 		expression: Liferay.Language.get('do'),
 		fieldFilter: ({settingsContext}) =>
-			!SettingsContext.getSettingsContextProperty(
+			!FieldUtil.getSettingsContextProperty(
 				settingsContext,
 				'rulesActionDisabled'
 			),
@@ -45,7 +45,7 @@ const CONFIG_DATA = {
 		component: Conditions,
 		expression: Liferay.Language.get('if'),
 		fieldFilter: ({settingsContext}) =>
-			!SettingsContext.getSettingsContextProperty(
+			!FieldUtil.getSettingsContextProperty(
 				settingsContext,
 				'rulesConditionDisabled'
 			),

@@ -15,7 +15,6 @@
 import {
 	FieldUtil,
 	PagesVisitor,
-	SettingsContext,
 } from 'data-engine-js-components-web';
 import {EVENT_TYPES as CORE_EVENT_TYPES} from 'data-engine-taglib';
 
@@ -46,12 +45,12 @@ export default function sidebarReducer(state, action) {
 					pages: visitor.mapFields(
 						(field) => {
 							if (field.fieldName === focusedField.fieldName) {
-								return SettingsContext.updateField(
+								return FieldUtil.updateField(
 									{
 										defaultLanguageId,
 										editingLanguageId,
 									},
-									SettingsContext.updateFieldReference(
+									FieldUtil.updateFieldReference(
 										focusedField,
 										false,
 										true

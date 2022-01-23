@@ -15,8 +15,8 @@
 import {
 	FieldSetUtil,
 	FieldSupport,
+	FieldUtil,
 	PagesVisitor,
-	SettingsContext,
 	sectionAdded,
 } from 'data-engine-js-components-web';
 
@@ -90,7 +90,7 @@ export default function fieldSetReducer(state, action, config) {
 
 			visitor.mapFields((nestedField) => {
 				nestedFields.push(
-					SettingsContext.updateField(
+					FieldUtil.updateField(
 						props,
 						nestedField,
 						'label',
@@ -107,7 +107,7 @@ export default function fieldSetReducer(state, action, config) {
 
 			if (properties) {
 				Object.keys(properties).forEach((key) => {
-					fieldSetField = SettingsContext.updateField(
+					fieldSetField = FieldUtil.updateField(
 						props,
 						fieldSetField,
 						key,
@@ -117,7 +117,7 @@ export default function fieldSetReducer(state, action, config) {
 			}
 
 			if (fieldSetDDMForm.id) {
-				fieldSetField = SettingsContext.updateField(
+				fieldSetField = FieldUtil.updateField(
 					props,
 					fieldSetField,
 					'ddmStructureId',
@@ -126,7 +126,7 @@ export default function fieldSetReducer(state, action, config) {
 			}
 
 			if (rows && rows.length) {
-				fieldSetField = SettingsContext.updateField(
+				fieldSetField = FieldUtil.updateField(
 					props,
 					fieldSetField,
 					'rows',
@@ -147,7 +147,7 @@ export default function fieldSetReducer(state, action, config) {
 							parentFieldName,
 						},
 						indexes,
-						newField: SettingsContext.updateField(
+						newField: FieldUtil.updateField(
 							props,
 							fieldSetField,
 							'label',
@@ -157,7 +157,7 @@ export default function fieldSetReducer(state, action, config) {
 				);
 			}
 
-			const newField = SettingsContext.updateField(
+			const newField = FieldUtil.updateField(
 				props,
 				fieldSetField,
 				'label',
@@ -215,7 +215,7 @@ export default function fieldSetReducer(state, action, config) {
 					editingLanguageId,
 				};
 
-				let updatedFieldSet = SettingsContext.updateField(
+				let updatedFieldSet = FieldUtil.updateField(
 					props,
 					field,
 					'label',
@@ -223,7 +223,7 @@ export default function fieldSetReducer(state, action, config) {
 				);
 
 				if (rows && rows.length) {
-					updatedFieldSet = SettingsContext.updateField(
+					updatedFieldSet = FieldUtil.updateField(
 						props,
 						updatedFieldSet,
 						'rows',

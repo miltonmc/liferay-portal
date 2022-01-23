@@ -13,7 +13,7 @@
  */
 
 import * as FormSupport from '../../utils/FormSupport.es';
-import {updateField} from '../../utils/settingsContext';
+import {updateField} from './fields';
 
 export function getColumn(pages, nestedIndexes = []) {
 	let column;

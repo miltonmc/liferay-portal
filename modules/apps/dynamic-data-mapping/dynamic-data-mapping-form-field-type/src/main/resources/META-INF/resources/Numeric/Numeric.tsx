@@ -17,7 +17,7 @@ import classNames from 'classnames';
 
 // @ts-ignore
 
-import {SettingsContext, useFormState} from 'data-engine-js-components-web';
+import {FieldUtil, useFormState} from 'data-engine-js-components-web';
 import React, {ChangeEventHandler, FocusEventHandler, useMemo} from 'react';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
@@ -183,7 +183,7 @@ const Numeric: React.FC<IProps> = ({
 	const {editingLanguageId}: {editingLanguageId: Locale} = useFormState();
 
 	const localizedSymbols = settingsContext
-		? SettingsContext.getSettingsContextProperty(
+		? FieldUtil.getSettingsContextProperty(
 				settingsContext,
 				'predefinedValue',
 				'localizedSymbols'

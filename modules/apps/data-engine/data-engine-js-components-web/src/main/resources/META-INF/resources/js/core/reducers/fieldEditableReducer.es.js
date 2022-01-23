@@ -21,12 +21,13 @@ import {
 	removeField,
 } from '../../utils/fieldSupport';
 import {formatRules} from '../../utils/rulesSupport';
-import {updateField, updateFieldReference} from '../../utils/settingsContext';
 import {PagesVisitor} from '../../utils/visitors.es';
 import {EVENT_TYPES} from '../actions/eventTypes.es';
 import {
 	createDuplicatedField,
 	findInvalidFieldReference,
+	updateField,
+	updateFieldReference,
 } from '../utils/fields';
 import {updateRulesReferences} from '../utils/rules';
 import sectionAdded from '../utils/sectionAddedHandler';

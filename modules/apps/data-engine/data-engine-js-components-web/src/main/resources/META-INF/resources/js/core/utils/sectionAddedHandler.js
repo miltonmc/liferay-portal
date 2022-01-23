@@ -19,9 +19,9 @@ import {
 import {FIELD_TYPE_FIELDSET} from '../../utils/constants';
 import {createFieldSet} from '../../utils/fieldSets';
 import {addFieldToPage, createField} from '../../utils/fieldSupport';
-import {updateField} from '../../utils/settingsContext';
 import {PagesVisitor} from '../../utils/visitors.es';
 import handleFieldDeleted from './fieldDeletedHandler';
+import {updateField} from './fields';
 
 const addNestedField = ({field, indexes, nestedField, props}) => {
 	const layout = addFieldToColumn(

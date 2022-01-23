@@ -12,6 +12,7 @@
  * details.
  */
 
+import {updateField} from '../core/utils/fields';
 import {
 	addFieldToColumn,
 	removeEmptyRows as removeEmptyRowsUtil,
@@ -19,7 +20,6 @@ import {
 import {FIELD_TYPE_FIELDSET} from './constants';
 import {normalizeFieldName} from './fields.es';
 import {generateName, getRepeatedIndex, parseName} from './repeatable.es';
-import {updateField} from './settingsContext';
 import {PagesVisitor} from './visitors.es';
 
 export function addFieldToPage({

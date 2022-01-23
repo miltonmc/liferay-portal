@@ -18,7 +18,6 @@ import {
 } from '../../utils/FormSupport.es';
 import {FIELD_TYPE_FIELDSET} from '../../utils/constants';
 import {addFieldToPage, getParentField} from '../../utils/fieldSupport';
-import {updateField} from '../../utils/settingsContext';
 import {PagesVisitor} from '../../utils/visitors.es';
 import {EVENT_TYPES} from '../actions/eventTypes.es';
 import {
@@ -26,6 +25,7 @@ import {
 	handleResizeLeft,
 	handleResizeRight,
 } from '../utils/columnResizedHandler';
+import {updateField} from '../utils/fields';
 import sectionAdded from '../utils/sectionAddedHandler';
 import {deleteField} from './fieldEditableReducer.es';
 
