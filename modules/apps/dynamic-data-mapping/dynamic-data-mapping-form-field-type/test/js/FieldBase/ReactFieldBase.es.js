@@ -14,106 +14,50 @@
 
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render, screen} from '@testing-library/react';
-import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
 import {FieldBase} from '../../../src/main/resources/META-INF/resources/FieldBase/ReactFieldBase.es';
 
-const spritemap = 'icons.svg';
-
-const FieldBaseWithProvider = (props) => (
-	<PageProvider value={{editingLanguageId: 'en_US'}}>
-		<FieldBase {...props} />
-	</PageProvider>
-);
-
 describe('ReactFieldBase', () => {
-	// eslint-disable-next-line no-console
-	const originalWarn = console.warn;
-
-	beforeAll(() => {
-		window.themeDisplay = {
-			...window.themeDisplay,
-			getPathThemeImages: () => 'http://localhost:8080',
-		};
-
-		// eslint-disable-next-line no-console
-		console.warn = (...args) => {
-			if (/DataProvider: Trying/.test(args[0])) {
-				return;
-			}
-			originalWarn.call(console, ...args);
-		};
-	});
-
-	afterAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = originalWarn;
-	});
-
-	beforeEach(() => {
-		jest.useFakeTimers();
-		fetch.mockResponseOnce(JSON.stringify({}));
-	});
-
 	it('renders the default markup', () => {
-		const {container} = render(
-			<FieldBaseWithProvider spritemap={spritemap} />
-		);
+		const {container} = render(<FieldBase />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders the FieldBase with required', () => {
-		const {container} = render(
-			<FieldBaseWithProvider required spritemap={spritemap} />
-		);
+		const {container} = render(<FieldBase required />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders the FieldBase with id', () => {
-		const {container} = render(
-			<FieldBaseWithProvider id="Id" spritemap={spritemap} />
-		);
+		const {container} = render(<FieldBase id="Id" />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders the FieldBase with help text', () => {
-		const {container} = render(
-			<FieldBaseWithProvider
-				spritemap={spritemap}
-				tip="Type something!"
-			/>
-		);
+		const {container} = render(<FieldBase tip="Type something!" />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders the FieldBase with label', () => {
-		const {container} = render(
-			<FieldBaseWithProvider label="Text" spritemap={spritemap} />
-		);
+		const {container} = render(<FieldBase label="Text" />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders the FieldBase with tooltip', () => {
-		render(
-			<FieldBaseWithProvider spritemap={spritemap} tooltip="Tooltip" />
-		);
+		render(<FieldBase tooltip="Tooltip" />);
 
-		expect(document.querySelector('.ddm-tooltip')).not.toBeNull();
+		expect(document.querySelector('.ddm-tooltip')).toBeInTheDocument();
 	});
 
 	it('does not render the label if showLabel is false', () => {
 		const {container} = render(
-			<FieldBaseWithProvider
-				label="Text"
-				showLabel={false}
-				spritemap={spritemap}
-			/>
+			<FieldBase label="Text" showLabel={false} />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -121,11 +65,11 @@ describe('ReactFieldBase', () => {
 
 	it('renders the FieldBase with contentRenderer', () => {
 		const {container} = render(
-			<FieldBaseWithProvider spritemap={spritemap}>
+			<FieldBase>
 				<div>
 					<h1>Foo bar</h1>
 				</div>
-			</FieldBaseWithProvider>
+			</FieldBase>
 		);
 
 		expect(container).toMatchSnapshot();
@@ -133,34 +77,29 @@ describe('ReactFieldBase', () => {
 
 	it('renders the add button when repeatable is true', () => {
 		const {container} = render(
-			<FieldBaseWithProvider
-				label="Text"
-				repeatable={true}
-				showLabel={false}
-				spritemap={spritemap}
-			/>
+			<FieldBase label="Text" repeatable showLabel={false} />
 		);
+
 		expect(container).toMatchSnapshot();
 	});
 
 	it('does not render the add button when repeatable is true and the maximum limit of repetions is reached', () => {
 		const {container} = render(
-			<FieldBaseWithProvider
+			<FieldBase
 				label="Text"
-				overMaximumRepetitionsLimit={true}
-				repeatable={true}
+				overMaximumRepetitionsLimit
+				repeatable
 				showLabel={false}
-				spritemap={spritemap}
 			/>
 		);
+
 		expect(container).toMatchSnapshot();
 	});
 
-	it('shows the popover for Format field when hovering over the tooltip icon', async () => {
+	it('shows the popover for Format field when hovering over the tooltip icon', () => {
 		render(
-			<FieldBaseWithProvider
+			<FieldBase
 				fieldName="inputMaskFormat"
-				spritemap={spritemap}
 				tooltip="Tooltip Description"
 			/>
 		);
@@ -170,7 +109,7 @@ describe('ReactFieldBase', () => {
 		/* TODO: replace by userEvent.hover() after bump @testing-library/user-event */
 		fireEvent.mouseOver(tooltipIcon);
 
-		const clayPopover = await screen.findByTestId('clayPopover');
+		const clayPopover = screen.getByTestId('clayPopover');
 
 		expect(clayPopover.style).toHaveProperty('maxWidth', '256px');
 
@@ -187,13 +126,7 @@ describe('ReactFieldBase', () => {
 
 	describe('Hide Field', () => {
 		it('renders the FieldBase with hideField markup', () => {
-			render(
-				<FieldBaseWithProvider
-					hideField
-					label="Text"
-					spritemap={spritemap}
-				/>
-			);
+			render(<FieldBase hideField label="Text" />);
 
 			expect(screen.getByText('hidden')).toBeInTheDocument();
 			expect(screen.getByText('Text')).toBeInTheDocument();
@@ -209,13 +142,7 @@ describe('ReactFieldBase', () => {
 		});
 
 		it('renders the FieldBase with hideField markup when the label is empty', () => {
-			render(
-				<FieldBaseWithProvider
-					hideField
-					label=""
-					spritemap={spritemap}
-				/>
-			);
+			render(<FieldBase hideField label="" />);
 
 			expect(screen.getByText('hidden')).toBeInTheDocument();
 

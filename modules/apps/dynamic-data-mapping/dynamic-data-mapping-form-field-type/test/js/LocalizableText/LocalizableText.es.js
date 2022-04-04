@@ -12,21 +12,13 @@
  * details.
  */
 
+import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import LocalizableText from '../../../src/main/resources/META-INF/resources/LocalizableText/LocalizableText.es';
-
-const spritemap = 'icons.svg';
-
-const LocalizableTextWithProvider = (props) => (
-	<PageProvider value={{editingLanguageId: 'en_US'}}>
-		<LocalizableText {...props} />
-	</PageProvider>
-);
 
 const defaultLocalizableTextConfig = {
 	availableLocales: [
@@ -67,45 +59,23 @@ const defaultLocalizableTextConfig = {
 	},
 	name:
 		'_com_liferay_configuration_admin_web_portlet_SystemSettingsPortlet_ddm$$emailArticleAddedSubject$uoeJR4Me$0$$en_US',
-	spritemap,
 };
 
 describe('Field LocalizableText', () => {
-	// eslint-disable-next-line no-console
-	const originalWarn = console.warn;
-
-	afterAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = originalWarn;
-	});
-
 	beforeAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = (...args) => {
-			if (/DataProvider: Trying/.test(args[0])) {
-				return;
-			}
-			originalWarn.call(console, ...args);
-		};
-
-		// @ts-ignore
-
 		ReactDOM.createPortal = jest.fn((element) => {
 			return element;
 		});
 	});
 
 	beforeEach(() => {
-		jest.useFakeTimers();
-		fetch.mockResponse(JSON.stringify({}));
 		Liferay.component = jest.fn();
 	});
 
 	it('is not readOnly', () => {
 		const {container} = render(
-			<LocalizableTextWithProvider
+			<LocalizableText
 				{...defaultLocalizableTextConfig}
-				readOnly={false}
 				value={{
 					ca_ES: 'Teste ES',
 					en_US: 'Test EUA',
@@ -119,7 +89,7 @@ describe('Field LocalizableText', () => {
 
 	it('has a label', () => {
 		const {container} = render(
-			<LocalizableTextWithProvider
+			<LocalizableText
 				{...defaultLocalizableTextConfig}
 				label="label"
 				value={{
@@ -135,7 +105,7 @@ describe('Field LocalizableText', () => {
 
 	it('has a placeholder', () => {
 		const {container} = render(
-			<LocalizableTextWithProvider
+			<LocalizableText
 				{...defaultLocalizableTextConfig}
 				placeholder="Placeholder"
 				value={{
@@ -151,9 +121,8 @@ describe('Field LocalizableText', () => {
 
 	it('is not required', () => {
 		const {container} = render(
-			<LocalizableTextWithProvider
+			<LocalizableText
 				{...defaultLocalizableTextConfig}
-				required={false}
 				value={{
 					ca_ES: 'Teste ES',
 					en_US: 'Test EUA',
@@ -167,7 +136,7 @@ describe('Field LocalizableText', () => {
 
 	it('renders values', () => {
 		const {container} = render(
-			<LocalizableTextWithProvider
+			<LocalizableText
 				{...defaultLocalizableTextConfig}
 				value={{
 					ca_ES: 'Teste ES',
@@ -182,10 +151,7 @@ describe('Field LocalizableText', () => {
 
 	it('renders no values when values come empty', () => {
 		const {container} = render(
-			<LocalizableTextWithProvider
-				{...defaultLocalizableTextConfig}
-				value={{}}
-			/>
+			<LocalizableText {...defaultLocalizableTextConfig} value={{}} />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -193,7 +159,7 @@ describe('Field LocalizableText', () => {
 
 	it('shows default language value when no other language is selected', () => {
 		const {container} = render(
-			<LocalizableTextWithProvider
+			<LocalizableText
 				{...defaultLocalizableTextConfig}
 				value={{
 					ca_ES: 'Teste ES',
@@ -217,7 +183,7 @@ describe('Field LocalizableText', () => {
 		const handleFieldEdited = jest.fn();
 
 		const {container} = render(
-			<LocalizableTextWithProvider
+			<LocalizableText
 				{...defaultLocalizableTextConfig}
 				onChange={handleFieldEdited}
 				value={{
@@ -240,9 +206,9 @@ describe('Field LocalizableText', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('fills with the selected language value when the selected language is translated', async () => {
+	it('fills with the selected language value when the selected language is translated', () => {
 		const {container} = render(
-			<LocalizableTextWithProvider
+			<LocalizableText
 				{...defaultLocalizableTextConfig}
 				onChange={jest.fn()}
 				value={{
@@ -257,13 +223,13 @@ describe('Field LocalizableText', () => {
 
 		userEvent.click(triggerButton);
 
-		const dropdownItem = await screen.findByTestId(
+		const dropdownItem = screen.getByTestId(
 			'availableLocalesDropdownca_ES'
 		);
 
 		userEvent.click(dropdownItem);
 
-		const inputElement = await screen.findByTestId('visibleChangeInput');
+		const inputElement = screen.getByTestId('visibleChangeInput');
 
 		expect(inputElement.value).toEqual('Teste ES');
 
@@ -272,9 +238,9 @@ describe('Field LocalizableText', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('fills with the default language value when the selected language is not translated', async () => {
+	it('fills with the default language value when the selected language is not translated', () => {
 		const {container} = render(
-			<LocalizableTextWithProvider
+			<LocalizableText
 				{...defaultLocalizableTextConfig}
 				onChange={jest.fn()}
 				value={{
@@ -291,24 +257,24 @@ describe('Field LocalizableText', () => {
 
 		userEvent.click(triggerElement);
 
-		const dropdownItem = await screen.findByTestId(
+		const dropdownItem = screen.getByTestId(
 			'availableLocalesDropdownja_JP'
 		);
 
 		userEvent.click(dropdownItem);
 
-		const inputComponent = screen.getByTestId('visibleChangeInput');
+		expect(triggerElement).toHaveProperty('textContent', 'ja-jp');
 
-		expect(triggerElement.textContent).toEqual('ja-jp');
-
-		expect(inputComponent.value).toEqual('Test EUA');
+		expect(screen.getByTestId('visibleChangeInput')).toHaveValue(
+			'Test EUA'
+		);
 
 		expect(container).toMatchSnapshot();
 	});
 
-	it('adds a new translation for an untranslated item', async () => {
+	it('adds a new translation for an untranslated item', () => {
 		const {container} = render(
-			<LocalizableTextWithProvider
+			<LocalizableText
 				{...defaultLocalizableTextConfig}
 				onChange={jest.fn()}
 				value={{
@@ -325,7 +291,7 @@ describe('Field LocalizableText', () => {
 
 		userEvent.click(triggerElement);
 
-		const dropdownItem = await screen.findByTestId(
+		const dropdownItem = screen.getByTestId(
 			'availableLocalesDropdownja_JP'
 		);
 
@@ -342,9 +308,9 @@ describe('Field LocalizableText', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('removes the translation of an item already translated', async () => {
+	it('removes the translation of an item already translated', () => {
 		const {container} = render(
-			<LocalizableTextWithProvider
+			<LocalizableText
 				{...defaultLocalizableTextConfig}
 				onChange={jest.fn()}
 				value={{
@@ -359,7 +325,7 @@ describe('Field LocalizableText', () => {
 
 		userEvent.click(triggerElement);
 
-		const dropdownItem = await screen.findByTestId(
+		const dropdownItem = screen.getByTestId(
 			'availableLocalesDropdownpt_BR'
 		);
 
@@ -381,9 +347,9 @@ describe('Field LocalizableText', () => {
 	});
 
 	describe('Submit Button Label', () => {
-		it('changes the placeholder according to the current editing locale', async () => {
+		it('changes the placeholder according to the current editing locale', () => {
 			render(
-				<LocalizableTextWithProvider
+				<LocalizableText
 					{...defaultLocalizableTextConfig}
 					fieldName="submitLabel"
 					onChange={jest.fn()}
@@ -399,34 +365,29 @@ describe('Field LocalizableText', () => {
 
 			userEvent.click(triggerButton);
 
-			const dropdownItem = await screen.findByTestId(
+			const dropdownItem = screen.getByTestId(
 				'availableLocalesDropdownde_DE'
 			);
 
 			userEvent.click(dropdownItem);
 
-			const inputComponent = await screen.findByTestId(
-				'visibleChangeInput'
-			);
+			const inputComponent = screen.getByTestId('visibleChangeInput');
 
 			expect(inputComponent.placeholder).toBe('Senden');
 		});
 
 		it('does not have the maxLength property equal to 25', () => {
-			render(
-				<LocalizableTextWithProvider
-					{...defaultLocalizableTextConfig}
-				/>
+			render(<LocalizableText {...defaultLocalizableTextConfig} />);
+
+			expect(screen.getByTestId('visibleChangeInput')).not.toHaveProperty(
+				'maxLength',
+				25
 			);
-
-			const inputComponent = screen.getByTestId('visibleChangeInput');
-
-			expect(inputComponent.maxLength).not.toBe(25);
 		});
 
 		it('has by default the dropdown description equal to translated/not-translated for non-default locales', () => {
 			render(
-				<LocalizableTextWithProvider
+				<LocalizableText
 					{...defaultLocalizableTextConfig}
 					value={{
 						de_DE: 'Test DE',
@@ -447,7 +408,7 @@ describe('Field LocalizableText', () => {
 
 		it('has by default the placeholder of the default locale', () => {
 			render(
-				<LocalizableTextWithProvider
+				<LocalizableText
 					{...defaultLocalizableTextConfig}
 					fieldName="submitLabel"
 					placeholdersSubmitLabel={[
@@ -465,7 +426,7 @@ describe('Field LocalizableText', () => {
 
 		it('has the dropdown description equal to customized/not-customized for the Submit Button Label input', () => {
 			render(
-				<LocalizableTextWithProvider
+				<LocalizableText
 					{...defaultLocalizableTextConfig}
 					fieldName="submitLabel"
 					placeholdersSubmitLabel={[
@@ -491,7 +452,7 @@ describe('Field LocalizableText', () => {
 
 		it('has the maxLength property equal to 25 for the Submit Button Label input', () => {
 			render(
-				<LocalizableTextWithProvider
+				<LocalizableText
 					{...defaultLocalizableTextConfig}
 					fieldName="submitLabel"
 					placeholdersSubmitLabel={[
@@ -502,9 +463,10 @@ describe('Field LocalizableText', () => {
 				/>
 			);
 
-			const inputComponent = screen.getByTestId('visibleChangeInput');
-
-			expect(inputComponent.maxLength).toBe(25);
+			expect(screen.getByTestId('visibleChangeInput')).toHaveProperty(
+				'maxLength',
+				25
+			);
 		});
 	});
 });

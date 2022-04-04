@@ -14,18 +14,9 @@
 
 import {fireEvent, render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
 import Grid from '../../../src/main/resources/META-INF/resources/Grid/Grid.es';
-
-const spritemap = 'icons.svg';
-
-const GridWithProvider = (props) => (
-	<PageProvider value={{editingLanguageId: 'en_US'}}>
-		<Grid {...props} />
-	</PageProvider>
-);
 
 describe('Grid', () => {
 	// eslint-disable-next-line no-console
@@ -52,7 +43,7 @@ describe('Grid', () => {
 
 	it('renders columns', () => {
 		const {container} = render(
-			<GridWithProvider
+			<Grid
 				columns={[
 					{
 						label: 'col1',
@@ -63,7 +54,6 @@ describe('Grid', () => {
 						value: 'fieldId',
 					},
 				]}
-				spritemap={spritemap}
 			/>
 		);
 
@@ -71,56 +61,44 @@ describe('Grid', () => {
 	});
 
 	it('renders no columns when columns comes empty', () => {
-		const {container} = render(
-			<GridWithProvider columns={[]} spritemap={spritemap} />
-		);
+		const {container} = render(<Grid columns={[]} />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('is not editable', () => {
-		const {container} = render(
-			<GridWithProvider readOnly={true} spritemap={spritemap} />
-		);
+		const {container} = render(<Grid readOnly />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has a tip', () => {
-		const {container} = render(
-			<GridWithProvider spritemap={spritemap} tip="Type something" />
-		);
+		const {container} = render(<Grid tip="Type something" />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has an id', () => {
-		const {container} = render(
-			<GridWithProvider id="Id" spritemap={spritemap} />
-		);
+		const {container} = render(<Grid id="Id" />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has a label', () => {
-		const {container} = render(
-			<GridWithProvider label="label" spritemap={spritemap} />
-		);
+		const {container} = render(<Grid label="label" />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('is not required', () => {
-		const {container} = render(
-			<GridWithProvider required={false} spritemap={spritemap} />
-		);
+		const {container} = render(<Grid required={false} />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders rows', () => {
 		const {container} = render(
-			<GridWithProvider
+			<Grid
 				rows={[
 					{
 						label: 'row1',
@@ -131,7 +109,6 @@ describe('Grid', () => {
 						value: 'fieldId',
 					},
 				]}
-				spritemap={spritemap}
 			/>
 		);
 
@@ -139,17 +116,13 @@ describe('Grid', () => {
 	});
 
 	it('renders no rows when row comes empty', () => {
-		const {container} = render(
-			<GridWithProvider rows={[]} spritemap={spritemap} />
-		);
+		const {container} = render(<Grid rows={[]} />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders Label if showLabel is true', () => {
-		const {container} = render(
-			<GridWithProvider label="text" showLabel spritemap={spritemap} />
-		);
+		const {container} = render(<Grid label="text" showLabel />);
 
 		expect(container).toMatchSnapshot();
 	});
@@ -158,7 +131,7 @@ describe('Grid', () => {
 		const handleFieldBlurred = jest.fn();
 
 		render(
-			<GridWithProvider
+			<Grid
 				columns={[
 					{
 						label: 'col1',
@@ -182,7 +155,6 @@ describe('Grid', () => {
 						value: 'rowFieldId2',
 					},
 				]}
-				spritemap={spritemap}
 			/>
 		);
 
@@ -199,7 +171,7 @@ describe('Grid', () => {
 		const handleFieldEdited = jest.fn();
 
 		render(
-			<GridWithProvider
+			<Grid
 				columns={[
 					{
 						label: 'col1',
@@ -223,7 +195,6 @@ describe('Grid', () => {
 						value: 'rowFieldId2',
 					},
 				]}
-				spritemap={spritemap}
 			/>
 		);
 
@@ -240,7 +211,7 @@ describe('Grid', () => {
 		const handleFieldFocused = jest.fn();
 
 		render(
-			<GridWithProvider
+			<Grid
 				columns={[
 					{
 						label: 'col1',
@@ -264,7 +235,6 @@ describe('Grid', () => {
 						value: 'rowFieldId2',
 					},
 				]}
-				spritemap={spritemap}
 			/>
 		);
 

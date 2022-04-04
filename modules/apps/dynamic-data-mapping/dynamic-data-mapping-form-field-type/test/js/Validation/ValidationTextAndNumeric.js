@@ -12,6 +12,7 @@
  * details.
  */
 
+import '@testing-library/jest-dom/extend-expect';
 import {render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {FormProvider} from 'data-engine-js-components-web';
@@ -71,11 +72,9 @@ describe('ValidationTextAndNumeric', () => {
 			/>
 		);
 
-		const inputParameter = document.querySelector(
-			'input[name="validation_parameter"]'
-		);
-
-		expect(inputParameter.value).toBe('');
+		expect(
+			document.querySelector('input[name="validation_parameter"]')
+		).toHaveValue('');
 	});
 
 	it('always sets the decimal separator as dot for parameter value', () => {
@@ -107,11 +106,10 @@ describe('ValidationTextAndNumeric', () => {
 			/>
 		);
 
-		const inputParameter = document.querySelector(
-			'input[name="validation_parameter"]'
+		userEvent.type(
+			document.querySelector('input[name="validation_parameter"]'),
+			'-1,2'
 		);
-
-		userEvent.type(inputParameter, '-1,2');
 
 		expect(onChange).toHaveBeenLastCalledWith({
 			target: {

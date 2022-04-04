@@ -13,59 +13,20 @@
  */
 
 import {render} from '@testing-library/react';
-import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
 import Radio from '../../../src/main/resources/META-INF/resources/Radio/Radio.es';
 
-const spritemap = 'icons.svg';
-
-const defaultRadioConfig = {
-	name: 'radioField',
-	spritemap,
-};
-
-const RadioWithProvider = (props) => (
-	<PageProvider value={{editingLanguageId: 'en_US'}}>
-		<Radio {...props} />
-	</PageProvider>
-);
-
 describe('Field Radio', () => {
-	// eslint-disable-next-line no-console
-	const originalWarn = console.warn;
-
-	beforeAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = (...args) => {
-			if (/DataProvider: Trying/.test(args[0])) {
-				return;
-			}
-			originalWarn.call(console, ...args);
-		};
-	});
-
-	afterAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = originalWarn;
-	});
-
-	beforeEach(() => {
-		jest.useFakeTimers();
-		fetch.mockResponseOnce(JSON.stringify({}));
-	});
-
 	it('is not editable', () => {
-		const {container} = render(
-			<RadioWithProvider {...defaultRadioConfig} readOnly />
-		);
+		const {container} = render(<Radio name="radioField" readOnly />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has a helptext', () => {
 		const {container} = render(
-			<RadioWithProvider {...defaultRadioConfig} tip="Type something" />
+			<Radio name="radioField" tip="Type something" />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -73,8 +34,8 @@ describe('Field Radio', () => {
 
 	it('renders options', () => {
 		const {container} = render(
-			<RadioWithProvider
-				{...defaultRadioConfig}
+			<Radio
+				name="radioField"
 				options={[
 					{
 						checked: false,
@@ -104,32 +65,26 @@ describe('Field Radio', () => {
 	});
 
 	it('renders no options when options is empty', () => {
-		const {container} = render(
-			<RadioWithProvider {...defaultRadioConfig} options={[]} />
-		);
+		const {container} = render(<Radio name="radioField" options={[]} />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has an id', () => {
-		const {container} = render(
-			<RadioWithProvider {...defaultRadioConfig} id="Id" />
-		);
+		const {container} = render(<Radio id="Id" name="radioField" />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has a label', () => {
-		const {container} = render(
-			<RadioWithProvider {...defaultRadioConfig} label="label" />
-		);
+		const {container} = render(<Radio label="label" name="radioField" />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has a placeholder', () => {
 		const {container} = render(
-			<RadioWithProvider {...defaultRadioConfig} placeholder="Option 1" />
+			<Radio name="radioField" placeholder="Option 1" />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -137,7 +92,7 @@ describe('Field Radio', () => {
 
 	it('is not required', () => {
 		const {container} = render(
-			<RadioWithProvider {...defaultRadioConfig} required={false} />
+			<Radio name="radioField" required={false} />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -145,16 +100,14 @@ describe('Field Radio', () => {
 
 	it('renders Label if showLabel is true', () => {
 		const {container} = render(
-			<RadioWithProvider {...defaultRadioConfig} label="text" showLabel />
+			<Radio label="text" name="radioField" showLabel />
 		);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has a value', () => {
-		const {container} = render(
-			<RadioWithProvider {...defaultRadioConfig} value="value" />
-		);
+		const {container} = render(<Radio name="radioField" value="value" />);
 
 		expect(container).toMatchSnapshot();
 	});

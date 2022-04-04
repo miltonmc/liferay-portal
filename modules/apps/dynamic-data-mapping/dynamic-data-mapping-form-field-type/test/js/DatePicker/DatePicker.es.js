@@ -50,7 +50,7 @@ describe('DatePicker', () => {
 		userEvent.click(screen.getByLabelText('Choose date'));
 
 		expect(
-			document.body.querySelector('.date-picker-dropdown-menu.show')
+			document.querySelector('.date-picker-dropdown-menu.show')
 		).toBeInTheDocument();
 	});
 
@@ -109,10 +109,9 @@ describe('DatePicker', () => {
 				value="2021-01-01"
 			/>
 		);
-		const input = screen.getByRole('textbox');
 		const hiddenInput = document.querySelector('[name=test-date]');
 
-		expect(input).toHaveValue('٠١/٠١/٢٠٢١');
+		expect(screen.getByRole('textbox')).toHaveValue('٠١/٠١/٢٠٢١');
 		expect(hiddenInput).toHaveValue('2021-01-01');
 	});
 
@@ -123,15 +122,13 @@ describe('DatePicker', () => {
 			<DatePicker locale="ar_SA" name="test-date" onChange={onChange} />
 		);
 
-		const input = screen.getByRole('textbox');
-
-		userEvent.type(input, '٠١/٠١/٢٠٢١');
+		userEvent.type(screen.getByRole('textbox'), '٠١/٠١/٢٠٢١');
 
 		expect(onChange).toHaveBeenLastCalledWith('');
 	});
 
 	xit('fills the input date and time according to the locale', () => {
-		const {container} = render(
+		render(
 			<DatePicker locale="pt_BR" onChange={() => {}} type="date_time" />
 		);
 
@@ -147,7 +144,7 @@ describe('DatePicker', () => {
 		userEvent.type(hours, '23');
 		userEvent.type(minutes, '30');
 
-		expect(container.querySelector('[type=text]')).toHaveValue(
+		expect(document.querySelector('[type=text]')).toHaveValue(
 			moment().format('DD/MM/YYYY [23:30]')
 		);
 	});

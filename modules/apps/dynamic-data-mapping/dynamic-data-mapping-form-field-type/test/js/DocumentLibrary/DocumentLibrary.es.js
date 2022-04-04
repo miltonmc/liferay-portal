@@ -12,79 +12,26 @@
  * details.
  */
 
-import {render} from '@testing-library/react';
-import {PageProvider} from 'data-engine-js-components-web';
+import '@testing-library/jest-dom/extend-expect';
+import {render, screen} from '@testing-library/react';
 import React from 'react';
 
 import DocumentLibrary from '../../../src/main/resources/META-INF/resources/DocumentLibrary/DocumentLibrary.es';
 
-const spritemap = 'icons.svg';
-
-const defaultDocumentLibraryConfig = {
-	name: 'uploadField',
-	spritemap,
-};
-
-const DocumentLibraryWithProvider = (props) => (
-	<PageProvider value={{editingLanguageId: 'en_US'}}>
-		<DocumentLibrary {...props} />
-	</PageProvider>
-);
-
 describe('Field DocumentLibrary', () => {
-	// eslint-disable-next-line no-console
-	const originalWarn = console.warn;
-
-	beforeAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = (...args) => {
-			if (/DataProvider: Trying/.test(args[0])) {
-				return;
-			}
-			originalWarn.call(console, ...args);
-		};
-	});
-
-	afterAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = originalWarn;
-	});
-
-	beforeEach(() => {
-		jest.useFakeTimers();
-		fetch.mockResponseOnce(JSON.stringify({}));
-	});
-
 	it('is not readOnly', () => {
 		const {container} = render(
-			<DocumentLibraryWithProvider
-				{...defaultDocumentLibraryConfig}
-				readOnly={false}
-			/>
+			<DocumentLibrary name="uploadField" readOnly={false} />
 		);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('is readOnly', () => {
-		render(
-			<DocumentLibraryWithProvider
-				{...defaultDocumentLibraryConfig}
-				readOnly={true}
-			/>
-		);
+		render(<DocumentLibrary readOnly />);
 
-		const uploadFieldInput = document.getElementById(
-			'uploadFieldinputFile'
-		);
-
-		expect(uploadFieldInput.disabled).toBeTruthy();
-
-		const uploadFieldInputSelectButton = document.querySelector(
-			'.select-button'
-		);
-
-		expect(uploadFieldInputSelectButton.disabled).toBeTruthy();
+		expect(screen.getByRole('textbox')).toBeDisabled();
+		expect(screen.getByRole('button')).toBeDisabled();
 	});
 
 	it('is readOnly when allowed for guest users', () => {
@@ -92,33 +39,17 @@ describe('Field DocumentLibrary', () => {
 
 		Liferay.ThemeDisplay.isSignedIn = mockIsSignedIn;
 
-		render(
-			<DocumentLibraryWithProvider
-				{...defaultDocumentLibraryConfig}
-				allowGuestUsers={true}
-				readOnly={true}
-			/>
-		);
+		render(<DocumentLibrary allowGuestUsers name="uploadField" readOnly />);
 
-		const guestUploadFieldInput = document.getElementById(
-			'uploadFieldinputFileGuestUpload'
-		);
-
-		expect(guestUploadFieldInput.disabled).toBeTruthy();
-
-		const guestUploadFieldInputLabel = document.querySelector(
-			'.select-button'
-		);
-
-		expect(guestUploadFieldInputLabel.classList).toContain('disabled');
+		expect(
+			document.getElementById('uploadFieldinputFileGuestUpload')
+		).toBeDisabled();
+		expect(screen.getByText('select')).toHaveClass('disabled');
 	});
 
 	it('has a helptext', () => {
 		const {container} = render(
-			<DocumentLibraryWithProvider
-				{...defaultDocumentLibraryConfig}
-				tip="Type something"
-			/>
+			<DocumentLibrary name="uploadField" tip="Type something" />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -126,10 +57,7 @@ describe('Field DocumentLibrary', () => {
 
 	it('has an id', () => {
 		const {container} = render(
-			<DocumentLibraryWithProvider
-				{...defaultDocumentLibraryConfig}
-				id="ID"
-			/>
+			<DocumentLibrary id="ID" name="uploadField" />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -137,10 +65,7 @@ describe('Field DocumentLibrary', () => {
 
 	it('has a label', () => {
 		const {container} = render(
-			<DocumentLibraryWithProvider
-				{...defaultDocumentLibraryConfig}
-				label="label"
-			/>
+			<DocumentLibrary label="label" name="uploadField" />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -148,10 +73,7 @@ describe('Field DocumentLibrary', () => {
 
 	it('has a placeholder', () => {
 		const {container} = render(
-			<DocumentLibraryWithProvider
-				{...defaultDocumentLibraryConfig}
-				placeholder="Placeholder"
-			/>
+			<DocumentLibrary name="uploadField" placeholder="Placeholder" />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -159,10 +81,7 @@ describe('Field DocumentLibrary', () => {
 
 	it('is not required', () => {
 		const {container} = render(
-			<DocumentLibraryWithProvider
-				{...defaultDocumentLibraryConfig}
-				required={false}
-			/>
+			<DocumentLibrary name="uploadField" required={false} />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -170,19 +89,7 @@ describe('Field DocumentLibrary', () => {
 
 	it('renders Label if showLabel is true', () => {
 		const {container} = render(
-			<DocumentLibraryWithProvider
-				{...defaultDocumentLibraryConfig}
-				label="text"
-				showLabel
-			/>
-		);
-
-		expect(container).toMatchSnapshot();
-	});
-
-	it('has a spritemap', () => {
-		const {container} = render(
-			<DocumentLibraryWithProvider {...defaultDocumentLibraryConfig} />
+			<DocumentLibrary label="text" name="uploadField" showLabel />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -190,10 +97,7 @@ describe('Field DocumentLibrary', () => {
 
 	it('has a value', () => {
 		const {container} = render(
-			<DocumentLibraryWithProvider
-				{...defaultDocumentLibraryConfig}
-				value='{"id":"123"}'
-			/>
+			<DocumentLibrary name="uploadField" value='{"id":"123"}' />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -205,18 +109,16 @@ describe('Field DocumentLibrary', () => {
 		Liferay.ThemeDisplay.isSignedIn = mockIsSignedIn;
 
 		render(
-			<DocumentLibraryWithProvider
-				{...defaultDocumentLibraryConfig}
-				allowGuestUsers={true}
+			<DocumentLibrary
+				allowGuestUsers
+				name="uploadField"
 				value='{"id":"123"}'
 			/>
 		);
 
-		const guestUploadFieldInput = document.getElementById(
-			'uploadFieldinputFileGuestUpload'
-		);
-
-		expect(guestUploadFieldInput).not.toBe(null);
+		expect(
+			document.getElementById('uploadFieldinputFileGuestUpload')
+		).toBeInTheDocument();
 	});
 
 	it('hide guest upload field if allowGuestUsers property is disabled', () => {
@@ -225,18 +127,16 @@ describe('Field DocumentLibrary', () => {
 		Liferay.ThemeDisplay.isSignedIn = mockIsSignedIn;
 
 		render(
-			<DocumentLibraryWithProvider
-				{...defaultDocumentLibraryConfig}
+			<DocumentLibrary
 				allowGuestUsers={false}
+				name="uploadField"
 				value='{"id":"123"}'
 			/>
 		);
 
-		const guestUploadFieldInput = document.getElementById(
-			'uploadFieldinputFileGuestUpload'
-		);
-
-		expect(guestUploadFieldInput).toBe(null);
+		expect(
+			document.getElementById('uploadFieldinputFileGuestUpload')
+		).not.toBeInTheDocument();
 	});
 
 	it('disables guest upload field if maximumSubmissionLimitReached property is true', () => {
@@ -245,23 +145,17 @@ describe('Field DocumentLibrary', () => {
 		Liferay.ThemeDisplay.isSignedIn = mockIsSignedIn;
 
 		render(
-			<DocumentLibraryWithProvider
-				{...defaultDocumentLibraryConfig}
-				allowGuestUsers={true}
-				maximumSubmissionLimitReached={true}
+			<DocumentLibrary
+				allowGuestUsers
+				maximumSubmissionLimitReached
+				name="uploadField"
 			/>
 		);
 
-		const guestUploadFieldInput = document.getElementById(
-			'uploadFieldinputFileGuestUpload'
-		);
+		expect(
+			document.getElementById('uploadFieldinputFileGuestUpload')
+		).toBeDisabled();
 
-		expect(guestUploadFieldInput.disabled).toBeTruthy();
-
-		const guestUploadFieldInputLabel = document.querySelector(
-			'.select-button'
-		);
-
-		expect(guestUploadFieldInputLabel.classList).toContain('disabled');
+		expect(screen.getByText('select')).toHaveClass('disabled');
 	});
 });

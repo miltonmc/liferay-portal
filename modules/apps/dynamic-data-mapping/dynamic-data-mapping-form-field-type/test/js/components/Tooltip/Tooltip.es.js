@@ -20,10 +20,6 @@ let component;
 const spritemap = 'icons.svg';
 
 describe('Field Tooltip', () => {
-	beforeEach(() => {
-		jest.useFakeTimers();
-	});
-
 	afterEach(() => {
 		if (component) {
 			component.dispose();
@@ -46,8 +42,6 @@ describe('Field Tooltip', () => {
 			spritemap,
 			text: 'This is a tooltip information about this component',
 		});
-
-		jest.runAllTimers();
 
 		const {tooltipTarget} = component.refs;
 
@@ -78,8 +72,6 @@ describe('Field Tooltip', () => {
 			spritemap,
 			text: 'This is a tooltip information about this component',
 		});
-
-		jest.runAllTimers();
 
 		component.refs.tooltipSource = {
 			element: document.createElement('div'),

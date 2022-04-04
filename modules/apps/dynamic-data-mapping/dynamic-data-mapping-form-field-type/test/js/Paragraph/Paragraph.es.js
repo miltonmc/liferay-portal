@@ -13,51 +13,18 @@
  */
 
 import {render} from '@testing-library/react';
-import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
 import Paragraph from '../../../src/main/resources/META-INF/resources/Paragraph/Paragraph.es';
 
-const spritemap = 'icons.svg';
-
 const defaultParagraphConfig = {
 	name: 'textField',
-	spritemap,
 };
 
-const ParagraphWithProvider = (props) => (
-	<PageProvider value={{editingLanguageId: 'en_US'}}>
-		<Paragraph {...props} />
-	</PageProvider>
-);
-
 describe('Field Paragraph', () => {
-	// eslint-disable-next-line no-console
-	const originalWarn = console.warn;
-
-	beforeAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = (...args) => {
-			if (/DataProvider: Trying/.test(args[0])) {
-				return;
-			}
-			originalWarn.call(console, ...args);
-		};
-	});
-
-	afterAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = originalWarn;
-	});
-
-	beforeEach(() => {
-		jest.useFakeTimers();
-		fetch.mockResponseOnce(JSON.stringify({}));
-	});
-
 	it('is readOnly', () => {
 		const {container} = render(
-			<ParagraphWithProvider {...defaultParagraphConfig} readOnly />
+			<Paragraph {...defaultParagraphConfig} readOnly />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -65,7 +32,7 @@ describe('Field Paragraph', () => {
 
 	it('has an id', () => {
 		const {container} = render(
-			<ParagraphWithProvider {...defaultParagraphConfig} id="Id" />
+			<Paragraph {...defaultParagraphConfig} id="Id" />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -73,7 +40,7 @@ describe('Field Paragraph', () => {
 
 	it('has a label', () => {
 		const {container} = render(
-			<ParagraphWithProvider {...defaultParagraphConfig} label="label" />
+			<Paragraph {...defaultParagraphConfig} label="label" />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -81,10 +48,7 @@ describe('Field Paragraph', () => {
 
 	it('has a placeholder', () => {
 		const {container} = render(
-			<ParagraphWithProvider
-				{...defaultParagraphConfig}
-				placeholder="Placeholder"
-			/>
+			<Paragraph {...defaultParagraphConfig} placeholder="Placeholder" />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -92,10 +56,7 @@ describe('Field Paragraph', () => {
 
 	it('is not required', () => {
 		const {container} = render(
-			<ParagraphWithProvider
-				{...defaultParagraphConfig}
-				required={false}
-			/>
+			<Paragraph {...defaultParagraphConfig} required={false} />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -103,11 +64,7 @@ describe('Field Paragraph', () => {
 
 	it('renders Label if showLabel is true', () => {
 		const {container} = render(
-			<ParagraphWithProvider
-				{...defaultParagraphConfig}
-				label="text"
-				showLabel
-			/>
+			<Paragraph {...defaultParagraphConfig} label="text" showLabel />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -115,7 +72,7 @@ describe('Field Paragraph', () => {
 
 	it('has a value', () => {
 		const {container} = render(
-			<ParagraphWithProvider {...defaultParagraphConfig} value="value" />
+			<Paragraph {...defaultParagraphConfig} value="value" />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -123,7 +80,7 @@ describe('Field Paragraph', () => {
 
 	it('has a key', () => {
 		const {container} = render(
-			<ParagraphWithProvider {...defaultParagraphConfig} key="key" />
+			<Paragraph {...defaultParagraphConfig} key="key" />
 		);
 
 		expect(container).toMatchSnapshot();

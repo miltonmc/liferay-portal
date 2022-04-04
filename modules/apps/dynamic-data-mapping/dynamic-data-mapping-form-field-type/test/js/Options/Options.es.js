@@ -14,7 +14,6 @@
 
 import {fireEvent, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
 import Options from '../../../src/main/resources/META-INF/resources/Options/Options.es';
@@ -22,14 +21,6 @@ import Options from '../../../src/main/resources/META-INF/resources/Options/Opti
 const DEFAULT_OPTION_NAME_REGEX = /^Option[0-9]{8}$/;
 
 let liferayLanguageSpy;
-
-const spritemap = 'icons.svg';
-
-const OptionsWithProvider = (props) => (
-	<PageProvider value={{editingLanguageId: themeDisplay.getLanguageId()}}>
-		<Options {...props} />
-	</PageProvider>
-);
 
 const optionsValue = {
 	[themeDisplay.getLanguageId()]: [
@@ -65,39 +56,11 @@ const unmockLiferayLanguage = () => {
 };
 
 describe('Options', () => {
-	// eslint-disable-next-line no-console
-	const originalWarn = console.warn;
-
-	beforeAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = (...args) => {
-			if (/DataProvider: Trying/.test(args[0])) {
-				return;
-			}
-			originalWarn.call(console, ...args);
-		};
-	});
-
-	afterAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = originalWarn;
-	});
-
-	beforeEach(() => {
-		jest.useFakeTimers();
-		fetch.mockResponseOnce(JSON.stringify({}));
-	});
-
 	it('shows the options', () => {
 		mockLiferayLanguage();
 
 		const {container} = render(
-			<OptionsWithProvider
-				name="options"
-				showKeyword={true}
-				spritemap={spritemap}
-				value={optionsValue}
-			/>
+			<Options name="options" showKeyword value={optionsValue} />
 		);
 
 		const referenceInputs = document.querySelectorAll(
@@ -127,11 +90,10 @@ describe('Options', () => {
 		mockLiferayLanguage();
 
 		render(
-			<OptionsWithProvider
-				keywordReadOnly={true}
+			<Options
+				keywordReadOnly
 				name="options"
-				showKeyword={true}
-				spritemap={spritemap}
+				showKeyword
 				value={{
 					[themeDisplay.getLanguageId()]: [
 						{
@@ -156,12 +118,11 @@ describe('Options', () => {
 		mockLiferayLanguage();
 
 		render(
-			<OptionsWithProvider
+			<Options
 				keywordReadOnly={false}
 				name="options"
 				onChange={jest.fn()}
-				showKeyword={true}
-				spritemap={spritemap}
+				showKeyword
 				value={{
 					[themeDisplay.getLanguageId()]: [
 						{
@@ -189,11 +150,10 @@ describe('Options', () => {
 		mockLiferayLanguage();
 
 		render(
-			<OptionsWithProvider
+			<Options
 				name="options"
 				onChange={jest.fn()}
-				showKeyword={true}
-				spritemap={spritemap}
+				showKeyword
 				value={{
 					[themeDisplay.getLanguageId()]: [
 						{
@@ -225,12 +185,11 @@ describe('Options', () => {
 
 	it('does show an empty option when translating', () => {
 		render(
-			<OptionsWithProvider
+			<Options
 				defaultLanguageId={themeDisplay.getLanguageId()}
 				editingLanguageId="pt_BR"
 				name="options"
 				onChange={jest.fn()}
-				spritemap={spritemap}
 				value={{
 					[themeDisplay.getLanguageId()]: [
 						{
@@ -259,11 +218,10 @@ describe('Options', () => {
 		mockLiferayLanguage();
 
 		render(
-			<OptionsWithProvider
+			<Options
 				name="options"
 				onChange={jest.fn()}
-				showKeyword={true}
-				spritemap={spritemap}
+				showKeyword
 				value={{
 					[themeDisplay.getLanguageId()]: [
 						{
@@ -289,11 +247,10 @@ describe('Options', () => {
 
 	it('edits the value of an option based on the label', () => {
 		render(
-			<OptionsWithProvider
+			<Options
 				name="options"
 				onChange={jest.fn()}
-				showKeyword={true}
-				spritemap={spritemap}
+				showKeyword
 				value={{
 					[themeDisplay.getLanguageId()]: [
 						{
@@ -317,11 +274,10 @@ describe('Options', () => {
 
 	it('inserts a new empty option when editing the last option', () => {
 		render(
-			<OptionsWithProvider
+			<Options
 				name="options"
 				onChange={jest.fn()}
-				showKeyword={true}
-				spritemap={spritemap}
+				showKeyword
 				value={{
 					[themeDisplay.getLanguageId()]: [
 						{
@@ -345,13 +301,12 @@ describe('Options', () => {
 
 	it('does not insert a new empty option automatically if translating', () => {
 		render(
-			<OptionsWithProvider
+			<Options
 				defaultLanguageId={themeDisplay.getLanguageId()}
 				editingLanguageId="pt_BR"
 				name="options"
 				onChange={jest.fn()}
-				showKeyword={true}
-				spritemap={spritemap}
+				showKeyword
 				value={{
 					[themeDisplay.getLanguageId()]: [
 						{
@@ -384,11 +339,10 @@ describe('Options', () => {
 		mockLiferayLanguage();
 
 		render(
-			<OptionsWithProvider
+			<Options
 				name="options"
 				onChange={jest.fn()}
-				showKeyword={true}
-				spritemap={spritemap}
+				showKeyword
 				value={{
 					[themeDisplay.getLanguageId()]: [
 						{
@@ -416,11 +370,10 @@ describe('Options', () => {
 
 	it('deduplication of the value when editing the value', () => {
 		render(
-			<OptionsWithProvider
+			<Options
 				name="options"
 				onChange={jest.fn()}
-				showKeyword={true}
-				spritemap={spritemap}
+				showKeyword
 				value={{
 					[themeDisplay.getLanguageId()]: [
 						{
@@ -449,11 +402,10 @@ describe('Options', () => {
 
 	it('adds a value to the value property when the label is empty', () => {
 		render(
-			<OptionsWithProvider
+			<Options
 				name="options"
 				onChange={jest.fn()}
-				showKeyword={true}
-				spritemap={spritemap}
+				showKeyword
 				value={{
 					[themeDisplay.getLanguageId()]: [
 						{
@@ -466,9 +418,7 @@ describe('Options', () => {
 			/>
 		);
 
-		const labelInput = document.querySelector('.ddm-field-text');
-
-		fireEvent.input(labelInput, {target: {value: ''}});
+		userEvent.type(document.querySelector('.ddm-field-text'), '');
 
 		const valueInput = document.querySelector('.key-value-input');
 
@@ -477,12 +427,11 @@ describe('Options', () => {
 
 	it('removes an option when click on remove button', () => {
 		render(
-			<OptionsWithProvider
+			<Options
 				defaultLanguageId={themeDisplay.getLanguageId()}
 				editingLanguageId="pt_BR"
 				name="options"
 				onChange={jest.fn()}
-				spritemap={spritemap}
 				value={{
 					...optionsValue,
 					pt_BR: [
@@ -511,7 +460,7 @@ describe('Options', () => {
 			'.ddm-option-entry .close'
 		);
 
-		fireEvent.click(removeOptionButton);
+		userEvent.click(removeOptionButton);
 
 		options = document.querySelectorAll('.ddm-field-options');
 
@@ -521,14 +470,7 @@ describe('Options', () => {
 	it('checks if the initial value of the option reference matches the option value', () => {
 		mockLiferayLanguage();
 
-		render(
-			<OptionsWithProvider
-				name="options"
-				showKeyword={true}
-				spritemap={spritemap}
-				value={optionsValue}
-			/>
-		);
+		render(<Options name="options" showKeyword value={optionsValue} />);
 
 		const referenceInputs = document.querySelectorAll(
 			'.key-value-reference-input'
@@ -550,10 +492,9 @@ describe('Options', () => {
 			mockLiferayLanguage();
 
 			render(
-				<OptionsWithProvider
+				<Options
 					name="options"
 					onChange={jest.fn()}
-					spritemap={spritemap}
 					value={{
 						[themeDisplay.getLanguageId()]: [
 							{
@@ -594,10 +535,9 @@ describe('Options', () => {
 			mockLiferayLanguage();
 
 			render(
-				<OptionsWithProvider
+				<Options
 					name="options"
 					onChange={jest.fn()}
-					spritemap={spritemap}
 					value={{
 						[themeDisplay.getLanguageId()]: [
 							{

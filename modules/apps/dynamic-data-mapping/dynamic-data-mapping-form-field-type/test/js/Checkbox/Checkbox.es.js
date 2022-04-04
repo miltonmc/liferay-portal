@@ -91,38 +91,28 @@ describe('Field Checkbox', () => {
 
 		render(<Checkbox onChange={handleFieldEdited} />);
 
-		userEvent.click(document.body.querySelector('input'));
+		userEvent.click(screen.getByRole('checkbox'));
 
 		expect(handleFieldEdited).toHaveBeenCalled();
 	});
 
 	describe('Maximum Repetitions Info', () => {
 		it('does not show the maximum repetitions info', () => {
-			const {container} = render(<Checkbox value />);
+			render(<Checkbox value />);
 
-			const ddmInfo = container.querySelector('.ddm-info');
-
-			expect(ddmInfo).toBeNull();
+			expect(document.querySelector('.ddm-info')).not.toBeInTheDocument();
 		});
 
 		it('does not show the maximum repetitions info if the value is false', () => {
-			const {container} = render(
-				<Checkbox showMaximumRepetitionsInfo value={false} />
-			);
+			render(<Checkbox showMaximumRepetitionsInfo value={false} />);
 
-			const ddmInfo = container.querySelector('.ddm-info');
-
-			expect(ddmInfo).toBeNull();
+			expect(document.querySelector('.ddm-info')).not.toBeInTheDocument();
 		});
 
 		it('shows the maximum repetitions info', () => {
-			const {container} = render(
-				<Checkbox showMaximumRepetitionsInfo value />
-			);
+			render(<Checkbox showMaximumRepetitionsInfo value />);
 
-			const ddmInfo = container.querySelector('.ddm-info');
-
-			expect(ddmInfo).not.toBeNull();
+			expect(document.querySelector('.ddm-info')).toBeInTheDocument();
 		});
 	});
 
@@ -130,13 +120,13 @@ describe('Field Checkbox', () => {
 		it('check if the boolean field is not checked if he has predefinedValue false', () => {
 			render(<Checkbox label="Boolean" predefinedValue={['false']} />);
 
-			expect(screen.queryByLabelText('Boolean')).not.toBeChecked();
+			expect(screen.getByLabelText('Boolean')).not.toBeChecked();
 		});
 
 		it('check if the boolean field is checked if he has predefinedValue true', () => {
 			render(<Checkbox label="Boolean" predefinedValue={['true']} />);
 
-			expect(screen.queryByLabelText('Boolean')).toBeChecked();
+			expect(screen.getByLabelText('Boolean')).toBeChecked();
 		});
 
 		it('check that with false predefinedValue the boolean field is checked when we enable it', () => {
@@ -150,7 +140,8 @@ describe('Field Checkbox', () => {
 				/>
 			);
 
-			userEvent.click(screen.queryByLabelText('Boolean'));
+			userEvent.click(screen.getByLabelText('Boolean'));
+
 			expect(onChange).toHaveBeenLastCalledWith({target: {value: true}});
 		});
 
@@ -164,54 +155,47 @@ describe('Field Checkbox', () => {
 				/>
 			);
 
-			userEvent.click(screen.queryByLabelText('Boolean'));
+			userEvent.click(screen.getByLabelText('Boolean'));
+
 			expect(onChange).toHaveBeenLastCalledWith({target: {value: false}});
 		});
 
 		it('check it shows the label when we set it up', () => {
 			render(<Checkbox label="Boolean" showLabel />);
 
-			expect(screen.queryByLabelText('Boolean')).toBeInTheDocument();
+			expect(screen.getByLabelText('Boolean')).toBeInTheDocument();
 		});
 
 		it('check if the required icon appears when the field is required', () => {
 			render(<Checkbox required />);
 
-			const requiredIcon = document.querySelector(
-				'.lexicon-icon-asterisk'
-			);
-
-			expect(requiredIcon).toBeInTheDocument();
+			expect(
+				document.querySelector('.lexicon-icon-asterisk')
+			).toBeInTheDocument();
 		});
 
 		it('check if the required icon do not appears when the field is not required', () => {
 			render(<Checkbox />);
 
-			const requiredIcon = document.querySelector(
-				'.lexicon-icon-asterisk'
-			);
-
-			expect(requiredIcon).not.toBeInTheDocument();
+			expect(
+				document.querySelector('.lexicon-icon-asterisk')
+			).not.toBeInTheDocument();
 		});
 
 		it('verify if the switcher do not appears when he is disabled in boolean field', () => {
 			render(<Checkbox showAsSwitcher={false} />);
 
-			const swithcerIcon = document.querySelector(
-				'.toggle-switch-handle'
-			);
-
-			expect(swithcerIcon).not.toBeInTheDocument();
+			expect(
+				document.querySelector('.toggle-switch-handle')
+			).not.toBeInTheDocument();
 		});
 
 		it('verify if the switcher appears when he is enabled in boolean field', () => {
 			render(<Checkbox />);
 
-			const swithcerIcon = document.querySelector(
-				'.toggle-switch-handle'
-			);
-
-			expect(swithcerIcon).toBeInTheDocument();
+			expect(
+				document.querySelector('.toggle-switch-handle')
+			).toBeInTheDocument();
 		});
 	});
 });

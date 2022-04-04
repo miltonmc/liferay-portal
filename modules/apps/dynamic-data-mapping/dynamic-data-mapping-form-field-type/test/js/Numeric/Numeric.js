@@ -30,25 +30,22 @@ describe('Field Numeric', () => {
 	it('has a name', () => {
 		render(<Numeric name="numericField" />);
 
-		const input = document.querySelector('input');
-
-		expect(input).toHaveAttribute('name', 'numericField');
+		expect(screen.queryByRole('textbox')).toHaveAttribute(
+			'name',
+			'numericField'
+		);
 	});
 
 	it('enables input whenever readOnly is omitted', () => {
 		render(<Numeric />);
 
-		const input = document.querySelector('input');
-
-		expect(input).toBeEnabled();
+		expect(screen.queryByRole('textbox')).toBeEnabled();
 	});
 
 	it('disables input whenever readOnly is set', () => {
 		render(<Numeric readOnly />);
 
-		const input = document.querySelector('input');
-
-		expect(input).toBeDisabled();
+		expect(screen.queryByRole('textbox')).toBeDisabled();
 	});
 
 	it('has a helptext', () => {
@@ -60,9 +57,7 @@ describe('Field Numeric', () => {
 	it('has an id', () => {
 		render(<Numeric id="ID" />);
 
-		const input = document.querySelector('input');
-
-		expect(input).toHaveAttribute('id', 'ID');
+		expect(screen.queryByRole('textbox')).toHaveAttribute('id', 'ID');
 	});
 
 	it('has a label', () => {
@@ -74,9 +69,10 @@ describe('Field Numeric', () => {
 	it('has a placeholder', () => {
 		render(<Numeric placeholder="Placeholder" />);
 
-		const input = document.querySelector('input');
-
-		expect(input).toHaveAttribute('placeholder', 'Placeholder');
+		expect(screen.queryByRole('textbox')).toHaveAttribute(
+			'placeholder',
+			'Placeholder'
+		);
 	});
 
 	it('is required', () => {
@@ -94,16 +90,14 @@ describe('Field Numeric', () => {
 	it('has a value', () => {
 		render(<Numeric value="123" />);
 
-		const input = document.querySelector('input');
-
-		expect(input).toHaveValue('123');
+		expect(screen.queryByRole('textbox')).toHaveValue('123');
 	});
 
 	it('fills with an input number', () => {
 		const onChange = jest.fn();
 		render(<Numeric onChange={onChange} />);
 
-		const input = document.querySelector('input');
+		const input = screen.queryByRole('textbox');
 		userEvent.type(input, '2');
 
 		expect(onChange).toHaveBeenCalledWith({target: {value: '2'}});
@@ -112,14 +106,14 @@ describe('Field Numeric', () => {
 	it('changes the mask type', () => {
 		render(<Numeric dataType="double" value="22.22" />);
 
-		expect(document.querySelector('input').value).toBe('22.22');
+		expect(screen.queryByRole('textbox')).toHaveValue('22.22');
 	});
 
 	it('filters the non numeric characters when set to integer', () => {
 		const onChange = jest.fn();
 		render(<Numeric onChange={onChange} />);
 
-		const input = document.querySelector('input');
+		const input = screen.queryByRole('textbox');
 		userEvent.type(input, '3.0');
 
 		expect(onChange).toHaveBeenLastCalledWith({
@@ -130,9 +124,7 @@ describe('Field Numeric', () => {
 	it('check field value is the same without decimal symbol when fieldType is integer but it receives a double', () => {
 		render(<Numeric value="3.8" />);
 
-		const input = document.querySelector('input');
-
-		expect(input.value).toBe('38');
+		expect(screen.queryByRole('textbox')).toHaveValue('38');
 	});
 
 	it('remove decimal symbol from value when changing from decimal to integer when symbol of language is comma', () => {
@@ -144,7 +136,7 @@ describe('Field Numeric', () => {
 			/>
 		);
 
-		expect(document.querySelector('input').value).toBe('2282');
+		expect(screen.queryByRole('textbox')).toHaveValue('2282');
 	});
 
 	it('updates decimal symbol using the current value of symbols', () => {
@@ -156,7 +148,7 @@ describe('Field Numeric', () => {
 			/>
 		);
 
-		expect(document.querySelector('input').value).toBe('-1,2');
+		expect(screen.queryByRole('textbox')).toHaveValue('-1,2');
 	});
 
 	it('updates decimal symbol using the localizedSymbols based on current editing language', () => {
@@ -177,7 +169,7 @@ describe('Field Numeric', () => {
 			</FormProvider>
 		);
 
-		expect(document.querySelector('input').value).toBe('1,2');
+		expect(screen.queryByRole('textbox')).toHaveValue('1,2');
 	});
 
 	describe('Confirmation Field', () => {
@@ -191,11 +183,9 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const confirmationField = document.getElementById(
-				'numericFieldconfirmationField'
-			);
-
-			expect(confirmationField.value).toBe('22.82');
+			expect(
+				document.getElementById('numericFieldconfirmationField')
+			).toHaveValue('22.82');
 		});
 
 		it('remove decimal symbol of the confirmation value if the data type is Integer', () => {
@@ -207,11 +197,9 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const confirmationField = document.getElementById(
-				'numericFieldconfirmationField'
-			);
-
-			expect(confirmationField.value).toBe('2282');
+			expect(
+				document.getElementById('numericFieldconfirmationField')
+			).toHaveValue('2282');
 		});
 	});
 
@@ -238,9 +226,9 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			expect(input.value).toBe('+12 (34) 5678-9012');
+			expect(screen.queryByRole('textbox')).toHaveValue(
+				'+12 (34) 5678-9012'
+			);
 		});
 
 		it('applies mask to predefined value', () => {
@@ -252,9 +240,9 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			expect(input.value).toBe('+12 (34) 5678-9012');
+			expect(screen.queryByRole('textbox')).toHaveValue(
+				'+12 (34) 5678-9012'
+			);
 		});
 
 		it('truncates values over mask digit limit', () => {
@@ -266,9 +254,9 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			expect(input.value).toBe('+12 (345) 6789-0123');
+			expect(screen.queryByRole('textbox')).toHaveValue(
+				'+12 (345) 6789-0123'
+			);
 		});
 
 		it('ignores optional digits whenever input is less than mandatory', () => {
@@ -280,9 +268,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			expect(input.value).toBe('+1 (23) 45');
+			expect(screen.queryByRole('textbox')).toHaveValue('+1 (23) 45');
 		});
 
 		it('sends unmasked value though onChange event', () => {
@@ -295,9 +281,10 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			userEvent.type(input, 'E.g +55 (81) 2121-6000');
+			userEvent.type(
+				screen.queryByRole('textbox'),
+				'E.g +55 (81) 2121-6000'
+			);
 
 			expect(onChange).toHaveBeenLastCalledWith({
 				target: {value: '558121216000'},
@@ -314,17 +301,15 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input[name="LPS-134259"]');
-
-			expect(input.value).toBe('1234');
+			expect(
+				document.querySelector('input[name="LPS-134259"]')
+			).toHaveValue('1234');
 		});
 
 		it('allows input mask format to have only numbers', () => {
 			render(<Numeric inputMask inputMaskFormat={99} value="1234" />);
 
-			const input = document.querySelector('input');
-
-			expect(input.value).toBe('12');
+			expect(screen.queryByRole('textbox')).toHaveValue('12');
 		});
 
 		/**
@@ -342,12 +327,12 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
+			const input = screen.queryByRole('textbox');
 
 			userEvent.click(input);
 			userEvent.type(input, '{backspace}');
 
-			expect(input.value).toBe('1');
+			expect(input).toHaveValue('1');
 		});
 	});
 
@@ -364,9 +349,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			expect(input.value).toBe('123');
+			expect(screen.queryByRole('textbox')).toHaveValue('123');
 			expect(screen.getByText('$')).toHaveClass('input-group-text');
 		});
 
@@ -382,10 +365,8 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
 			expect(screen.getByText('$')).toHaveClass('input-group-text');
-			expect(input.value).toBe('123');
+			expect(screen.queryByRole('textbox')).toHaveValue('123');
 		});
 
 		it('renders the thousand separator', () => {
@@ -399,9 +380,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			expect(input.value).toBe('1,234');
+			expect(screen.queryByRole('textbox')).toHaveValue('1,234');
 		});
 
 		it('hides the thousand separator if it is set to `none`', () => {
@@ -415,9 +394,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			expect(input.value).toBe('1234');
+			expect(screen.queryByRole('textbox')).toHaveValue('1234');
 		});
 
 		it('allows user to input a decimal separator', () => {
@@ -432,9 +409,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			userEvent.type(input, '1,234');
+			userEvent.type(screen.queryByRole('textbox'), '1,234');
 
 			expect(onChange).toHaveBeenLastCalledWith({
 				target: {value: '1,23'},
@@ -452,9 +427,10 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			expect(input).toHaveAttribute('placeholder', '0,00');
+			expect(screen.queryByRole('textbox')).toHaveAttribute(
+				'placeholder',
+				'0,00'
+			);
 		});
 
 		it('allows user to input only the decimal quantity defined by decimal places field', () => {
@@ -470,9 +446,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			userEvent.type(input, '1,2345678');
+			userEvent.type(screen.queryByRole('textbox'), '1,2345678');
 
 			expect(onChange).toHaveBeenLastCalledWith({
 				target: {value: '1,234'},
@@ -496,9 +470,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			userEvent.type(input, 'a# @e');
+			userEvent.type(screen.queryByRole('textbox'), 'a# @e');
 
 			expect(onChange).not.toHaveBeenCalled();
 		});
@@ -519,9 +491,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			userEvent.type(input, '0083,5');
+			userEvent.type(screen.queryByRole('textbox'), '0083,5');
 
 			expect(onChange).toHaveBeenLastCalledWith({
 				target: {value: '83,5'},
@@ -541,9 +511,7 @@ describe('Field Numeric', () => {
 				/>
 			);
 
-			const input = document.querySelector('input');
-
-			userEvent.type(input, '00,083');
+			userEvent.type(screen.queryByRole('textbox'), '00,083');
 
 			expect(onChange).toHaveBeenLastCalledWith({
 				target: {value: '0,083'},

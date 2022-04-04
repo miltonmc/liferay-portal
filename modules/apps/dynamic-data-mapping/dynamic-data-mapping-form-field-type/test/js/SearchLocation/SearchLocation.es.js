@@ -266,18 +266,13 @@ describe('Field Search Location', () => {
 		).toBe(true);
 	});
 
-	it('must to be append google dropdown places script', async () => {
-		const {getAllByLabelText} = await render(
-			<SearchLocationWithProvider {...defaultConfig} />
-		);
+	it('must to be append google dropdown places script', () => {
+		render(<SearchLocationWithProvider {...defaultConfig} />);
 
-		const searchLocationField = getAllByLabelText('Search Location');
-		expect(searchLocationField).toHaveLength(2);
-		const searchLocationFieldTagName = searchLocationField[1].getElementsByTagName(
-			'script'
-		);
-		expect(searchLocationFieldTagName).toHaveLength(1);
-		const googlePlacesScriptElement = searchLocationFieldTagName.item(0);
+		const searchLocationField = screen.getByLabelText('Search Location');
+		const googlePlacesScriptElement = searchLocationField
+			.getElementsByTagName('script')
+			.item(0);
 
 		expect(!!googlePlacesScriptElement).toBe(true);
 	});
@@ -286,7 +281,7 @@ describe('Field Search Location', () => {
 		render(
 			<SearchLocationWithProvider
 				{...defaultConfig}
-				displayErrors={true}
+				displayErrors
 				errorMessage="This field is required."
 				valid={false}
 				value='{"address": "Address"}'
@@ -324,9 +319,9 @@ describe('Field Search Location', () => {
 		render(
 			<SearchLocationWithProvider
 				{...defaultConfig}
-				displayErrors={true}
+				displayErrors
 				errorMessage="This field is required."
-				pageValidationFailed={true}
+				pageValidationFailed
 				valid={false}
 				value='{"address": "Address"}'
 			/>

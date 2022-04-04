@@ -15,63 +15,20 @@
 import '@testing-library/jest-dom/extend-expect';
 import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
 import ColorPicker from '../../../src/main/resources/META-INF/resources/ColorPicker/ColorPicker.es';
 
-const name = 'colorPicker';
-const spritemap = 'icons.svg';
-
-const ColorPickerWithProvider = (props) => (
-	<PageProvider value={{editingLanguageId: 'en_US'}}>
-		<ColorPicker {...props} />
-	</PageProvider>
-);
-
 describe('Field Color Picker', () => {
-	// eslint-disable-next-line no-console
-	const originalWarn = console.warn;
-
-	beforeAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = (...args) => {
-			if (/DataProvider: Trying/.test(args[0])) {
-				return;
-			}
-			originalWarn.call(console, ...args);
-		};
-	});
-
-	afterAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = originalWarn;
-	});
-
-	beforeEach(() => {
-		jest.useFakeTimers();
-		fetch.mockResponseOnce(JSON.stringify({}));
-	});
-
 	it('renders field disabled', () => {
-		const {container} = render(
-			<ColorPickerWithProvider
-				name={name}
-				readOnly={true}
-				spritemap={spritemap}
-			/>
-		);
+		const {container} = render(<ColorPicker name="colorPicker" readOnly />);
 
 		expect(container).toMatchSnapshot();
 	});
 
-	it('renders field with helptext', () => {
+	it('renders field with help text', () => {
 		const {container} = render(
-			<ColorPickerWithProvider
-				name={name}
-				spritemap={spritemap}
-				tip="Helptext"
-			/>
+			<ColorPicker name="colorPicker" tip="Helptext" />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -79,28 +36,14 @@ describe('Field Color Picker', () => {
 
 	it('renders field with label', () => {
 		const {container} = render(
-			<ColorPickerWithProvider
-				label="label"
-				name={name}
-				spritemap={spritemap}
-				tip="Helptext"
-			/>
+			<ColorPicker label="label" name="colorPicker" tip="Helptext" />
 		);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders with basic color', () => {
-		const color = '#FF67AA';
-
-		render(
-			<ColorPickerWithProvider
-				name={name}
-				readOnly
-				spritemap={spritemap}
-				value={color}
-			/>
-		);
+		render(<ColorPicker readOnly value="#FF67AA" />);
 
 		expect(screen.getByRole('textbox')).toHaveValue('FF67AA');
 	});

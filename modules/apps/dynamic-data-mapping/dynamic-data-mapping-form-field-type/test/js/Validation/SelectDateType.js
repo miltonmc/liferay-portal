@@ -121,7 +121,7 @@ describe('SelectDateType', () => {
 					template: 'pastDates({name}, "{parameter}")',
 				}}
 				validations={validations}
-				visible={true}
+				visible
 			/>
 		);
 

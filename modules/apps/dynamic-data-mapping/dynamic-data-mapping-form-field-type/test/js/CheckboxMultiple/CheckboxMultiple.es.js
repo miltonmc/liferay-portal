@@ -15,157 +15,73 @@
 import '@testing-library/jest-dom/extend-expect';
 import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
 import CheckboxMultiple from '../../../src/main/resources/META-INF/resources/CheckboxMultiple/CheckboxMultiple.es';
 
-const spritemap = 'icons.svg';
-
-const CheckboxMultipleWithProvider = (props) => (
-	<PageProvider value={{editingLanguageId: 'en_US'}}>
-		<CheckboxMultiple {...props} />
-	</PageProvider>
-);
-
 describe('Field Checkbox Multiple', () => {
-	// eslint-disable-next-line no-console
-	const originalWarn = console.warn;
-
-	beforeAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = (...args) => {
-			if (/DataProvider: Trying/.test(args[0])) {
-				return;
-			}
-			originalWarn.call(console, ...args);
-		};
-	});
-
-	afterAll(() => {
-		// eslint-disable-next-line no-console
-		console.warn = originalWarn;
-	});
-
-	beforeEach(() => {
-		jest.useFakeTimers();
-		fetch.mockResponseOnce(JSON.stringify({}));
-	});
-
 	it('is not editable', () => {
-		const {container} = render(
-			<CheckboxMultipleWithProvider
-				readOnly={true}
-				spritemap={spritemap}
-			/>
-		);
+		const {container} = render(<CheckboxMultiple readOnly />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has a helptext', () => {
-		const {container} = render(
-			<CheckboxMultipleWithProvider
-				spritemap={spritemap}
-				tip="Type something"
-			/>
-		);
+		const {container} = render(<CheckboxMultiple tip="Type something" />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has an id', () => {
-		const {container} = render(
-			<CheckboxMultipleWithProvider id="ID" spritemap={spritemap} />
-		);
+		const {container} = render(<CheckboxMultiple id="ID" />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has a label', () => {
-		const {container} = render(
-			<CheckboxMultipleWithProvider label="label" spritemap={spritemap} />
-		);
+		const {container} = render(<CheckboxMultiple label="label" />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has a predefined Value', () => {
-		const {container} = render(
-			<CheckboxMultipleWithProvider
-				placeholder="Option 1"
-				spritemap={spritemap}
-			/>
-		);
+		const {container} = render(<CheckboxMultiple placeholder="Option 1" />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('is not required', () => {
-		const {container} = render(
-			<CheckboxMultipleWithProvider
-				required={false}
-				spritemap={spritemap}
-			/>
-		);
+		const {container} = render(<CheckboxMultiple required={false} />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('is shown as a switcher', () => {
-		const {container} = render(
-			<CheckboxMultipleWithProvider
-				showAsSwitcher
-				spritemap={spritemap}
-			/>
-		);
+		const {container} = render(<CheckboxMultiple showAsSwitcher />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('is shown as checkbox', () => {
-		const {container} = render(
-			<CheckboxMultipleWithProvider
-				showAsSwitcher={false}
-				spritemap={spritemap}
-			/>
-		);
+		const {container} = render(<CheckboxMultiple showAsSwitcher={false} />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders Label if showLabel is true', () => {
-		const {container} = render(
-			<CheckboxMultipleWithProvider
-				label="text"
-				showLabel
-				spritemap={spritemap}
-			/>
-		);
-
-		expect(container).toMatchSnapshot();
-	});
-
-	it('has a spritemap', () => {
-		const {container} = render(
-			<CheckboxMultipleWithProvider spritemap={spritemap} />
-		);
+		const {container} = render(<CheckboxMultiple label="text" showLabel />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has a value', () => {
-		const {container} = render(
-			<CheckboxMultipleWithProvider spritemap={spritemap} value={true} />
-		);
+		const {container} = render(<CheckboxMultiple value />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('has a key', () => {
-		const {container} = render(
-			<CheckboxMultipleWithProvider key="key" spritemap={spritemap} />
-		);
+		const {container} = render(<CheckboxMultiple key="key" />);
 
 		expect(container).toMatchSnapshot();
 	});
@@ -173,21 +89,16 @@ describe('Field Checkbox Multiple', () => {
 	it('call the onChange callback on the field change', () => {
 		const handleFieldEdited = jest.fn();
 
-		render(
-			<CheckboxMultipleWithProvider
-				onChange={handleFieldEdited}
-				spritemap={spritemap}
-			/>
-		);
+		render(<CheckboxMultiple onChange={handleFieldEdited} />);
 
-		userEvent.click(document.body.querySelector('input'));
+		userEvent.click(screen.getByRole('checkbox', {name: 'Option 1'}));
 
 		expect(handleFieldEdited).toHaveBeenCalled();
 	});
 
 	it('checks the value if there is a value', () => {
 		render(
-			<CheckboxMultipleWithProvider
+			<CheckboxMultiple
 				options={[
 					{
 						label: 'Option 1',
@@ -203,7 +114,6 @@ describe('Field Checkbox Multiple', () => {
 					},
 				]}
 				predefinedValue={['option1', 'option2']}
-				spritemap={spritemap}
 				value={['option3']}
 			/>
 		);
@@ -215,7 +125,7 @@ describe('Field Checkbox Multiple', () => {
 
 	it('checks the predefinedValue if there is no value', () => {
 		render(
-			<CheckboxMultipleWithProvider
+			<CheckboxMultiple
 				options={[
 					{
 						label: 'Option 1',
@@ -231,7 +141,6 @@ describe('Field Checkbox Multiple', () => {
 					},
 				]}
 				predefinedValue={['option1', 'option2']}
-				spritemap={spritemap}
 				value={[]}
 			/>
 		);
@@ -243,7 +152,7 @@ describe('Field Checkbox Multiple', () => {
 
 	it('uncheck all values if the user has edited the field to clear the predefinedValue', () => {
 		render(
-			<CheckboxMultipleWithProvider
+			<CheckboxMultiple
 				localizedValueEdited={{en_US: true}}
 				options={[
 					{
@@ -260,7 +169,6 @@ describe('Field Checkbox Multiple', () => {
 					},
 				]}
 				predefinedValue={['option1', 'option2']}
-				spritemap={spritemap}
 				value={[]}
 			/>
 		);

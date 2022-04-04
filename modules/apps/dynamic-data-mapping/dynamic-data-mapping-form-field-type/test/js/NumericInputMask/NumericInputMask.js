@@ -32,17 +32,13 @@ const THOUSANDS_SEPARATORS = [
 ];
 
 describe('Field Numeric Input Mask', () => {
-	beforeAll(() => {
-		jest.useFakeTimers();
-	});
-
 	it('shows the Thousands Separator, Decimal Separator, Decimal places and Prefix or Suffix field by default', () => {
 		render(
 			<NumericInputMask
 				append=""
 				decimalSymbols={DECIMAL_SYMBOLS}
 				thousandsSeparators={THOUSANDS_SEPARATORS}
-				visible={true}
+				visible
 			/>
 		);
 
@@ -77,7 +73,7 @@ describe('Field Numeric Input Mask', () => {
 				append="$"
 				decimalSymbols={DECIMAL_SYMBOLS}
 				thousandsSeparators={THOUSANDS_SEPARATORS}
-				visible={true}
+				visible
 			/>
 		);
 
@@ -96,7 +92,7 @@ describe('Field Numeric Input Mask', () => {
 				decimalSymbols={DECIMAL_SYMBOLS}
 				thousandsSeparator=","
 				thousandsSeparators={THOUSANDS_SEPARATORS}
-				visible={true}
+				visible
 			/>
 		);
 
@@ -115,7 +111,7 @@ describe('Field Numeric Input Mask', () => {
 				decimalSymbols={DECIMAL_SYMBOLS}
 				thousandsSeparator=""
 				thousandsSeparators={THOUSANDS_SEPARATORS}
-				visible={true}
+				visible
 			/>
 		);
 

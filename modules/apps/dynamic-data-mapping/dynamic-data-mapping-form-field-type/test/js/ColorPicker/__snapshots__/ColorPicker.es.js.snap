@@ -64,7 +64,7 @@ exports[`Field Color Picker renders field disabled 1`] = `
 </div>
 `;
 
-exports[`Field Color Picker renders field with helptext 1`] = `
+exports[`Field Color Picker renders field with help text 1`] = `
 <div>
   <div
     aria-labelledby="colorPicker_fieldDetails"
