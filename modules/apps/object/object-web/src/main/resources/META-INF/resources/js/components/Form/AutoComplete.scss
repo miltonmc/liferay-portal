@@ -1,3 +1,14 @@
+@import 'atlas-variables';
+
+.lfr-objects__auto-complete-trigger {
+	display: flex;
+	justify-content: space-between;
+
+	&-icon {
+		color: $secondary-l1;
+	}
+}
+
 .dropdown-menu {
 	max-width: 550px;
 	width: 100%;

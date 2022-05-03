@@ -13,29 +13,14 @@
  */
 
 import ClayDropDown from '@clayui/drop-down';
+import ClayIcon from '@clayui/icon';
 import React, {useState} from 'react';
 
-import CustomSelect from '../CustomSelect/CustomSelect';
 import FieldBase from './FieldBase';
 
 import './AutoComplete.scss';
 
-interface IAutoCompleteProps extends React.HTMLAttributes<HTMLElement> {
-	children: (item: any) => React.ReactNode;
-	contentRight?: React.ReactNode;
-	emptyStateMessage: string;
-	error?: string;
-	feedbackMessage?: string;
-	items: any[];
-	label: string;
-	onChangeQuery: (value: string) => void;
-	onSelectItem: (item: any) => void;
-	query: string;
-	required?: boolean;
-	value?: string;
-}
-
-const AutoComplete: React.FC<IAutoCompleteProps> = ({
+export default function AutoComplete<T>({
 	children,
 	className,
 	contentRight,
@@ -50,8 +35,25 @@ const AutoComplete: React.FC<IAutoCompleteProps> = ({
 	query,
 	required = false,
 	value,
-}) => {
+}: IProps<T>) {
 	const [active, setActive] = useState<boolean>(false);
+
+	const Trigger = () => (
+		<div
+			className="form-control lfr-objects__auto-complete-trigger"
+			tabIndex={0}
+		>
+			<span>{value || Liferay.Language.get('choose-an-option')}</span>
+
+			<div>
+				{value && contentRight}
+
+				<a className="lfr-objects__auto-complete-trigger-icon">
+					<ClayIcon symbol="caret-double" />
+				</a>
+			</div>
+		</div>
+	);
 
 	return (
 		<FieldBase
@@ -65,13 +67,7 @@ const AutoComplete: React.FC<IAutoCompleteProps> = ({
 			<ClayDropDown
 				active={active}
 				onActiveChange={setActive}
-				trigger={
-					<CustomSelect
-						contentRight={<>{value && contentRight}</>}
-						placeholder={Liferay.Language.get('choose-an-option')}
-						value={value}
-					/>
-				}
+				trigger={<Trigger />}
 			>
 				<ClayDropDown.Search
 					onChange={({target: {value}}) => onChangeQuery(value)}
@@ -105,6 +101,21 @@ const AutoComplete: React.FC<IAutoCompleteProps> = ({
 			</ClayDropDown>
 		</FieldBase>
 	);
-};
+}
 
-export default AutoComplete;
+interface IProps<T> {
+	children: (item: T) => React.ReactNode;
+	className?: string;
+	contentRight?: React.ReactNode;
+	emptyStateMessage: string;
+	error?: string;
+	feedbackMessage?: string;
+	id?: string;
+	items: T[];
+	label: string;
+	onChangeQuery: (value: string) => void;
+	onSelectItem: (item: T) => void;
+	query: string;
+	required?: boolean;
+	value?: string;
+}

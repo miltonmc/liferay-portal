@@ -14,19 +14,36 @@
 
 import React from 'react';
 import './AutoComplete.scss';
-interface IAutoCompleteProps extends React.HTMLAttributes<HTMLElement> {
-	children: (item: any) => React.ReactNode;
+export default function AutoComplete<T>({
+	children,
+	className,
+	contentRight,
+	emptyStateMessage,
+	error,
+	feedbackMessage,
+	id,
+	items,
+	label,
+	onChangeQuery,
+	onSelectItem,
+	query,
+	required,
+	value,
+}: IProps<T>): JSX.Element;
+interface IProps<T> {
+	children: (item: T) => React.ReactNode;
+	className?: string;
 	contentRight?: React.ReactNode;
 	emptyStateMessage: string;
 	error?: string;
 	feedbackMessage?: string;
-	items: any[];
+	id?: string;
+	items: T[];
 	label: string;
 	onChangeQuery: (value: string) => void;
-	onSelectItem: (item: any) => void;
+	onSelectItem: (item: T) => void;
 	query: string;
 	required?: boolean;
 	value?: string;
 }
-declare const AutoComplete: React.FC<IAutoCompleteProps>;
-export default AutoComplete;
+export {};

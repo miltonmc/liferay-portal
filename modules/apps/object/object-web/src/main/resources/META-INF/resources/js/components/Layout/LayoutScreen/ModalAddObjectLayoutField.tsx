@@ -167,15 +167,13 @@ const ModalAddObjectLayoutField: React.FC<IModalAddObjectLayoutFieldProps> = ({
 						label={Liferay.Language.get('field')}
 						onChangeQuery={setQuery}
 						onSelectItem={(item) => {
-							const syntheticEvent: any = {
+							setSelectedObjectField(item);
+							handleChange({
 								target: {
 									name: 'objectFieldId',
 									value: item.id,
 								},
-							};
-
-							setSelectedObjectField(item);
-							handleChange(syntheticEvent);
+							} as any);
 						}}
 						query={query}
 						required
