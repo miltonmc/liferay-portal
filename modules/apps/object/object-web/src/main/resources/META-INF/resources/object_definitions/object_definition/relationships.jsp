@@ -39,13 +39,13 @@ renderResponse.setTitle(objectDefinition.getLabel(locale, true));
 	namespace="<%= liferayPortletResponse.getNamespace() %>"
 	pageNumber="<%= 1 %>"
 	portletURL="<%= liferayPortletResponse.createRenderURL() %>"
-	propsTransformer="js/ObjectDefinitionsRelationshipsFDSPropsTransformer"
+	propsTransformer="js/components/ObjectRelationship/propsTransformer"
 	style="fluid"
 />
 
-<div id="<portlet:namespace />AddObjectRelationship">
+<div>
 	<react:component
-		module="js/components/ModalAddObjectRelationship"
+		module="js/components/ObjectRelationship/AddRelationship"
 		props='<%=
 			HashMapBuilder.<String, Object>put(
 				"apiURL", objectDefinitionsRelationshipsDisplayContext.getAPIURL()
@@ -60,9 +60,9 @@ renderResponse.setTitle(objectDefinition.getLabel(locale, true));
 	/>
 </div>
 
-<div id="<portlet:namespace />DeleteObjectRelationship">
+<div>
 	<react:component
-		module="js/components/ModalDeleteObjectRelationship"
+		module="js/components/ObjectRelationship/DeleteRelationship"
 		props='<%=
 			HashMapBuilder.<String, Object>put(
 				"isApproved", objectDefinition.isApproved()

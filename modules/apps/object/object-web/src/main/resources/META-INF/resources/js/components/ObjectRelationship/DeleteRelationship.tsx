@@ -17,9 +17,9 @@ import {Observer} from '@clayui/modal/lib/types';
 import {fetch, sub} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
 
-import {HEADERS} from '../utils/constants';
-import DangerModal from './DangerModal';
-import WarningModal from './WarningModal';
+import {HEADERS} from '../../utils/constants';
+import DangerModal from '../DangerModal';
+import WarningModal from '../WarningModal';
 
 function ModalDeleteObjectRelationship({
 	objectRelationship,

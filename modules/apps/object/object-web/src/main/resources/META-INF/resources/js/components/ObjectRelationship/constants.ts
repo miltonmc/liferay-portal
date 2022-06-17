@@ -12,7 +12,7 @@
  * details.
  */
 
-export const objectRelationshipTypes = [
+export const RELATIONSHIP_TYPES = [
 	{
 		description: Liferay.Language.get(
 			"one-object's-entry-interacts-only-with-one-other-object's-entry"

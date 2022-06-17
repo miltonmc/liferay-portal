@@ -26,14 +26,14 @@ import {
 } from '@liferay/object-js-components-web';
 import React, {useState} from 'react';
 
-import {updateRelationship} from '../utils/api';
+import {updateRelationship} from '../../utils/api';
 import {
 	availableLocales,
 	defaultLanguageId,
 	defaultLocale,
-} from '../utils/locale';
-import {objectRelationshipTypes} from '../utils/objectRelationshipTypes';
-import {firstLetterUppercase} from '../utils/string';
+} from '../../utils/locale';
+import {firstLetterUppercase} from '../../utils/string';
+import {RELATIONSHIP_TYPES} from './constants';
 
 export default function EditObjectRelationship({
 	deletionTypes,
@@ -48,7 +48,7 @@ export default function EditObjectRelationship({
 		}
 	);
 
-	const selectedType = objectRelationshipTypes.find(
+	const selectedType = RELATIONSHIP_TYPES.find(
 		(relationshipType) => relationshipType.value === initialValues.type
 	);
 
@@ -127,7 +127,7 @@ export default function EditObjectRelationship({
 				<FormCustomSelect
 					disabled
 					label={Liferay.Language.get('type')}
-					options={objectRelationshipTypes}
+					options={RELATIONSHIP_TYPES}
 					required
 					value={selectedType?.label}
 				/>

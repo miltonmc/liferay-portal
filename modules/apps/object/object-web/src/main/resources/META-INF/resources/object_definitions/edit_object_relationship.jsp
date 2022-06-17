@@ -22,7 +22,7 @@ ObjectRelationship objectRelationship = (ObjectRelationship)request.getAttribute
 %>
 
 <react:component
-	module="js/components/EditObjectRelationship"
+	module="js/components/ObjectRelationship/EditRelationship"
 	props='<%=
 		HashMapBuilder.<String, Object>put(
 			"deletionTypes", objectDefinitionsRelationshipsDisplayContext.getObjectRelationshipDeletionTypesJSONArray()

@@ -12,7 +12,7 @@
  * details.
  */
 
-export declare const objectRelationshipTypes: {
+export declare const RELATIONSHIP_TYPES: {
 	description: string;
 	label: string;
 	value: string;

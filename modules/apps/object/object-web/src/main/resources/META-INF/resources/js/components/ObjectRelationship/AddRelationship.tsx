@@ -24,10 +24,10 @@ import {
 } from '@liferay/object-js-components-web';
 import React, {useEffect, useState} from 'react';
 
-import {getObjectDefinitions, save} from '../utils/api';
-import {defaultLanguageId} from '../utils/locale';
-import {objectRelationshipTypes} from '../utils/objectRelationshipTypes';
-import {toCamelCase} from '../utils/string';
+import {getObjectDefinitions, save} from '../../utils/api';
+import {defaultLanguageId} from '../../utils/locale';
+import {toCamelCase} from '../../utils/string';
+import {RELATIONSHIP_TYPES} from './constants';
 
 const ModalAddObjectRelationship: React.FC<IProps> = ({
 	apiURL,
@@ -57,7 +57,7 @@ const ModalAddObjectRelationship: React.FC<IProps> = ({
 		type: {label: '', value: ''},
 	};
 
-	const filteredObjectRelationshipTypes = objectRelationshipTypes.filter(
+	const filteredObjectRelationshipTypes = RELATIONSHIP_TYPES.filter(
 		({value}) => {
 			if (!system && !ffOneToOneRelationshipConfigurationEnabled) {
 				return value !== 'oneToOne';
