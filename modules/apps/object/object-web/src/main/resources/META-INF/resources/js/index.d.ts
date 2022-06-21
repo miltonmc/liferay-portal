@@ -159,7 +159,7 @@ interface ObjectRelationship {
 	objectDefinitionName2: string;
 	objectRelationshipId: number;
 	reverse?: boolean;
-	type: string;
+	type: ObjectRelationshipType;
 }
 
 interface ObjectDefinitionsRelationship {
@@ -167,6 +167,8 @@ interface ObjectDefinitionsRelationship {
 	label: string;
 	related?: boolean;
 }
+
+type ObjectRelationshipType = 'manyToMany' | 'oneToMany' | 'oneToOne';
 
 type ObjectValidationType = {
 	label: string;

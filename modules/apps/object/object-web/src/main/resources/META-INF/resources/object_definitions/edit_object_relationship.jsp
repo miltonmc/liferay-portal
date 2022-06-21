@@ -29,8 +29,6 @@ ObjectRelationship objectRelationship = (ObjectRelationship)request.getAttribute
 		).put(
 			"hasUpdateObjectDefinitionPermission", objectDefinitionsRelationshipsDisplayContext.hasUpdateObjectDefinitionPermission()
 		).put(
-			"isReverse", objectRelationship.isReverse()
-		).put(
 			"objectRelationship", objectDefinitionsRelationshipsDisplayContext.getObjectRelationshipJSONObject(objectRelationship)
 		).build()
 	%>'

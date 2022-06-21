@@ -12,15 +12,18 @@
  * details.
  */
 
-import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
+/// <reference types="react" />
+
+export default function AddRelationship({
+	apiURL,
+	ffOneToOneRelationshipConfigurationEnabled,
+	objectDefinitionId,
+}: IProps): JSX.Element;
+interface IProps {
 	apiURL: string;
-	ffOneToManyRelationshipCustomAndNativeObjects: boolean;
 	ffOneToOneRelationshipConfigurationEnabled: boolean;
 	objectDefinitionId: number;
 	observer: any;
 	onClose: () => void;
-	system: boolean;
 }
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+export {};

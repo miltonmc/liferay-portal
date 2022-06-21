@@ -14,16 +14,14 @@
 
 /// <reference types="react" />
 
-export default function EditObjectRelationship({
+export default function EditRelationship({
 	deletionTypes,
 	hasUpdateObjectDefinitionPermission,
-	isReverse,
 	objectRelationship: initialValues,
 }: IProps): JSX.Element;
 interface IProps {
 	deletionTypes: TDeletionType[];
 	hasUpdateObjectDefinitionPermission: boolean;
-	isReverse: boolean;
 	objectRelationship: ObjectRelationship;
 }
 declare type TDeletionType = {

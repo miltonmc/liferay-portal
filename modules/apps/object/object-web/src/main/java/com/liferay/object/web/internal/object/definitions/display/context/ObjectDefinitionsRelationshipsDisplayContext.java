@@ -140,13 +140,16 @@ public class ObjectDefinitionsRelationshipsDisplayContext
 		).put(
 			"name", objectRelationship.getName()
 		).put(
-			"objectDefinitionId1", objectRelationship.getObjectDefinitionId1()
+			"objectDefinitionId1",
+			Long.valueOf(objectRelationship.getObjectDefinitionId1())
 		).put(
-			"objectDefinitionId2", objectRelationship.getObjectDefinitionId2()
+			"objectDefinitionId2",
+			Long.valueOf(objectRelationship.getObjectDefinitionId2())
 		).put(
 			"objectDefinitionName2", objectDefinition2.getShortName()
 		).put(
-			"objectRelationshipId", objectRelationship.getObjectRelationshipId()
+			"objectRelationshipId",
+			Long.valueOf(objectRelationship.getObjectRelationshipId())
 		).put(
 			"parameterObjectFieldId",
 			() -> {
@@ -158,6 +161,8 @@ public class ObjectDefinitionsRelationshipsDisplayContext
 
 				return null;
 			}
+		).put(
+			"reverse", objectRelationship.isReverse()
 		).put(
 			"type", objectRelationship.getType()
 		);

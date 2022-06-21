@@ -16,13 +16,10 @@ import ClayAlert from '@clayui/alert';
 import {
 	Card,
 	FormCustomSelect,
-	Input,
 	InputLocalized,
 	SidePanelForm,
 	closeSidePanel,
-	invalidateRequired,
 	openToast,
-	useForm,
 } from '@liferay/object-js-components-web';
 import React, {useState} from 'react';
 
@@ -33,12 +30,14 @@ import {
 	defaultLocale,
 } from '../../utils/locale';
 import {firstLetterUppercase} from '../../utils/string';
-import {RELATIONSHIP_TYPES} from './constants';
+import {
+	ObjectRelationshipFormBase,
+	useObjectRelationshipForm,
+} from './ObjectRelationshipFormBase';
 
-export default function EditObjectRelationship({
+export default function EditRelationship({
 	deletionTypes,
 	hasUpdateObjectDefinitionPermission,
-	isReverse,
 	objectRelationship: initialValues,
 }: IProps) {
 	const [selectedLocale, setSelectedLocale] = useState(
@@ -46,10 +45,6 @@ export default function EditObjectRelationship({
 			label: string;
 			symbol: string;
 		}
-	);
-
-	const selectedType = RELATIONSHIP_TYPES.find(
-		(relationshipType) => relationshipType.value === initialValues.type
 	);
 
 	const onSubmit = async (objectRelationship: ObjectRelationship) => {
@@ -68,23 +63,18 @@ export default function EditObjectRelationship({
 		}
 	};
 
-	const validate = (value: ObjectRelationship) => {
-		const errors: {deletionType?: string; label?: string} = {};
-
-		if (invalidateRequired(value.label[defaultLanguageId])) {
-			errors.label = Liferay.Language.get('required');
-		}
-
-		return errors;
-	};
-
-	const {errors, handleSubmit, setValues, values} = useForm({
+	const {
+		errors,
+		handleChange,
+		handleSubmit,
+		setValues,
+		values,
+	} = useObjectRelationshipForm({
 		initialValues,
 		onSubmit,
-		validate,
 	});
 
-	const readOnly = !hasUpdateObjectDefinitionPermission || isReverse;
+	const readOnly = !hasUpdateObjectDefinitionPermission || values.reverse;
 
 	return (
 		<SidePanelForm
@@ -93,7 +83,7 @@ export default function EditObjectRelationship({
 			title={Liferay.Language.get('relationship')}
 		>
 			<Card title={Liferay.Language.get('basic-info')}>
-				{isReverse && (
+				{values.reverse && (
 					<ClayAlert
 						displayType="warning"
 						title={`${Liferay.Language.get('warning')}:`}
@@ -114,30 +104,15 @@ export default function EditObjectRelationship({
 					onTranslationsChange={(label) => setValues({label})}
 					required
 					selectedLocale={selectedLocale}
-					translations={values.label}
+					translations={values.label as LocalizedValue<string>}
 				/>
 
-				<Input
-					disabled
-					label={Liferay.Language.get('name')}
-					required
-					value={initialValues.name}
-				/>
-
-				<FormCustomSelect
-					disabled
-					label={Liferay.Language.get('type')}
-					options={RELATIONSHIP_TYPES}
-					required
-					value={selectedType?.label}
-				/>
-
-				<FormCustomSelect
-					disabled
-					label={Liferay.Language.get('object')}
-					options={[]}
-					required
-					value={initialValues.objectDefinitionName2}
+				<ObjectRelationshipFormBase
+					errors={errors}
+					handleChange={handleChange}
+					readonly
+					setValues={setValues}
+					values={values}
 				/>
 
 				<FormCustomSelect
@@ -148,7 +123,7 @@ export default function EditObjectRelationship({
 					}
 					options={deletionTypes}
 					required
-					value={firstLetterUppercase(values.deletionType)}
+					value={firstLetterUppercase(values.deletionType as string)}
 				/>
 			</Card>
 		</SidePanelForm>
@@ -158,7 +133,6 @@ export default function EditObjectRelationship({
 interface IProps {
 	deletionTypes: TDeletionType[];
 	hasUpdateObjectDefinitionPermission: boolean;
-	isReverse: boolean;
 	objectRelationship: ObjectRelationship;
 }
 

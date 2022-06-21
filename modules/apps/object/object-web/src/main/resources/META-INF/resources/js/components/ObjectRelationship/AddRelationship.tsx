@@ -16,71 +16,38 @@ import ClayAlert from '@clayui/alert';
 import ClayButton from '@clayui/button';
 import ClayForm from '@clayui/form';
 import ClayModal, {ClayModalProvider, useModal} from '@clayui/modal';
-import {
-	FormCustomSelect,
-	Input,
-	Select,
-	useForm,
-} from '@liferay/object-js-components-web';
+import {Input} from '@liferay/object-js-components-web';
 import React, {useEffect, useState} from 'react';
 
-import {getObjectDefinitions, save} from '../../utils/api';
+import {save} from '../../utils/api';
 import {defaultLanguageId} from '../../utils/locale';
 import {toCamelCase} from '../../utils/string';
-import {RELATIONSHIP_TYPES} from './constants';
+import {
+	ObjectRelationshipFormBase,
+	useObjectRelationshipForm,
+} from './ObjectRelationshipFormBase';
 
-const ModalAddObjectRelationship: React.FC<IProps> = ({
+function ModalAddObjectRelationship({
 	apiURL,
 	ffOneToOneRelationshipConfigurationEnabled,
 	objectDefinitionId,
 	observer,
 	onClose,
-	system,
-}) => {
+}: IProps) {
 	const [error, setError] = useState<string>('');
 
-	const [objectDefinitions, setObjectDefinitions] = useState<
-		ObjectDefinition[]
-	>([]);
-
-	const [
-		manyToManyObjectDefinitions,
-		setManyToManyObjectDefinitions,
-	] = useState<ObjectDefinition[]>([]);
-
-	const [manyToMany, setManyToMany] = useState(false);
-
-	const initialValues: TInitialValues = {
-		label: '',
-		name: undefined,
-		objectDefinitionId2: 0,
-		type: {label: '', value: ''},
+	const initialValues: Partial<ObjectRelationship> = {
+		objectDefinitionId1: Number(objectDefinitionId),
 	};
 
-	const filteredObjectRelationshipTypes = RELATIONSHIP_TYPES.filter(
-		({value}) => {
-			if (!system && !ffOneToOneRelationshipConfigurationEnabled) {
-				return value !== 'oneToOne';
-			}
-
-			return value === 'oneToMany' || value === 'manyToMany';
-		}
-	);
-
-	const onSubmit = async ({
-		label,
-		name,
-		objectDefinitionId2,
-		type,
-	}: TInitialValues) => {
+	const onSubmit = async ({label, name, ...others}: ObjectRelationship) => {
 		try {
 			await save(
 				apiURL,
 				{
-					label: {[defaultLanguageId]: label},
-					name: name || toCamelCase(label),
-					objectDefinitionId2,
-					type: type.value,
+					...others,
+					label,
+					name: name ?? toCamelCase(label[defaultLanguageId]!),
 				},
 				'POST'
 			);
@@ -93,68 +60,13 @@ const ModalAddObjectRelationship: React.FC<IProps> = ({
 		}
 	};
 
-	const validate = (values: TInitialValues) => {
-		const errors: any = {};
-
-		if (!values.label) {
-			errors.label = Liferay.Language.get('required');
-		}
-
-		if (!(values.name ?? values.label)) {
-			errors.name = Liferay.Language.get('required');
-		}
-
-		if (!values.type.label || !values.type.value) {
-			errors.type = Liferay.Language.get('required');
-		}
-
-		if (!values.objectDefinitionId2) {
-			errors.objectDefinitionId2 = Liferay.Language.get('required');
-		}
-
-		return errors;
-	};
-
-	const {errors, handleChange, handleSubmit, setValues, values} = useForm({
-		initialValues,
-		onSubmit,
-		validate,
-	});
-
-	useEffect(() => {
-		const makeRequest = async () => {
-			const items = await getObjectDefinitions();
-
-			const currentObjectDefinition = items.find(
-				({id}) => Number(objectDefinitionId) === id
-			)!;
-
-			const objectDefinitions = Liferay.FeatureFlags['LPS-135430']
-				? items.filter(({storageType}) => storageType === 'default')
-				: items;
-
-			let manyToManyObjectDefinitions = objectDefinitions.filter(
-				(objectDefinition) =>
-					objectDefinition.id !== Number(objectDefinitionId)
-			);
-
-			if (currentObjectDefinition.system) {
-				manyToManyObjectDefinitions = objectDefinitions.filter(
-					(objectDefinition) => !objectDefinition.system
-				);
-			}
-
-			setManyToManyObjectDefinitions(manyToManyObjectDefinitions);
-
-			const definitions = currentObjectDefinition.system
-				? objectDefinitions.filter(({system}) => !system)
-				: objectDefinitions;
-
-			setObjectDefinitions(definitions);
-		};
-
-		makeRequest();
-	}, [objectDefinitionId]);
+	const {
+		errors,
+		handleChange,
+		handleSubmit,
+		setValues,
+		values,
+	} = useObjectRelationshipForm({initialValues, onSubmit});
 
 	return (
 		<ClayModal observer={observer}>
@@ -170,61 +82,35 @@ const ModalAddObjectRelationship: React.FC<IProps> = ({
 
 					<Input
 						error={errors.label}
-						id="objectRelationshipLabel"
 						label={Liferay.Language.get('label')}
-						name="label"
-						onChange={handleChange}
-						required
-						value={values.label}
-					/>
-
-					<Input
-						error={errors.name}
-						id="objectRelationshipName"
-						label={Liferay.Language.get('name')}
-						name="name"
-						onChange={handleChange}
-						required
-						value={values.name ?? toCamelCase(values.label)}
-					/>
-
-					<FormCustomSelect
-						error={errors.type}
-						label={Liferay.Language.get('type')}
-						onChange={(type) => {
-							setValues({type});
-							setManyToMany(type.value === 'manyToMany');
-						}}
-						options={filteredObjectRelationshipTypes}
-						required
-						value={values.type.label}
-					/>
-
-					<Select
-						error={errors.objectDefinitionId2}
-						id="objectDefinitionId2"
-						label={Liferay.Language.get('object')}
-						onChange={({target: {value}}: any) => {
-							const {id} = manyToMany
-								? manyToManyObjectDefinitions[Number(value)]
-								: objectDefinitions[Number(value)];
-
-							setValues({objectDefinitionId2: Number(id)});
-						}}
-						options={
-							manyToMany
-								? manyToManyObjectDefinitions.map(
-										({name}) => name
-								  )
-								: objectDefinitions.map(({name}) => name)
+						onChange={({target: {value}}) =>
+							setValues({label: {[defaultLanguageId]: value}})
 						}
 						required
+						value={values.label?.[defaultLanguageId]}
+					/>
+
+					<ObjectRelationshipFormBase
+						errors={errors}
+						ffOneToOneRelationshipConfigurationEnabled={
+							ffOneToOneRelationshipConfigurationEnabled
+						}
+						handleChange={handleChange}
+						setValues={setValues}
+						values={{
+							...values,
+							name:
+								values.name ??
+								toCamelCase(
+									values.label?.[defaultLanguageId] ?? ''
+								),
+						}}
 					/>
 				</ClayModal.Body>
 
 				<ClayModal.Footer
 					last={
-						<ClayButton.Group key={1} spaced>
+						<ClayButton.Group spaced>
 							<ClayButton
 								displayType="secondary"
 								onClick={() => onClose()}
@@ -241,35 +127,13 @@ const ModalAddObjectRelationship: React.FC<IProps> = ({
 			</ClayForm>
 		</ClayModal>
 	);
-};
-
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	ffOneToManyRelationshipCustomAndNativeObjects: boolean;
-	ffOneToOneRelationshipConfigurationEnabled: boolean;
-	objectDefinitionId: number;
-	observer: any;
-	onClose: () => void;
-	system: boolean;
 }
 
-type TInitialValues = {
-	label: string;
-	name?: string;
-	objectDefinitionId2: number;
-	type: {
-		label: string;
-		value: string;
-	};
-};
-
-const ModalWithProvider: React.FC<IProps> = ({
+export default function AddRelationship({
 	apiURL,
-	ffOneToManyRelationshipCustomAndNativeObjects,
 	ffOneToOneRelationshipConfigurationEnabled,
 	objectDefinitionId,
-	system,
-}) => {
+}: IProps) {
 	const [visibleModal, setVisibleModal] = useState<boolean>(false);
 	const {observer, onClose} = useModal({
 		onClose: () => setVisibleModal(false),
@@ -288,20 +152,22 @@ const ModalWithProvider: React.FC<IProps> = ({
 			{visibleModal && (
 				<ModalAddObjectRelationship
 					apiURL={apiURL}
-					ffOneToManyRelationshipCustomAndNativeObjects={
-						ffOneToManyRelationshipCustomAndNativeObjects
-					}
 					ffOneToOneRelationshipConfigurationEnabled={
 						ffOneToOneRelationshipConfigurationEnabled
 					}
 					objectDefinitionId={objectDefinitionId}
 					observer={observer}
 					onClose={onClose}
-					system={system}
 				/>
 			)}
 		</ClayModalProvider>
 	);
-};
+}
 
-export default ModalWithProvider;
+interface IProps {
+	apiURL: string;
+	ffOneToOneRelationshipConfigurationEnabled: boolean;
+	objectDefinitionId: number;
+	observer: any;
+	onClose: () => void;
+}

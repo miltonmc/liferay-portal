@@ -162,7 +162,7 @@
 	</tr>
 	<tr>
 		<td>LABEL_OBJECT_RELATIONSHIP</td>
-		<td>//input[@id ='objectRelationshipLabel']</td>
+		<td>//label[contains(text(),'Label')]/following::input[@class='form-control']</td>
 		<td></td>
 	</tr>
 	<tr>
@@ -197,7 +197,7 @@
 	</tr>
 	<tr>
 		<td>NAME_OBJECT_RELATIONSHIP</td>
-		<td>//input[@id ='objectRelationshipName']</td>
+		<td>//label[contains(text(),'Name')]/following::input[@class='form-control']</td>
 		<td></td>
 	</tr>
 	<tr>
