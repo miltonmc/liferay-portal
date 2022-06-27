@@ -804,9 +804,7 @@ definition {
 
 		Button.clickSave();
 
-		AssertElementPresent(
-			key_fieldName = "Request Files",
-			locator1 = "ObjectField#ERROR_REQUIRED_FIELD_SPECIFIC");
+		FieldBase.assertRequiredFieldErrorPresent(fieldLabel = "Request Files");
 	}
 
 	@description = "LPS-148112 - Verify if field called Storage Folder have a default value"
@@ -896,9 +894,7 @@ definition {
 
 		Button.clickSave();
 
-		AssertElementPresent(
-			key_fieldName = "Storage Folder",
-			locator1 = "ObjectField#ERROR_REQUIRED_FIELD_SPECIFIC");
+		FieldBase.assertRequiredFieldErrorPresent(fieldLabel = "Storage Folder");
 	}
 
 }
