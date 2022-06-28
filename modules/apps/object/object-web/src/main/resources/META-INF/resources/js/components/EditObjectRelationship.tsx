@@ -24,10 +24,9 @@ import {
 	openToast,
 	useForm,
 } from '@liferay/object-js-components-web';
-import {fetch} from 'frontend-js-web';
 import React, {useState} from 'react';
 
-import {HEADERS} from '../utils/constants';
+import {updateRelationship} from '../utils/api';
 import {
 	availableLocales,
 	defaultLanguageId,
@@ -53,23 +52,9 @@ export default function EditObjectRelationship({
 		(relationshipType) => relationshipType.value === initialValues.type
 	);
 
-	const onSubmit = async (objectRelationship: TObjectRelationship) => {
-		const response = await fetch(
-			`/o/object-admin/v1.0/object-relationships/${objectRelationship.objectRelationshipId}`,
-			{
-				body: JSON.stringify({
-					deletionType: objectRelationship.deletionType,
-					label: objectRelationship.label,
-				}),
-				headers: HEADERS,
-				method: 'PUT',
-			}
-		);
-
-		if (response.status === 401) {
-			window.location.reload();
-		}
-		else if (response.ok) {
+	const onSubmit = async (objectRelationship: ObjectRelationship) => {
+		try {
+			await updateRelationship(objectRelationship);
 			closeSidePanel();
 
 			openToast({
@@ -78,19 +63,12 @@ export default function EditObjectRelationship({
 				),
 			});
 		}
-		else {
-			const {
-				title = Liferay.Language.get('an-error-occurred'),
-			} = (await response.json()) as any;
-
-			openToast({
-				message: title,
-				type: 'danger',
-			});
+		catch ({message}) {
+			openToast({message: message as string, type: 'danger'});
 		}
 	};
 
-	const validate = (value: TObjectRelationship) => {
+	const validate = (value: ObjectRelationship) => {
 		const errors: {deletionType?: string; label?: string} = {};
 
 		if (invalidateRequired(value.label[defaultLanguageId])) {
@@ -181,25 +159,10 @@ interface IProps {
 	deletionTypes: TDeletionType[];
 	hasUpdateObjectDefinitionPermission: boolean;
 	isReverse: boolean;
-	objectRelationship: TObjectRelationship;
+	objectRelationship: ObjectRelationship;
 }
 
 type TDeletionType = {
 	label: string;
 	value: string;
-};
-
-type TName = {
-	[key: string]: string;
-};
-
-type TObjectRelationship = {
-	deletionType: string;
-	label: TName;
-	name: string;
-	objectDefinitionId1: number;
-	objectDefinitionId2: number;
-	objectDefinitionName2: string;
-	objectRelationshipId: number;
-	type: string;
 };

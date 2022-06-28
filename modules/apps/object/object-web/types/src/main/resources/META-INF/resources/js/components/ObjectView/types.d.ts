@@ -33,12 +33,6 @@ export declare type TObjectColumn = {
 	value?: string;
 	valueList?: LabelValueObject[];
 };
-export interface ObjectFieldView extends ObjectField {
-	checked?: boolean;
-	filtered?: boolean;
-	hasFilter?: boolean;
-	type?: string;
-}
 export declare type TObjectViewColumn = {
 	defaultSort: boolean;
 	fieldLabel: string;

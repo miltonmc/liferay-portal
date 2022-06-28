@@ -18,7 +18,6 @@ import React, {useContext, useState} from 'react';
 
 import {ModalAddFilter} from '../../ModalAddFilter';
 import ViewContext, {TYPES} from '../context';
-import {ObjectFieldView} from '../types';
 
 export function FilterScreen() {
 	const [

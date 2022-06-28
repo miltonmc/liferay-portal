@@ -22,6 +22,11 @@ import {
 import {fetch} from 'frontend-js-web';
 import React, {useContext, useEffect, useState} from 'react';
 
+import {
+	fetchJSON,
+	getObjectFields,
+	getObjectRelationships,
+} from '../../utils/api';
 import {HEADERS} from '../../utils/constants';
 import {defaultLanguageId} from '../../utils/locale';
 import {TabsVisitor} from '../../utils/visitor';
@@ -119,35 +124,19 @@ const Layout: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
 
 	useEffect(() => {
 		const makeFetch = async () => {
-			const objectLayoutResponse = await fetch(
-				`/o/object-admin/v1.0/object-layouts/${objectLayoutId}`,
-				{
-					headers: HEADERS,
-					method: 'GET',
-				}
-			);
-
 			const {
 				defaultObjectLayout,
 				name,
 				objectDefinitionId,
 				objectLayoutTabs,
-			} = (await objectLayoutResponse.json()) as any;
-
-			const objectFieldsResponse = await fetch(
-				`/o/object-admin/v1.0/object-definitions/${objectDefinitionId}/object-fields`,
-				{
-					headers: HEADERS,
-					method: 'GET',
-				}
+			} = await fetchJSON(
+				`/o/object-admin/v1.0/object-layouts/${objectLayoutId}`
 			);
 
-			const objectRelationshipsResponse = await fetch(
-				`/o/object-admin/v1.0/object-definitions/${objectDefinitionId}/object-relationships`,
-				{
-					headers: HEADERS,
-					method: 'GET',
-				}
+			const objectFields = await getObjectFields(objectDefinitionId);
+
+			const objectRelationships = await getObjectRelationships(
+				objectDefinitionId
 			);
 
 			const objectLayout = {
@@ -162,12 +151,6 @@ const Layout: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
 				},
 				type: TYPES.ADD_OBJECT_LAYOUT,
 			});
-
-			const {
-				items: objectFields,
-			}: {
-				items: TObjectField[];
-			} = (await objectFieldsResponse.json()) as any;
 
 			if (ffUseMetadataAsSystemFields) {
 				const filteredObjectFields = objectFields.filter(
@@ -195,12 +178,6 @@ const Layout: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
 					type: TYPES.ADD_OBJECT_FIELDS,
 				});
 			}
-
-			const {
-				items: objectRelationships,
-			}: {
-				items: TObjectRelationship[];
-			} = (await objectRelationshipsResponse.json()) as any;
 
 			dispatch({
 				payload: {

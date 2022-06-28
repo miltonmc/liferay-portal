@@ -19,7 +19,6 @@ import {
 	FormCustomSelect,
 	Input,
 } from '@liferay/object-js-components-web';
-import {fetch} from 'frontend-js-web';
 import React, {
 	FormEvent,
 	useCallback,
@@ -28,10 +27,8 @@ import React, {
 	useState,
 } from 'react';
 
-import {HEADERS} from '../utils/constants';
-import {defaultLanguageId, locale} from '../utils/locale';
-
-HEADERS.append('Accept-Language', locale!.symbol);
+import {getPickListItems} from '../utils/api';
+import {defaultLanguageId} from '../utils/locale';
 
 const PICKLIST_OPERATORS: LabelValueObject[] = [
 	{
@@ -134,7 +131,7 @@ export function ModalAddFilter({
 		return newItemsValues;
 	};
 
-	const getCheckedPickListItems = (itemValues: TPickListValue[]): IItem[] => {
+	const getCheckedPickListItems = (itemValues: PickListItem[]): IItem[] => {
 		let newItemsValues: IItem[] = [];
 
 		const currentFilterColumn = currentFilters.find((filterColumn) => {
@@ -181,17 +178,9 @@ export function ModalAddFilter({
 		(objectField: ObjectField) => {
 			if (objectField?.businessType === 'Picklist') {
 				const makeFetch = async () => {
-					const response = await fetch(
-						`/o/headless-admin-list-type/v1.0/list-type-definitions/${objectField.listTypeDefinitionId}/list-type-entries`,
-						{
-							headers: HEADERS,
-							method: 'GET',
-						}
+					const items = await getPickListItems(
+						objectField.listTypeDefinitionId
 					);
-
-					const {items = []} = (await response.json()) as {
-						items?: TPickListValue[];
-					};
 
 					if (editingFilter) {
 						setItems(getCheckedPickListItems(items));
@@ -240,15 +229,13 @@ export function ModalAddFilter({
 		}
 		else {
 			if (selectedFilterBy) {
-				setFieldValues(selectedFilterBy);
+				setFieldValues(
+					(selectedFilterBy as unknown) as ObjectFieldView
+				);
 			}
 			else {
 				const objectField = objectFields.find(
-					(objectField: ObjectField) => {
-						if (objectField.name === editingObjectFieldName) {
-							return objectField;
-						}
-					}
+					({name}) => name === editingObjectFieldName
 				);
 
 				objectField && setFieldValues(objectField);
@@ -414,16 +401,6 @@ interface IProps {
 interface IItem extends LabelValueObject {
 	checked?: boolean;
 }
-
-type TPickListValue = {
-	dateCreated: string;
-	dateModified: number;
-	id: number;
-	key: string;
-	name: string;
-	name_i18n: TName;
-	type: string;
-};
 
 type TCurrentFilter = {
 	definition: {[key: string]: string[]} | null;

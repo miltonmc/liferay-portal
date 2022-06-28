@@ -24,23 +24,10 @@ interface IProps {
 	deletionTypes: TDeletionType[];
 	hasUpdateObjectDefinitionPermission: boolean;
 	isReverse: boolean;
-	objectRelationship: TObjectRelationship;
+	objectRelationship: ObjectRelationship;
 }
 declare type TDeletionType = {
 	label: string;
 	value: string;
-};
-declare type TName = {
-	[key: string]: string;
-};
-declare type TObjectRelationship = {
-	deletionType: string;
-	label: TName;
-	name: string;
-	objectDefinitionId1: number;
-	objectDefinitionId2: number;
-	objectDefinitionName2: string;
-	objectRelationshipId: number;
-	type: string;
 };
 export {};

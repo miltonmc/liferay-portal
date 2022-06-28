@@ -16,7 +16,6 @@ import React, {createContext, useReducer} from 'react';
 
 import {defaultLanguageId} from '../../utils/locale';
 import {
-	ObjectFieldView,
 	TAction,
 	TName,
 	TObjectView,

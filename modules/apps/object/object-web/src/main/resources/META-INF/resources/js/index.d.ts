@@ -12,10 +12,6 @@
  * details.
  */
 
-interface ItemIdName {
-	id: string;
-	name: string;
-}
 type Locale = Liferay.Language.Locale;
 type LocalizedValue<T> = Liferay.Language.LocalizedValue<T>;
 
@@ -81,6 +77,13 @@ interface ObjectField {
 	system?: boolean;
 }
 
+interface ObjectFieldView extends ObjectField {
+	checked?: boolean;
+	filtered?: boolean;
+	hasFilter?: boolean;
+	type?: string;
+}
+
 interface ObjectDefinition {
 	active: boolean;
 	dateCreated: string;
@@ -101,6 +104,7 @@ interface ObjectDefinition {
 		label: string;
 		label_i18n: string;
 	};
+	storageType?: string;
 	system: boolean;
 	titleObjectFieldId: number;
 }
@@ -147,7 +151,7 @@ interface ObjectValidation {
 
 interface ObjectRelationship {
 	deletionType: string;
-	id: string;
+	id: number;
 	label: LocalizedValue<string>;
 	name: string;
 	objectDefinitionId1: number;
@@ -158,15 +162,28 @@ interface ObjectRelationship {
 	type: string;
 }
 
-interface PickListItem {
-	key: string;
-	name: string;
+interface ObjectDefinitionsRelationship {
+	id: number;
+	label: string;
+	related?: boolean;
 }
 
 type ObjectValidationType = {
 	label: string;
 	name: string;
 };
+
+interface PickList {
+	id: number;
+	listTypeEntries: PickListItem[];
+	name: string;
+}
+
+interface PickListItem {
+	id: number;
+	key: string;
+	name: string;
+}
 
 interface PredefinedValue {
 	inputAsValue: boolean;
