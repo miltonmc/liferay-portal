@@ -53,9 +53,10 @@ declare module Liferay {
 			| 'sv_SE'
 			| 'zh_CN';
 
-		type LocalizedValue<T> = {[key in Locale]?: T};
+		type FullyLocalizedValue<T> = {[key in Locale]: T};
+		type LocalizedValue<T> = Partial<FullyLocalizedValue<T>>;
 
-		export const available: Object;
+		export const available: FullyLocalizedValue<string>;
 
 		export const direction: LocalizedValue<Direction>;
 
@@ -230,7 +231,8 @@ declare module Liferay {
 	}
 
 	namespace ThemeDisplay {
-		export function getDefaultLanguageId(): string;
+		export function getBCP47LanguageId(): string;
+		export function getDefaultLanguageId(): Language.Locale;
 		export function getLanguageId(): Language.Locale;
 		export function getPathThemeImages(): string;
 		export function getSiteGroupId(): number;
