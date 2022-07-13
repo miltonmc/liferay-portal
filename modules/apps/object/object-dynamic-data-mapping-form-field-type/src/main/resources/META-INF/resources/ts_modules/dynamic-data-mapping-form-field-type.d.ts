@@ -13,11 +13,5 @@
  */
 
 declare module 'dynamic-data-mapping-form-field-type' {
-	type FieldChangeEventHandler<T = unknown> = (event: {
-		target: {
-			value: T;
-		};
-	}) => void;
-
-	function ReactFieldBase(props: any): JSX.Element;
+	export * from 'dynamic-data-mapping-form-field-type/src/main/resources/META-INF/resources/index';
 }

@@ -12,4 +12,6 @@
  * details.
  */
 
-declare module 'data-engine-js-components-web';
+declare module 'data-engine-js-components-web' {
+	export * from 'data-engine-js-components-web/src/main/resources/META-INF/resources/js/index';
+}

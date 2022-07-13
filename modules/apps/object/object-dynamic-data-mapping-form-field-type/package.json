@@ -1,6 +1,4 @@
 {
-	"dependencies": {
-	},
 	"name": "@liferay/object-dynamic-data-mapping-form-field-type",
 	"private": true,
 	"scripts": {
