@@ -12,15 +12,6 @@
  * details.
  */
 
-import {FieldTypeName} from 'data-engine-js-components-web';
-import React from 'react';
-import './SidebarFieldSettings.scss';
-declare const SidebarFieldSettings: React.FC<IProps>;
-export default SidebarFieldSettings;
-interface Field {
-	name: string;
-	type: FieldTypeName;
-}
-interface IProps {
-	field: Field;
+declare module 'data-engine-js-components-web' {
+	export * from 'data-engine-js-components-web/src/main/resources/META-INF/resources/js/index';
 }

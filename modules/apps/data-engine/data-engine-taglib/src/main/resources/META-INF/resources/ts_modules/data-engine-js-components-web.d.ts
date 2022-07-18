@@ -13,18 +13,5 @@
  */
 
 declare module 'data-engine-js-components-web' {
-	function useConfig(): {formReportDataURL: string};
-
-	export const FormReport: React.FC<{
-		data?: string;
-		fields: unknown;
-		formReportRecordsFieldValuesURL: string;
-		portletNamespace: string;
-	}>;
-
-	export const FormView: React.FC;
-
-	export const PartialResults: React.FC<{
-		reportDataURL: string;
-	}>;
+	export * from 'data-engine-js-components-web/src/main/resources/META-INF/resources/js/index';
 }
